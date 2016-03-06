@@ -12,6 +12,8 @@ Contents:
    :maxdepth: 2
 
    notes/c_basic
+   notes/c_concurrency
+   notes/c_socket
 
 
 Indices and tables
