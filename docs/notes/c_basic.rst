@@ -186,3 +186,58 @@ Read content into memory from a file
         }
         return ret;
     }
+
+Check file types
+----------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <unistd.h>
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        struct stat st;
+        char *path = NULL;
+
+        bzero(&st, sizeof(struct stat));
+
+        if (argc != 2) {
+            printf("Usage: PROG file\n");
+            goto Error;
+        }
+        path = argv[1];
+        if (-1 == stat(path, &st)) {
+            printf("stat %s get error\n", path);
+            goto Error;
+        }
+        /* check file type */
+        switch (st.st_mode & S_IFMT) {
+            case S_IFBLK: printf("Block device\n"); break;
+            case S_IFCHR: printf("Character device\n"); break;
+            case S_IFDIR: printf("Directory\n"); break;
+            case S_IFIFO: printf("FIFO pipe\n"); break;
+            case S_IFLNK: printf("Symbolic link\n"); break;
+            case S_IFREG: printf("Regular file\n"); break;
+            case S_IFSOCK: printf("Socket\n"); break;
+            default: printf("Unknown\n");
+        }
+        ret = 0;
+    Error:
+        return ret;
+    }
+
+output:
+
+.. code-block:: console
+
+    $ ./a.out /etc/hosts
+    Regular file
+    $ ./a.out /usr
+    Directory
+    ./a.out /dev/tty.Bluetooth-Incoming-Port
+    Character device
