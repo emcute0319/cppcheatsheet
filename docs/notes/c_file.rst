@@ -40,6 +40,7 @@ Calculate file size via ``lseek``
             goto Error;
         }
         printf("File Size: %ld byte\n", e_offset - s_offset);
+        ret = 0;
     Error:
         if (fd>=0) {
             close(fd);
@@ -89,6 +90,7 @@ Using ``fstat`` get file size
             goto Error;
         }
         printf("File Size: %lld byte\n", st.st_size);
+        ret = 0;
     Error:    
         if (fd>=0) {
             close(fd);
@@ -158,6 +160,7 @@ Copy all content of a file
                 goto Error;
             } 
         }
+        ret = 0;
     Error:
         if (sfd >= 0) {
             close(sfd);
@@ -174,6 +177,94 @@ output:
 
     $ echo "Hello" > hello.txt
     $ ./a.out hello.txt hello_copy.txt
+    $ diff hello.txt hello_copy.txt
+
+
+Copy some bytes of content to a file
+------------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #include <fcntl.h>
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        int sfd = -1, dfd = -1;
+        size_t s_offset = 0;
+        size_t d_offset = -1;
+        mode_t perm = 0;
+        char *src = NULL;
+        char *dst = NULL;
+        struct stat st = {0};
+        char buf[1024] = {0};
+        size_t size = 0;
+        size_t r_size = 0;
+
+        if (argc != 4) {
+            printf("Usage: PROG src dst bytes\n");
+            goto Error;
+        }
+        /* open source file */
+        src = argv[1]; 
+        if (0 > (sfd = open(src, O_RDONLY))) {
+            printf("open source file error\n");
+            goto Error;
+        }
+        /* get source file permission */
+        if (-1 == fstat(sfd, &st)) {
+            printf("fstat fail\n");
+            goto Error;
+        }
+        /* open dst file */
+        dst = argv[2];
+        perm = st.st_mode;
+        if (0 > (dfd = open(dst, O_WRONLY | O_CREAT, perm))) {
+            printf("open destination file error\n"); 
+            goto Error;
+        }
+        if (-1 == (d_offset = lseek(dfd, 0, SEEK_END))) {
+            printf("lseek get error\n");
+            goto Error;
+        }
+        if (-1 == (s_offset = lseek(sfd, d_offset, SEEK_SET))) {
+            printf("lseek get error\n");
+            goto Error;
+        }
+        /* bytes */
+        size = atoi(argv[3]);    
+        if (-1 == (r_size = read(sfd, buf, size))) {
+            printf("read content fail\n"); 
+            goto Error;
+        }
+        if (r_size != write(dfd, buf, r_size)) {
+            printf("write content fail\n"); 
+            goto Error;
+        }
+        ret = 0; 
+    Error:
+        if (sfd >= 0) {
+            close(sfd);
+        }
+        if (dfd >= 0) {
+            close(dfd);
+        }
+        return ret;
+    }
+
+.. code-block:: console
+
+    $ echo "Hello" > hello.txt
+    $ $ ./a.out hello.txt hello_copy.txt 3
+    $ cat hello_copy.txt
+    Hel$./a.out hello.txt hello_copy.txt 3
+    $ cat hello_copy.txt 
+    Hello
     $ diff hello.txt hello_copy.txt
 
 

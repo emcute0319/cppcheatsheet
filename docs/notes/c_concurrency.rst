@@ -2,8 +2,8 @@
 C Concurrency cheatsheet
 ========================
 
-How to write a UNIX damon
--------------------------
+How to write a UNIX daemon
+--------------------------
 
 .. code-block:: c
 
@@ -54,7 +54,7 @@ How to write a UNIX damon
         return ret;
     }
 
-Using ``damon(nochdir, noclose)``
+Using ``daemon(nochdir, noclose)``
 ---------------------------------
 
 .. code-block:: c
