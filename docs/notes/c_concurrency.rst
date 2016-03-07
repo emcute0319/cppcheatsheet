@@ -53,3 +53,27 @@ How to write a UNIX damon
     Error:
         return ret;
     }
+
+Using ``damon(nochdir, noclose)``
+---------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <syslog.h>
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        /* make process as a daemon */
+        if (-1 == daemon(0, 0)) {
+            syslog(LOG_ERR, "create a daemon get error");
+            goto Error;
+        }
+        /* do the daemon task */
+        while(1) { sleep(3); syslog(LOG_ERR, "Hello"); }
+        ret = 0;
+    Error:
+        return ret;
+    }
