@@ -257,6 +257,8 @@ Copy some bytes of content to a file
         return ret;
     }
 
+output:
+
 .. code-block:: console
 
     $ echo "Hello" > hello.txt
