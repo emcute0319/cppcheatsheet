@@ -2,6 +2,44 @@
 C Basic cheatsheet
 ==================
 
+Implement closure via ``static`` 
+--------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    void foo()
+    {
+        static int s_var = 9527;
+        int l_var = 5566;
+        
+        l_var++;
+        s_var++;
+        printf("s_var = %d, l_var = %d\n", s_var, l_var);
+    }
+
+    int main(int argc, char *argv[])
+    {
+        int i = 0;
+        for (i=0; i < 5; i++) {
+            foo();
+        }
+        return 0;
+    }
+
+output:
+
+.. code-block:: c
+
+    $ ./a.out
+    s_var = 9528, l_var = 5567
+    s_var = 9529, l_var = 5567
+    s_var = 9530, l_var = 5567
+    s_var = 9531, l_var = 5567
+    s_var = 9532, l_var = 5567
+
+
 Split String
 ------------
 
