@@ -130,3 +130,59 @@ output:
     ^C[54652] Get signal: Interrupt: 2
     [54652] Get signal: Hangup: 1
     [54652] Get signal: Alarm clock: 14
+
+
+Basic sigaction usage 
+---------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <signal.h>
+    #include <sys/types.h>
+    #include <unistd.h>
+
+    void handler(int signo)
+    {
+        printf("Get Signal: %s\n",sys_siglist[signo]);
+    }
+
+    int main(int argc, char *argv[])
+    {
+        pid_t pid = -1;
+        struct sigaction new_sa = {0};
+        struct sigaction old_sa = {0};
+
+        new_sa.sa_handler = handler;
+        sigemptyset(&new_sa.sa_mask);
+        new_sa.sa_flags = 0;
+
+        pid = getpid();
+        printf("Process PID: %i\n", pid);
+        /* if signal not ignore, overwrite its handler */
+        sigaction(SIGINT, NULL, &old_sa);
+        if (old_sa.sa_handler != SIG_IGN) {
+            sigaction(SIGINT, &new_sa, NULL);
+        }
+
+        sigaction(SIGHUP, NULL, &old_sa);
+        if (old_sa.sa_handler != SIG_IGN) {
+            sigaction(SIGHUP, &new_sa, NULL);
+        }
+        while (1) { sleep(3); }
+        return 0;
+    }
+
+output:
+
+.. code-block:: console
+
+    # bash 1
+    kill -1 57140
+    kill -2 57140
+
+    # bash 2
+    $ ./a.out
+    Process PID: 57140
+    Get Signal: Hangup
+    Get Signal: Interrupt
