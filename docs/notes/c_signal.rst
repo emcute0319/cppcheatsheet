@@ -199,6 +199,53 @@ output:
     [1]+  Terminated              ./a.out
 
 
+Check child process alive
+-------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <signal.h>
+
+    void handler(int signo)
+    {
+        pid_t pid = getpid();
+        printf("[%i] Got signal[%d]: %s\n",
+               pid, signo, sys_siglist[signo]);
+    }
+
+    int main(int argc, char *argv[]) 
+    {
+        int ret = -1;
+        pid_t pid = -1;
+
+        pid = fork();
+        signal(SIGCHLD, handler);
+        if (pid < 0) {
+            printf("Fork failed\n");
+            goto Error; 
+        } else if (pid == 0) {
+            /* child */
+            printf("Child[%i]\n", getpid());
+            sleep(3);
+        } else {
+            printf("Parent[%i]\n", getpid());
+            pause();
+        }
+        ret = 0;
+    Error:
+        return ret;
+    }
+
+.. code-block:: console
+
+    $ ./a.out 
+    Parent[59113]
+    Child[59114]
+    [59113] Got signal[20]: Child exited
+
+
 Basic sigaction usage 
 ---------------------
 
