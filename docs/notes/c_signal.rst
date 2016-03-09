@@ -132,6 +132,73 @@ output:
     [54652] Get signal: Alarm clock: 14
 
 
+A pthread signal handler
+------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <pthread.h>
+    #include <errno.h>
+    #include <signal.h>
+    #include <unistd.h>
+
+    static void *sig_thread(void *arg)
+    {
+        sigset_t *set = (sigset_t *)arg;
+        int err = -1, signo = -1;
+
+        for(;;) {
+            if(0 != (err = sigwait(set, &signo))) {
+                printf("sigwait error\n");
+                goto Error;
+            }
+            printf("Get signal[%d]: %s\n", signo, sys_siglist[signo]);
+        }
+    Error:
+        return;
+    }
+
+    int main(int argc, char *argv[])
+    {
+        pthread_t thread;
+        sigset_t sig_set;
+        int err = -1;
+
+        sigemptyset(&sig_set);
+        sigaddset(&sig_set, SIGQUIT);
+        sigaddset(&sig_set, SIGUSR1);
+        /* set signal handler thread sigmask */
+        if(0 != (err = pthread_sigmask(SIG_BLOCK, &sig_set, NULL))) {
+            printf("set pthread_sigmask error\n");
+            goto Error;
+        }
+        /* create signal thread */
+        if (0 != (err = pthread_create(&thread, NULL, &sig_thread, (void *)&sig_set))) {
+            printf("create pthread error\n");
+            goto Error;
+        }
+
+        pause();
+    Error:
+        return err;
+    }
+
+output:
+
+.. code-block:: console
+
+    $ ./a.out &
+    [1] 21258
+    $ kill -USR1 %1
+    Get signal[10]: User defined signal 1
+    $ kill -QUIT %1
+    Get signal[3]: Quit
+    $ kill -TERM %1
+    [1]+  Terminated              ./a.out
+
+
 Basic sigaction usage 
 ---------------------
 

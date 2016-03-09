@@ -55,7 +55,7 @@ How to write a UNIX daemon
     }
 
 Using ``daemon(nochdir, noclose)``
----------------------------------
+----------------------------------
 
 .. code-block:: c
 
