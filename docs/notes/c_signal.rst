@@ -154,7 +154,8 @@ A pthread signal handler
                 printf("sigwait error\n");
                 goto Error;
             }
-            printf("Get signal[%d]: %s\n", signo, sys_siglist[signo]);
+            printf("Get signal[%d]: %s\n",
+                   signo, sys_siglist[signo]);
         }
     Error:
         return;
@@ -170,12 +171,15 @@ A pthread signal handler
         sigaddset(&sig_set, SIGQUIT);
         sigaddset(&sig_set, SIGUSR1);
         /* set signal handler thread sigmask */
-        if(0 != (err = pthread_sigmask(SIG_BLOCK, &sig_set, NULL))) {
+        err = pthread_sigmask(SIG_BLOCK, &sig_set, NULL)
+        if(0 != err) {
             printf("set pthread_sigmask error\n");
             goto Error;
         }
         /* create signal thread */
-        if (0 != (err = pthread_create(&thread, NULL, &sig_thread, (void *)&sig_set))) {
+        err = pthread_create(&thread, NULL, 
+                             &sig_thread, (void *)&sig_set))
+        if (0 != err) {
             printf("create pthread error\n");
             goto Error;
         }
@@ -300,3 +304,71 @@ output:
     Process PID: 57140
     Get Signal: Hangup
     Get Signal: Interrupt
+
+
+Block & Unblock signal
+----------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <errno.h>
+    #include <unistd.h>
+    #include <signal.h>
+    #include <setjmp.h>
+
+    static sigjmp_buf jmpbuf;
+
+    void handler(int signo)
+    {
+        printf("Get signal[%d]: %s\n", signo, sys_siglist[signo]);
+        if (SIGUSR1 == signo) {
+            siglongjmp(jmpbuf, 1);
+        }
+    }
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        sigset_t new_mask, old_mask;
+
+        sigemptyset(&new_mask);
+        sigaddset(&new_mask, SIGHUP);
+
+        if (SIG_ERR == signal(SIGHUP, handler)) {
+                printf("Set signal get %s error", strerror(errno));
+                goto Error;
+        }
+        if (SIG_ERR == signal(SIGALRM, handler)) {
+                printf("Set signal get %s error", strerror(errno));
+                goto Error;
+        }
+        if (SIG_ERR == signal(SIGUSR1, handler)) {
+                printf("Set signal get %s error", strerror(errno));
+                goto Error;
+        }
+        /* block SIGHUP */
+        if (sigsetjmp(jmpbuf, 1)) {
+                /* unblock SIGHUP */
+                sigprocmask(SIG_UNBLOCK, &new_mask, &old_mask);
+        } else {
+                /* block SIGHUP */
+                sigprocmask(SIG_BLOCK, &new_mask, &old_mask);
+        }
+        while (1) sleep(3);
+        ret = 0;
+    Error:
+        return ret;
+    }
+
+output:
+
+.. code-block:: console
+
+    $ kill -HUP %1
+    $ kill -ALRM %1
+    Get signal[14]: Alarm clock
+    $ kill -USR1 %1
+    Get signal[10]: User defined signal 1
+    Get signal[1]: Hangup
