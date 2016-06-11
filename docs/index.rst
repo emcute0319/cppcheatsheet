@@ -16,6 +16,7 @@ Contents:
    notes/c_signal
    notes/c_concurrency
    notes/c_socket
+   notes/c_make
 
 
 Indices and tables
