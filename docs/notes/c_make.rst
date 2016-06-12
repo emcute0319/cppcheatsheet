@@ -242,6 +242,96 @@ output
     cc -shared -Wl,-soname,libfoobar.so.1 -o src/libfoobar.so.1.0.0 src/foo.o src/bar.o
 
 
+build shared and static library
+--------------------------------
+
+directory layout
+
+.. code-block:: bash
+
+    .
+    |-- Makefile
+    |-- include
+    |   |-- bar.h
+    |   `-- foo.h
+    `-- src
+        |-- Makefile
+        |-- bar.c
+        `-- foo.c
+
+Makefile
+
+.. code-block:: make
+
+    SUBDIR = src
+
+    .PHONY: all clean $(SUBDIR)
+
+    all: $(SUBDIR)
+
+    clean: $(SUBDIR)
+
+    $(SUBDIR):
+            make -C $@ $(MAKECMDGOALS)
+
+
+src/Makefile
+
+.. code-block:: bash
+
+    SRC      = $(wildcard *.c)
+    OBJ      = $(SRC:.c=.o)
+    LIB      = libfoobar
+
+    STATIC   = $(LIB).a
+    SHARED   = $(LIB).so.1.0.0
+    SONAME   = $(LIB).so.1
+    SOFILE   = $(LIB).so
+
+    CFLAGS  += -Wall -Werror -g -O2 -fPIC -I../include
+    LDFLAGS += -shared -Wl,-soname,$(SONAME)
+
+    .PHONY: all clean
+
+    all: $(STATIC) $(SHARED) $(SONAME) $(SOFILE)
+
+    $(SOFILE): $(SHARED)
+            ln -sf $(SHARED) $(SOFILE)
+
+    $(SONAME): $(SHARED)
+            ln -sf $(SHARED) $(SONAME)
+
+    $(SHARED): $(STATIC)
+            $(CC) $(LDFLAGS) -o $@ $<
+
+    $(STATIC): $(OBJ)
+            $(AR) $(ARFLAGS) $@ $^
+
+    %.o: %.c
+            $(CC) $(CFLAGS) -c -o $@ $<
+
+    clean:
+            rm -rf *.o *.a *.so *.so.*
+
+output
+
+.. code-block:: bash
+
+    $ make
+    make -C src 
+    make[1]: Entering directory '/root/test/src'
+    cc -Wall -Werror -g -O2 -fPIC -I../include -c -o foo.o foo.c
+    cc -Wall -Werror -g -O2 -fPIC -I../include -c -o bar.o bar.c
+    ar rv libfoobar.a foo.o bar.o
+    ar: creating libfoobar.a
+    a - foo.o
+    a - bar.o
+    cc -shared -Wl,-soname,libfoobar.so.1 -o libfoobar.so.1.0.0 libfoobar.a
+    ln -sf libfoobar.so.1.0.0 libfoobar.so.1
+    ln -sf libfoobar.so.1.0.0 libfoobar.so
+    make[1]: Leaving directory '/root/test/src'
+
+
 build recursively
 --------------------
 
