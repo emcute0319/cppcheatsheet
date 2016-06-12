@@ -145,6 +145,65 @@ output
     cc   bar.o   -o bar
 
 
+using ``$(eval)`` predefine variables
+--------------------------------------
+
+without ``$(eval)``
+
+.. code-block:: make
+
+    SRC = $(wildcard *.c)
+    EXE = $(subst .c,,$(SRC))
+
+    define PROGRAM_template
+    $1_SHARED = lib$(strip $1).so
+    endef
+
+    .PHONY: all
+
+    $(foreach exe, $(EXE), $(call PROGRAM_template, $(exe)))
+
+    all:
+            @echo $(foo_SHARED)
+            @echo $(bar_SHARED)
+
+output
+
+.. code-block:: bash
+
+    $ make
+    Makefile:11: *** missing separator.  Stop.
+
+
+with ``$(evall)``
+
+.. code-block:: make
+
+    CFLAGS  += -Wall -g -O2 -I./include
+    SRC = $(wildcard *.c)
+    EXE = $(subst .c,,$(SRC))
+
+    define PROGRAM_template
+    $1_SHARED = lib$(strip $1).so
+    endef
+
+    .PHONY: all
+
+    $(foreach exe, $(EXE), $(eval $(call PROGRAM_template, $(exe))))
+
+    all:
+            @echo $(foo_SHARED)
+            @echo $(bar_SHARED)
+
+output
+
+.. code-block:: bash
+
+    $ make
+    libfoo.so
+    libbar.so
+
+
 build subdir and link together
 -------------------------------
 
