@@ -53,6 +53,55 @@ output
     foo foo foo bar bar
 
 
+single dollar sign and double dollar sign
+------------------------------------------
+
++-------------+-----------------------------------------+
+| dollar sign | descriptions                            |
++-------------+-----------------------------------------+
+|     ``$``   | reference a make variable using ``$``   |
++-------------+-----------------------------------------+
+|    ``$$``   | reference a shell variable using ``$$`` |
++-------------+-----------------------------------------+
+
+Makefile
+
+.. code-block:: make
+
+    LIST = one two three
+
+    .PHONY: all single_dollar double_dollar
+
+    all: single_dollar double_dollar
+
+    double_dollar:
+            @echo "=== double dollar sign example ==="
+            @for i in $(LIST); do \
+                    echo $$i;     \
+            done
+
+    single_dollar:
+            @echo "=== single dollar sign example ==="
+            @for i in $(LIST); do  \
+                    echo $i;     \
+            done
+
+
+output
+
+.. code-block:: bash
+
+    $ make
+    === single dollar sign example ===
+
+
+
+    === double dollar sign example ===
+    one
+    two
+    three
+
+
 build executable files respectively
 ------------------------------------
 
@@ -320,3 +369,88 @@ output
         `-- test_main
 
     3 directories, 14 files
+
+
+replace current shell
+----------------------
+
+.. code-block:: make
+
+    OLD_SHELL := $(SHELL)
+    SHELL = /usr/bin/python
+
+    .PHONY: all
+
+    all:
+            @import os; print os.uname()[0]
+
+output
+
+.. code-block:: bash
+
+    $ make
+    Linux
+
+
+one line condition
+-------------------
+
+syntax: ``$(if cond, then part, else part)``
+
+Makefile
+
+.. code-block:: make
+
+    VAR =
+    IS_EMPTY = $(if $(VAR), $(info not empty), $(info empty))
+
+    .PHONY: all
+
+    all:
+            @echo $(IS_EMPTY)
+
+output
+
+.. code-block:: bash
+
+    $ make
+    empty
+
+    $ make VAR=true
+    not empty
+
+
+Using define to control CFLAGS
+--------------------------------
+
+Makefile
+
+.. code-block:: make
+
+    CFLAGS += -Wall -Werror -g -O2
+    SRC     = $(wildcard *.c)
+    OBJ     = $(SRC:.c=.o)
+    EXE     = $(subst .c,,$(SRC))
+
+    ifdef DEBUG
+    CFLAGS += -DDEBUG
+    endif
+
+    .PHONY: all clean
+
+    all: $(OBJ) $(EXE)
+
+    clean:
+            rm -rf $(OBJ) $(EXE)
+
+
+output
+
+.. code-block:: bash
+
+    $ make
+    cc -Wall -Werror -g -O2   -c -o foo.o foo.c
+    cc   foo.o   -o foo
+    $ make DEBUG=1
+    cc -Wall -Werror -g -O2 -DDEBUG   -c -o foo.o foo.c
+    cc   foo.o   -o foo
