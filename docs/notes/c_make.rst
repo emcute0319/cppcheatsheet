@@ -53,6 +53,51 @@ output
     foo foo foo bar bar
 
 
+string functions
+-----------------
+
+Makefile
+
+.. code-block:: make
+
+    SRC      = hello_foo.c hello_bar.c foo_world.c bar_world.c
+
+    SUBST    = $(subst .c,,$(SRC))
+
+    SRCST    = $(SRC:.c=.o)
+    PATSRCST = $(SRC:%.c=%.o)
+    PATSUBST = $(patsubst %.c, %.o, $(SRC))
+
+    .PHONY: all
+
+    all: sub filter
+
+    sub:
+            @echo "== sub example =="
+            @echo "SUBST: " $(SUBST)
+            @echo "SRCST: " $(SRCST)
+            @echo "PATSRCST: " $(PATSRCST)
+            @echo "PATSUBST: " $(PATSUBST)
+
+    filter:
+            @echo "== filter example =="
+            @echo "filter: " $(filter hello_%, $(SRC))
+            @echo "filter-out: $(filter-out hello_%, $(SRC))"
+
+output
+
+.. code-block:: bash
+
+    == sub example ==
+    SUBST:  hello_foo hello_bar foo_world bar_world
+    SRCST:  hello_foo.o hello_bar.o foo_world.o bar_world.o
+    PATSRCST:  hello_foo.o hello_bar.o foo_world.o bar_world.o
+    PATSUBST:  hello_foo.o hello_bar.o foo_world.o bar_world.o
+    == filter example ==
+    filter:  hello_foo.c hello_bar.c
+    filter-out: foo_world.c bar_world.c
+
+
 single dollar sign and double dollar sign
 ------------------------------------------
 
