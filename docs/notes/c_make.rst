@@ -53,6 +53,34 @@ output
     foo foo foo bar bar
 
 
+using ``$(warning text)`` check make rules (for debug)
+--------------------------------------------------------
+
+.. code-block:: make
+
+    $(warning Top level warning)
+
+    FOO := $(warning FOO variable)foo
+    BAR  = $(warning BAR variable)bar
+
+    $(warning target)target: $(warning prerequisite list)Makefile $(BAR)
+            $(warning tagrget script)
+            @ls
+    $(BAR):
+
+output
+
+.. code-block:: bash
+
+    Makefile:1: Top level warning
+    Makefile:3: FOO variable
+    Makefile:6: target
+    Makefile:6: prerequisite list
+    Makefile:6: BAR variable
+    Makefile:9: BAR variable
+    Makefile:7: tagrget script
+    Makefile
+
 string functions
 -----------------
 
