@@ -106,24 +106,47 @@ output:
     lambda: 3
 
 
-EXPECT_SUCCESS
----------------
+EXPECT_*
+-----------
 
 .. code-block:: c
 
-    #include <stdio.h>
+    #include <stdio.h>                                                                                                                                   [19/1840]
     #include <string.h>
     #include <errno.h>
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <unistd.h>
 
+    #define EXPECT_TRUE(i, ...) \
+        if (i != 1) { __VA_ARGS__ }
 
-    #define EXPECT_SUCCESS(ret) \
-        if (ret < 0) { \
-            printf("error: %s\n", strerror(errno)); \
+    #define EXPECT_FALSE(i, ...) \
+        if (i != 0) { __VA_ARGS__ }
+
+    #define EXPECT_EQ(i, e, ...) \
+        if (i != e) { __VA_ARGS__ }
+
+    #define EXPECT_NEQ(i, e, ...) \
+        if (i == e) { __VA_ARGS__ }
+
+    #define EXPECT_LT(i, e, ...) \
+        if (i >= e) { __VA_ARGS__ }
+
+    #define EXPECT_LE(i, e, ...) \
+        if (i > e) { __VA_ARGS__ }
+
+    #define EXPECT_GT(i, e, ...) \
+        if (i <= e) { __VA_ARGS__ }
+
+    #define EXPECT_GE(i, e, ...) \
+        if (i < e) { __VA_ARGS__ }
+
+    #define EXPECT_SUCCESS(ret, fmt, ...) \
+        EXPECT_GT(ret, 0, \
+            printf(fmt, ##__VA_ARGS__); \
             goto End; \
-        }
+        )
 
     /*
      * Entry point
@@ -131,17 +154,12 @@ EXPECT_SUCCESS
     int main(int argc, char *argv[])
     {
         int ret = -1;
-        struct stat st = {};
-        char *path = NULL;
 
-        if (argc != 2) {
-            printf("Usage: COMMAND [file]\n");
-            goto End;
-        }
-        path = argv[1];
-
-        EXPECT_SUCCESS(stat(path, &st));
-
+        EXPECT_TRUE(1);
+        EXPECT_FALSE(0);
+        EXPECT_LT(1, 0, printf("check less then fail\n"););
+        EXPECT_GT(0, 1, printf("check great then fail\n"););
+        EXPECT_SUCCESS(ret, "ret = %d\n", ret);
         ret = 0;
     End:
         return ret;
@@ -152,6 +170,7 @@ output:
 .. code-block:: bash
 
     $ cc -g -Wall -o checkerr checkerr.c
-    $ ./checkerr /etc/passwd
-    $ ./checkerr /etc/passw
-    error: No such file or directory
+    $ ./checkerr
+    check less then fail
+    check great then fail
+    ret = -1
