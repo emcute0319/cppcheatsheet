@@ -70,6 +70,48 @@ output:
     Hello World
 
 
+ALLOC_STRUCT
+-------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <errno.h>
+
+    #define ALLOC_STRUCT(s)  ((s *) malloc(sizeof(s)))
+    #define EXPECT_NOT_NULL(i, ...) \
+        if (i == NULL) { __VA_ARGS__ }
+    #define EXPECT_ALLOC_SUCCESS(i, fmt, ...) \
+        EXPECT_NOT_NULL(i, printf(fmt, ##__VA_ARGS__); goto End;)
+
+    typedef struct _foo {
+        int hello;
+        int world;
+    } foo;
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        foo *f  = NULL;
+        f = ALLOC_STRUCT(foo);
+        EXPECT_ALLOC_SUCCESS(f, "err: %s", strerror(errno));
+        printf("alloc foo success\n");
+        ret = 0;
+    End:
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -g -Wall -o test test.c
+    $ ./test
+    alloc foo success
+
+
 lambda
 -------
 
