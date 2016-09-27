@@ -104,3 +104,54 @@ output:
     $ gcc -g -Wall -o test test.c
     $ ./test
     lambda: 3
+
+
+EXPECT_SUCCESS
+---------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <errno.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <unistd.h>
+
+
+    #define EXPECT_SUCCESS(ret) \
+        if (ret < 0) { \
+            printf("error: %s\n", strerror(errno)); \
+            goto End; \
+        }
+
+    /*
+     * Entry point
+     */
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        struct stat st = {};
+        char *path = NULL;
+
+        if (argc != 2) {
+            printf("Usage: COMMAND [file]\n");
+            goto End;
+        }
+        path = argv[1];
+
+        EXPECT_SUCCESS(stat(path, &st));
+
+        ret = 0;
+    End:
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ cc -g -Wall -o checkerr checkerr.c
+    $ ./checkerr /etc/passwd
+    $ ./checkerr /etc/passw
+    error: No such file or directory
