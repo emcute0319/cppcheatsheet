@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to csheeet's documentation!
-===================================
+Welcome to C cheatsheet!
+=========================
 
 Contents:
 
@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    notes/c_basic
+   notes/c_macro
    notes/c_file
    notes/c_signal
    notes/c_concurrency
