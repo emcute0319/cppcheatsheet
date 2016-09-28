@@ -2,6 +2,84 @@
 C Macro cheatsheet
 ==================
 
+Predefined Macros
+------------------
+
+============   ================================================
+   Macro        descriptions
+============   ================================================
+  __FILE__      current file name
+  __DATE__      current compile date in "MMM DD YYYY"" format.
+  __TIME__      current compile time in "HH:MM:SS" format.
+  __LINE__      current line number
+  __func__      current function name
+============   ================================================
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+
+        printf("__FILE__: %s\n"
+               "__DATE__: %s\n"
+               "__TIME__: %s\n"
+               "__LINE__: %d\n"
+               "__func__: %s\n",
+               __FILE__, __DATE__, __TIME__, __LINE__, __func__);
+
+        ret = 0;
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ cc -g -Wall -o test test.c
+    $ ./test
+    __FILE__: test.c
+    __DATE__: Sep 28 2016
+    __TIME__: 10:01:59
+    __LINE__: 16
+    __func__: main
+
+
+``DEBUG`` switch
+------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+
+    #ifdef DEBUG
+        printf("debug version\n");
+    #else
+        printf("release version\n");
+    #endif
+
+        ret = 0;
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ cc -g -Wall -o test test.c
+    $ ./test
+    release version
+    $ cc -g -Wall -DDEBUG -o test test.c
+    $ ./test
+    debug version
+
+
 ARRAYSIZE
 ----------
 
