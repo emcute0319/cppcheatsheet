@@ -218,6 +218,61 @@ output:
     ret = -1
 
 
+Get struct member `GET_FIELD_PTR`
+----------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    #define _GET_FIELD_OFFSET(s, field ) \
+        ((short)(long)(&((s *)NULL)->field))
+
+    #define _GET_FIELD_PTR(ps, offset) \
+        ((void *)(((char *)ps) + (offset)))
+
+    #define GET_FIELD_PTR(s, ps, field) \
+        _GET_FIELD_PTR(ps, _GET_FIELD_OFFSET(s, field))
+
+    typedef struct _foo {
+        char name[16];
+        int age;
+        int gender;
+    } foo;
+
+    /*
+     * Entry point
+     */
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        char *name = NULL;
+        int *age = NULL, *gender = NULL;
+        foo f = {.name="c", .age=44, .gender=0};
+
+        name   = GET_FIELD_PTR(foo, &f, name);
+        age    = GET_FIELD_PTR(foo, &f, age);
+        gender = GET_FIELD_PTR(foo, &f, gender);
+
+        printf("name: %s\n"
+               "age: %d\n"
+               "gender: %d\n", name, *age, *gender);
+
+        ret = 0;
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ cc -g -Wall -o test test.c
+    $ ./test
+    name: c
+    age: 44
+    gender: 0
+
+
 define ``__attribute__ ((*))``
 --------------------------------
 
