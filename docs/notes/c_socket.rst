@@ -28,6 +28,64 @@ output: (from a little endian machine)
     $ ./a.out 
     78 56 34 12
 
+
+Get host via ``gethostbyname``
+--------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <netdb.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1, i = 0;
+        struct hostent *h_ent = NULL;
+        struct in_addr **addr_list = NULL;
+
+        if (argc != 2) {
+            printf("Usage: COMMAND [name]\n");
+            goto End;
+        }
+        h_ent = gethostbyname(argv[1]);
+        if (h_ent == NULL) {
+            printf("gethostbyname fail. %s", hstrerror(h_errno));
+            goto End;
+        }
+
+        printf("Host Name: %s\n", h_ent->h_name);
+        addr_list = (struct in_addr **)h_ent->h_addr_list;
+        for (i=0; addr_list[i] != NULL; i++) {
+            printf("IP Address: %s\n", inet_ntoa(*addr_list[i]));
+        }
+
+        ret = 0;
+    End:
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ cc -g -Wall -o gethostbyname gethostbyname.c
+    $ ./gethostbyname localhost
+    Host Name: localhost
+    IP Address: 127.0.0.1
+    $ ./gethostbyname www.google.com
+    Host Name: www.google.com
+    IP Address: 74.125.204.99
+    IP Address: 74.125.204.105
+    IP Address: 74.125.204.147
+    IP Address: 74.125.204.106
+    IP Address: 74.125.204.104
+    IP Address: 74.125.204.103
+
+
 Basic socket server
 -------------------
 
