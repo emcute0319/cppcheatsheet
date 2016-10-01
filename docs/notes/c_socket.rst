@@ -86,8 +86,8 @@ output:
     IP Address: 74.125.204.103
 
 
-Basic socket server
--------------------
+Basic TCP socket server
+-------------------------
 
 .. code-block:: c
 
@@ -174,6 +174,89 @@ output:
     $ nc localhost 5566
     Hello Socket
     Hello Socket
+
+
+Basic UDP socket server
+------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <errno.h>
+    #include <sys/socket.h>
+    #include <sys/types.h>
+    #include <arpa/inet.h>
+    #include <netinet/in.h>
+    #include <unistd.h>
+
+    #define EXPECT_GE(i, e, ...) \
+      if (i < e) {__VA_ARGS__}
+
+    #define EXPECT_SUCCESS(ret, fmt, ...) \
+      EXPECT_GE(ret, 0, \
+        printf(fmt, ##__VA_ARGS__); goto End;)
+
+    #ifndef BUF_SIZE
+    #define BUF_SIZE 1024
+    #endif
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        int sockfd = -1;
+        int port = 5566;
+        char buf[BUF_SIZE] = {};
+        struct sockaddr_in s_addr = {};
+        struct sockaddr_in c_addr = {};
+        socklen_t s_len = 0;
+
+        /* create socket */
+        sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+        EXPECT_SUCCESS(sockfd, "create socket fail. %s\n", strerror(errno));
+
+
+        /* set socket addr */
+        bzero((char *) &s_addr, sizeof(s_addr));
+        s_addr.sin_family = AF_INET;
+        s_addr.sin_port = htons(port);
+        s_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+        s_len = sizeof(c_addr);
+
+        /* bind */
+        ret = bind(sockfd, (struct sockaddr *)&s_addr, sizeof(s_addr));
+        EXPECT_SUCCESS(ret, "bind fail. %s\n", strerror(errno));
+
+        for(;;) {
+            bzero(buf, sizeof(buf));
+            ret = recvfrom(sockfd, buf, sizeof(buf), 0,
+                           (struct sockaddr *)&c_addr, &s_len);
+            EXPECT_GE(ret, 0, continue;);
+
+            ret = sendto(sockfd, buf, ret, 0,
+                         (struct sockaddr *)&c_addr, s_len);
+        }
+
+        ret = 0;
+    End:
+        if (sockfd >= 0) {
+            close(sockfd);
+        }
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ cc -g -Wall -o udp_server udp_server.c
+    $ ./udp_server &
+    [1] 90190
+    $ nc -u 192.168.55.66 5566
+    Hello
+    Hello
+    UDP
+    UDP
 
 
 Event driven socket via ``select``
