@@ -257,3 +257,123 @@ output: (bash 2)
     $ nc localhost 5566
     Socket
     Socket
+
+
+socket with pthread
+---------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <errno.h>
+    #include <sys/socket.h>
+    #include <unistd.h>
+    #include <netinet/in.h>
+    #include <sys/types.h>
+    #include <arpa/inet.h>
+    #include <pthread.h>
+
+    #define EXPECT_GE(i, e, ...) \
+        if (i < e) { __VA_ARGS__; }
+
+    #define EXPECT_SUCCESS(ret, fmt, ...) \
+        EXPECT_GE(ret, 0, printf(fmt, ##__VA_ARGS__); goto End)
+
+    #define SOCKET(sockfd, domain, types, proto) \
+        do { \
+            sockfd = socket(domain, types, proto); \
+            EXPECT_SUCCESS(sockfd, "create socket fail. %s", strerror(errno)); \
+        } while(0)
+
+    #define SETSOCKOPT(ret, sockfd, level, optname, optval) \
+        do { \
+            int opt = optval;\
+            ret = setsockopt(sockfd, level, optname, &opt, sizeof(opt)); \
+            EXPECT_SUCCESS(ret, "setsockopt fail. %s", strerror(errno)); \
+        } while(0)
+
+    #define BIND(ret, sockfd, addr, port) \
+        do { \
+            struct sockaddr_in s_addr = {}; \
+            struct sockaddr sa = {}; \
+            socklen_t len = 0; \
+            ret = getsockname(sockfd, &sa, &len); \
+            EXPECT_SUCCESS(ret, "getsockopt fail. %s", strerror(errno)); \
+            s_addr.sin_family = sa.sa_family; \
+            s_addr.sin_addr.s_addr = inet_addr(addr); \
+            s_addr.sin_port = htons(port); \
+            ret = bind(sockfd, (struct sockaddr *) &s_addr, sizeof(s_addr)); \
+            EXPECT_SUCCESS(ret, "bind fail. %s", strerror(errno)); \
+        } while(0)
+
+    #define LISTEN(ret, sockfd, backlog) \
+        do { \
+            ret = listen(sockfd, backlog); \
+            EXPECT_SUCCESS(ret, "listen fail. %s", strerror(errno)); \
+        } while(0)
+
+
+    #ifndef BUF_SIZE
+    #define BUF_SIZE 1024
+    #endif
+
+    void *handler(void *p_sockfd)
+    {
+        int ret = -1;
+        char buf[BUF_SIZE] = {};
+        int c_sockfd = *(int *)p_sockfd;
+
+        for (;;) {
+            bzero(buf, sizeof(buf));
+            ret = recv(c_sockfd, buf, sizeof(buf) - 1, 0);
+            EXPECT_GE(ret, 0, break);
+            send(c_sockfd, buf, sizeof(buf) - 1, 0);
+        }
+        EXPECT_GE(c_sockfd, 0, close(c_sockfd));
+        pthread_exit(NULL);
+    }
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1, sockfd = -1, c_sockfd = -1;
+        int port = 9527;
+        char addr[] = "127.0.0.1";
+        struct sockaddr_in c_addr = {};
+        socklen_t clen = 0;
+        pthread_t t;
+
+        SOCKET(sockfd, AF_INET, SOCK_STREAM, 0);
+        SETSOCKOPT(ret, sockfd, SOL_SOCKET, SO_REUSEADDR, 1);
+        BIND(ret, sockfd, addr, port);
+        LISTEN(ret, sockfd, 10);
+
+        for(;;) {
+            c_sockfd = accept(sockfd, (struct sockaddr *)&c_addr, &clen);
+            EXPECT_GE(c_sockfd, 0, continue);
+            ret = pthread_create(&t, NULL, handler, (void *)&c_sockfd);
+            EXPECT_GE(ret, 0, close(c_sockfd); continue);
+        }
+    End:
+        EXPECT_GE(sockfd, 0, close(sockfd));
+        ret = 0;
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    # console 1
+    $ cc -g -Wall -c -o test.o test.c
+    $ cc test.o -o test
+    $ ./test &
+    [1] 86601
+    $ nc localhost 9527
+    Hello
+    Hello
+
+    # console 2
+    $ nc localhost 9527
+    World
+    World
