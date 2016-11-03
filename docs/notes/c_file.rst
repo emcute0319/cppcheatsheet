@@ -30,11 +30,11 @@ Calculate file size via ``lseek``
         if(0 > (fd = open(path,O_RDONLY))) {
             printf("open failed\n");
             goto Error;
-        } 
+        }
         if (-1 == (s_offset = lseek(fd, 0, SEEK_SET))) {
             printf("lseek error\n");
             goto Error;
-        } 
+        }
         if (-1 == (e_offset = lseek(fd, 0, SEEK_END))) {
             printf("lseek error\n");
             goto Error;
@@ -426,3 +426,67 @@ output:
     Directory
     ./a.out /dev/tty.Bluetooth-Incoming-Port
     Character device
+
+
+File tree walk
+---------------
+
+.. code-block:: c
+
+    #define _GNU_SOURCE
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <errno.h>
+    #include <ftw.h>
+
+    #define CHECK_RET(ret, fmt, ...)        \
+        do {                                \
+            if (ret < 0) {                  \
+                printf(fmt, ##__VA_ARGS__); \
+                goto End;                   \
+            }                               \
+        } while(0)
+
+    #define CHECK_NULL(ret, fmt, ...)       \
+        do {                                \
+            if (ret == NULL) {              \
+                printf(fmt, ##__VA_ARGS__); \
+                goto End;                   \
+            }                               \
+        } while(0)
+
+    int callback(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
+    {
+        CHECK_NULL(fpath, "fpath cannot be NULL\n");
+        printf("%s\n", fpath);
+    End:
+        return 0;
+    }
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        char *path = NULL;
+
+        if (argc != 2) {
+            perror("Usage: PROG [dirpath]\n");
+            goto End;
+        }
+
+        path = argv[1];
+        ret = nftw(path, callback, 64, FTW_DEPTH | FTW_PHYS);
+        CHECK_RET(ret, "nftw(%s) fail. [%s]", path, strerror(errno));
+    End:
+        return ret;
+    }
+
+output:
+
+.. code-block:: console
+
+    $ gcc tree_walk.c
+    $ ./a.out .
+    ./tree_walk.c
+    ./a.out
+    .
