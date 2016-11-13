@@ -125,7 +125,9 @@ html_theme_options = {
     'github_user': 'crazyguitar',
     'github_repo': 'csheeet',
     'github_banner': True,
-    'show_related': False
+    'show_related': False,
+    'head_font_family': 'Georgia',
+    'font_family': 'Georgia'
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -133,7 +135,7 @@ html_theme_options = {
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = "csheeet"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -166,7 +168,23 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    'index': [
+        'sidebarintro.html',
+        'link.html',
+        'relations.html',
+        'github.html',
+        'searchbox.html'
+    ],
+    '**': [
+        'sidebarintro.html',
+        'link.html',
+        'github.html',
+        'localtoc.html',
+        'relations.html',
+        'searchbox.html'
+    ]
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -265,7 +283,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'csheeet', u'csheeet Documentation',
+    (master_doc, 'C cheatsheet', u'C cheatsheet Documentation',
      [author], 1)
 ]
 
@@ -279,8 +297,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'csheeet', u'csheeet Documentation',
-     author, 'csheeet', 'One line description of project.',
+    (master_doc, 'c-cheatsheet', u'c-cheatsheet Documentation',
+     author, 'c-cheatsheet', 'One line description of project.',
      'Miscellaneous'),
 ]
 
