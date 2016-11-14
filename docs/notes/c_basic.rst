@@ -2,7 +2,53 @@
 C Basic cheatsheet
 ==================
 
-Implement closure via ``static`` 
+Machine endian check
+---------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <stdint.h>
+
+    static union {
+        uint8_t buf[2];
+        uint16_t uint16;
+    } endian = { {0x00, 0x3a}};
+
+    #define LITTLE_ENDIAN ((char)endian.uint16 == 0x00)
+    #define BIG_ENDIAN ((char)endian.uint16 == 0x3a)
+
+
+
+    int main(int argc, char *argv[])
+    {
+        uint8_t buf[2] = {0x00, 0x3a};
+
+        if (LITTLE_ENDIAN) {
+            printf("Little Endian Machine: %x\n", ((uint16_t *)buf)[0]);
+        } else {
+            printf("Big Endian Machine: %x\n", ((uint16_t *)buf)[0]);
+        }
+
+        return 0;
+    }
+
+output:
+
+.. code-block:: bash
+
+    # on little endian macheine
+    $ ${CC} endian_check.c
+    $ ./a.out
+    Little Endian Machine: 3a00
+
+    # on big endian machine
+    $ ${CC} endian_check.c
+    $ ./a.out
+    Big Endian Machine: 3a
+
+
+Implement closure via ``static``
 --------------------------------
 
 .. code-block:: c
@@ -13,7 +59,7 @@ Implement closure via ``static``
     {
         static int s_var = 9527;
         int l_var = 5566;
-        
+
         l_var++;
         s_var++;
         printf("s_var = %d, l_var = %d\n", s_var, l_var);
@@ -30,7 +76,7 @@ Implement closure via ``static``
 
 output:
 
-.. code-block:: c
+.. code-block:: bash
 
     $ ./a.out
     s_var = 9528, l_var = 5567
@@ -72,7 +118,7 @@ Split String
 
         ptr = strtok(str, delimiters);
         while (ptr != NULL) {
-           buf[i++] = strdup(ptr); 
+           buf[i++] = strdup(ptr);
            ptr = strtok(NULL, delimiters);
         }
     Error:
@@ -83,7 +129,7 @@ Split String
     {
         char **ptr = NULL;
         for (ptr = buf; *ptr; ptr++) {
-            free(*ptr); 
+            free(*ptr);
         }
     }
 
@@ -103,7 +149,7 @@ Split String
         buf = split(pattern, ',');
         for (ptr = buf; *ptr; ptr++) {
             printf("%s\n",*ptr);
-        } 
+        }
         ret = 0;
     Error:
         if (buf) {
