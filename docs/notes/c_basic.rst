@@ -242,6 +242,52 @@ output:
     run task fail!
 
 
+Duff's device
+--------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int main(int argc, char* argv[])
+    {
+        int ret = -1, count = 0;
+        int to = 0, from = 0;
+
+        if (argc != 2) {
+            printf("Usage: PROG [number]\n");
+            goto End;
+        }
+        count = atoi(argv[1]);
+        switch (count % 8) {
+            case 0:        do {  to = from++;
+            case 7:              to = from++;
+            case 6:              to = from++;
+            case 5:              to = from++;
+            case 4:              to = from++;
+            case 3:              to = from++;
+            case 2:              to = from++;
+            case 1:              to = from++;
+                           } while ((count -= 8) > 0);
+        }
+        printf("get 'to': %d\n", to);
+        ret = 0;
+    End:
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out 6
+    get 'to': 5
+    $ ./a.out
+    ./test 19
+    get 'to': 18
+
+
 Simple ``try ... catch`` in C
 -------------------------------
 
