@@ -242,75 +242,41 @@ output:
     run task fail!
 
 
-Single error handle function
------------------------------
+Simple ``try ... catch`` in C
+-------------------------------
 
 .. code-block:: c
 
+    /* cannot distinguish exception */
+
     #include <stdio.h>
-    #include <string.h>
-    #include <sys/stat.h>
-    #include <sys/types.h>
-    #include <errno.h>
     #include <setjmp.h>
-    #include <unistd.h>
 
-    /* using setjmp & longjmp */
+    enum {
+        ERR_EPERM = 1,
+        ERR_ENOENT,
+        ERR_ESRCH,
+        ERR_EINTR,
+        ERR_EIO
+    };
 
-    static jmp_buf g_jmp_env;
-    static int done;
+    #define try    do { jmp_buf jmp_env__;     \
+                        if (!setjmp(jmp_env__))
+    #define catch       else
+    #define end    } while(0)
 
-    void fail(int err)
-    {
-        if (err) {
-            printf("get error: %s\n", strerror(err));
-            longjmp(g_jmp_env, 1);
-        }
-    }
-
-    int divide_int(int a, int b)
-    {
-        if (b == 0) fail(EPERM);
-        return a / b;
-    }
-
-    int stat_file(char *path)
-    {
-        struct stat st = {};
-
-        if (stat(path, &st)) {
-            fail(errno);
-        }
-        return 0;
-    }
-
-    void TEST_divide_zero(void)
-    {
-        divide_int(1, 0);
-    }
-
-    void TEST_stat_fail(void)
-    {
-        stat_file("/etc/passww");
-    }
+    #define throw(exc) longjmp(jmp_env__, exc)
 
     int main(int argc, char *argv[])
     {
         int ret = 0;
 
-        if (!setjmp(g_jmp_env)) {
-            TEST_divide_zero();
-        } else {
-            printf("divide zero\n");
+        try {
+            throw(ERR_EPERM);
+        } catch {
+            printf("get exception!\n");
             ret = -1;
-        }
-
-        if (!setjmp(g_jmp_env)) {
-            TEST_stat_fail();
-        } else {
-            printf("stat file fail\n");
-            ret = -1;
-        }
+        } end;
         return ret;
     }
 
@@ -319,7 +285,117 @@ output:
 .. code-block:: bash
 
     $ ./a.out
-    get error: Operation not permitted
-    divide zero
-    get error: No such file or directory
-    stat file fail
+    get exception!
+
+
+Simple ``try ... catch(exc)`` in C
+------------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <setjmp.h>
+
+    enum {
+        ERR_EPERM = 1,
+        ERR_ENOENT,
+        ERR_ESRCH,
+        ERR_EINTR,
+        ERR_EIO
+    };
+
+    #define try    do { jmp_buf jmp_env__;             \
+                        switch ( setjmp(jmp_env__) ) { \
+                            case 0:
+    #define catch(exc)          break;                 \
+                            case exc:
+    #define end    } } while(0)
+
+    #define throw(exc) longjmp(jmp_env__, exc)
+
+    int main(int argc, char *argv[])
+    {
+        int ret = 0;
+
+        try {
+            throw(ERR_ENOENT);
+        } catch(ERR_EPERM) {
+            printf("get exception: %s\n", strerror(ERR_EPERM));
+            ret = -1;
+        } catch(ERR_ENOENT) {
+            printf("get exception: %s\n", strerror(ERR_ENOENT));
+            ret = -1;
+        } catch(ERR_ESRCH) {
+            printf("get exception: %s\n", strerror(ERR_ENOENT));
+            ret = -1;
+        } end;
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    get exception: No such file or directory
+
+
+Simple ``try ... catch(exc) ... finally`` in C
+-----------------------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <setjmp.h>
+
+    enum {
+        ERR_EPERM = 1,
+        ERR_ENOENT,
+        ERR_ESRCH,
+        ERR_EINTR,
+        ERR_EIO
+    };
+
+    #define try  do { jmp_buf jmp_env__  ;             \
+                        switch ( setjmp(jmp_env__) ) { \
+                            case 0: while(1) {
+    #define catch(exc)  	break;                 \
+                            case exc:
+    #define finally         break; }                   \
+                        default:
+    #define end  } } while(0)
+
+    #define throw(exc) longjmp(jmp_env__, exc)
+
+    int main(int argc, char *argv[])
+    {
+        int ret = 0;
+
+        try {
+            throw(ERR_ENOENT);
+        } catch(ERR_EPERM) {
+            printf("get exception: %s\n", strerror(ERR_EPERM));
+            ret = -1;
+        } catch(ERR_ENOENT) {
+            printf("get exception: %s\n", strerror(ERR_ENOENT));
+            ret = -1;
+        } catch(ERR_ESRCH) {
+            printf("get exception: %s\n", strerror(ERR_ENOENT));
+            ret = -1;
+        } finally {
+            printf("finally block\n");
+        } end;
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    get exception: No such file or directory
+    finally block
+
+ref: `Exceptions in C with Longjmp and Setjmp <http://www.di.unipi.it/~nids/docs/longjump_try_trow_catch.html>`_
