@@ -167,3 +167,76 @@ output:
     pattern = hello,world
     hello
     world
+
+
+Callback in C
+--------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <errno.h>
+    #include <stdint.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <unistd.h>
+
+    #define CHECK_ERR(ret, fmt, ...)        \
+        do {                                \
+            if (ret < 0) {                  \
+                printf(fmt, ##__VA_ARGS__); \
+                goto End;                   \
+            }                               \
+        } while(0)
+
+    void callback(int err)
+    {
+        if (err < 0) {
+            printf("run task fail!\n");
+        } else {
+            printf("run task success!\n");
+        }
+    }
+
+    int task(const char *path ,void (*cb)(int err))
+    {
+        int ret = -1;
+        struct stat st = {};
+
+        ret = stat(path, &st);
+        CHECK_ERR(ret, "stat(%s) fail. [%s]\n", path, strerror(errno));
+
+        ret = 0;
+    End:
+        cb(ret); /* run the callback function */
+        return ret;
+    }
+
+
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        char *path = NULL;
+
+        if (argc != 2) {
+            printf("Usage: PROG [path]\n");
+            goto End;
+        }
+        path = argv[1];
+        task(path, callback);
+        ret = 0;
+    End:
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ${CC} example_callback.c
+    $ ./a.out /etc/passwd
+    run task success!
+    $ ./a.out /etc/passw
+    stat(/etc/passw) fail. [No such file or directory]
+    run task fail!
