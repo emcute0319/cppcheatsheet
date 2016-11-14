@@ -240,3 +240,86 @@ output:
     $ ./a.out /etc/passw
     stat(/etc/passw) fail. [No such file or directory]
     run task fail!
+
+
+Single error handle function
+-----------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <errno.h>
+    #include <setjmp.h>
+    #include <unistd.h>
+
+    /* using setjmp & longjmp */
+
+    static jmp_buf g_jmp_env;
+    static int done;
+
+    void fail(int err)
+    {
+        if (err) {
+            printf("get error: %s\n", strerror(err));
+            longjmp(g_jmp_env, 1);
+        }
+    }
+
+    int divide_int(int a, int b)
+    {
+        if (b == 0) fail(EPERM);
+        return a / b;
+    }
+
+    int stat_file(char *path)
+    {
+        struct stat st = {};
+
+        if (stat(path, &st)) {
+            fail(errno);
+        }
+        return 0;
+    }
+
+    void TEST_divide_zero(void)
+    {
+        divide_int(1, 0);
+    }
+
+    void TEST_stat_fail(void)
+    {
+        stat_file("/etc/passww");
+    }
+
+    int main(int argc, char *argv[])
+    {
+        int ret = 0;
+
+        if (!setjmp(g_jmp_env)) {
+            TEST_divide_zero();
+        } else {
+            printf("divide zero\n");
+            ret = -1;
+        }
+
+        if (!setjmp(g_jmp_env)) {
+            TEST_stat_fail();
+        } else {
+            printf("stat file fail\n");
+            ret = -1;
+        }
+        return ret;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    get error: Operation not permitted
+    divide zero
+    get error: No such file or directory
+    stat file fail
