@@ -288,6 +288,56 @@ output:
     get 'to': 18
 
 
+``switch`` **goto** ``default`` block
+---------------------------------------
+
+.. code-block:: c
+
+
+    #include <stdio.h>
+
+    enum { EVENT_FOO, EVENT_BAR, EVENT_BAZ, EVENT_QUX };
+
+    void demo(int event) {
+
+        switch (event) {
+            case EVENT_FOO:
+                printf("---> foo event\n");
+                break;
+            case EVENT_BAR:  while(1) {
+                                printf("---> bar event\n");
+                                break;
+            case EVENT_BAZ:     printf("---> baz event\n");
+                                break;
+            case EVENT_QUX:     printf("---> qux event\n");
+                                break;
+                             }
+            default:
+                printf("default block\n");
+        }
+    }
+
+    int main(int argc, char *argv[])
+    {
+        demo(EVENT_FOO); /* will not fall into default block */
+        demo(EVENT_BAR); /* will fall into default block */
+        demo(EVENT_BAZ); /* will fall into default block */
+
+        return 0;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    ---> foo event
+    ---> bar event
+    default block
+    ---> baz event
+    default block
+
+
 Simple ``try ... catch`` in C
 -------------------------------
 
