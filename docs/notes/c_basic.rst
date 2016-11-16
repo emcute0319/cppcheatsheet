@@ -495,3 +495,108 @@ output:
     finally block
 
 ref: `Exceptions in C with Longjmp and Setjmp <http://www.di.unipi.it/~nids/docs/longjump_try_trow_catch.html>`_
+
+
+Implement a **Task** Chain
+---------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    typedef enum {
+        TASK_FOO = 0,
+        TASK_BAR,
+        TASK_BAZ,
+        TASK_NUM
+    } task_set;
+
+    #define NUM_TASKS TASK_NUM
+    #define LIST_ADD(list, ptr)       \
+        do {                          \
+            if (!list) {              \
+                (list) = (ptr);       \
+                ptr->prev = NULL;     \
+                ptr->next = NULL;     \
+            } else {                  \
+                (list)->prev = ptr;   \
+                (ptr)->next = (list); \
+                (ptr)->prev = NULL;   \
+                (list) = (ptr);       \
+            }                         \
+        } while(0)
+
+    struct task {
+        task_set task_label;
+        void (*task) (void);
+        struct task *next, *prev;
+    };
+
+    static void foo(void) { printf("Foo task\n"); }
+    static void bar(void) { printf("Bar task\n"); }
+    static void baz(void) { printf("Baz task\n"); }
+
+    struct task task_foo = { TASK_FOO, foo, NULL, NULL };                                                                                                                                                                          [0/1916]
+    struct task task_bar = { TASK_BAR, bar, NULL, NULL };
+    struct task task_baz = { TASK_BAZ, baz, NULL, NULL };
+
+    static struct task *task_list = NULL;
+    static void register_task(struct task *t) { LIST_ADD(task_list, t); }
+    static void lazy_init(void)
+    {
+        static init_done = 0;
+
+        if (init_done == 0) {
+            init_done = 1;
+
+            /* register tasks */
+            register_task(&task_foo);
+            register_task(&task_bar);
+            register_task(&task_baz);
+        }
+    }
+
+    static void init_tasks(void) {
+        lazy_init();
+    }
+
+    static struct task * get_task(task_set label)
+    {
+        struct task *t = task_list;
+        while (t) {
+            if (t->task_label == label) {
+                return t;
+            }
+            t = t->next;
+        }
+        return NULL;
+    }
+
+    #define RUN_TASK(label, ...)              \
+        do {                                  \
+            struct task *t = NULL;            \
+            t = get_task(label);              \
+            if (t) { t-> task(__VA_ARGS__); } \
+        } while(0)
+
+
+    int main(int argc, char *argv[])
+    {
+        int i = 0;
+        init_tasks();
+
+        /* run chain of tasks */
+        for (i=0; i<NUM_TASKS; i++) {
+            RUN_TASK(i);
+        }
+        return 0;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    Foo task
+    Bar task
+    Baz task
