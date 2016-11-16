@@ -536,12 +536,16 @@ Implement a **Task** Chain
     static void bar(void) { printf("Bar task\n"); }
     static void baz(void) { printf("Baz task\n"); }
 
-    struct task task_foo = { TASK_FOO, foo, NULL, NULL };                                                                                                                                                                          [0/1916]
+    struct task task_foo = { TASK_FOO, foo, NULL, NULL };
     struct task task_bar = { TASK_BAR, bar, NULL, NULL };
     struct task task_baz = { TASK_BAZ, baz, NULL, NULL };
-
     static struct task *task_list = NULL;
-    static void register_task(struct task *t) { LIST_ADD(task_list, t); }
+
+    static void register_task(struct task *t)
+    {
+        LIST_ADD(task_list, t);
+    }
+
     static void lazy_init(void)
     {
         static init_done = 0;
