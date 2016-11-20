@@ -13,6 +13,7 @@ Contents:
 
    notes/c_basic
    notes/c_macro
+   notes/c_gnuext.rst
    notes/c_file
    notes/c_signal
    notes/c_concurrency
