@@ -108,7 +108,7 @@ output:
 Nested Functions
 -----------------
 
-ref: `Nested Functions <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Nested-Functions.html#Nested-Functions>`
+ref: `Nested Functions <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Nested-Functions.html#Nested-Functions>`_
 
 .. code-block:: c
 
