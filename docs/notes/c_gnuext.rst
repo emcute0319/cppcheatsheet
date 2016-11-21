@@ -151,27 +151,26 @@ output:
 
     int main(int argc, char *argv[])
     {
-            char *arr[5] = {"Hello", "World", "Foo", "Bar", NULL};
-            char *ptr = NULL;
             int i = 0;
-            int offset = 1;
 
-            char *access(char **arr, int idx) {
-                    return arr[idx + offset];
-            }
+            void up(void) { i++; }
+            printf("i = %d\n", i);
+            up();
+            printf("i = %d\n", i);
+            up();
+            printf("i = %d\n", i);
 
-            for (;;) {
-                    ptr = access(arr, i++);
-                    if (ptr != NULL) {
-                            printf("str = %s\n", ptr);
-                    } else {
-                            break;
-                    }
-            }
-
-        return 0;
+            return 0;
     }
     #endif
+
+.. code-block:: bash
+
+    ./a.out
+    i = 0
+    i = 1
+    i = 2
+
 
 .. note::
 
@@ -228,6 +227,55 @@ output:
     str = World
     str = Foo
     str = Bar
+
+
+.. note::
+
+    A nested function can jump to a label inherited from
+    a containing function, provided the label is explicitly
+    declared in the containing function.
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+            __label__ end;
+            int ret = -1, i = 0;
+
+            void up(void) {
+                    i++; 
+                    if (i > 2) goto end;
+            }
+            printf("i = %d\n", i); /* i = 0 */
+            up();
+            printf("i = %d\n", i); /* i = 1 */
+            up();
+            printf("i = %d\n", i); /* i = 2 */
+            up();
+            printf("i = %d\n", i); /* i = 3 */
+            up();
+            printf("i = %d\n", i); /* i = 4 */
+            up();
+            ret = 0;
+    end:
+            return ret;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    i = 0
+    i = 1
+    i = 2
 
 
 Referring to a Type with ``typeof``
