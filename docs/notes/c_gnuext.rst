@@ -278,6 +278,45 @@ output:
     i = 2
 
 
+.. note::
+
+    If you need to declare the nested function before its
+    definition, use ``auto`` (which is otherwise meaningless
+    for function declarations).
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+            int i = 0;
+            auto void up(void);
+
+            void up(void) { i++; }
+            printf("i = %d\n", i); /* i = 0 */
+            up();
+            printf("i = %d\n", i); /* i = 1 */
+            up();
+            printf("i = %d\n", i); /* i = 2 */
+            up();
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    i = 0
+    i = 1
+    i = 2
+
 Referring to a Type with ``typeof``
 -------------------------------------
 
