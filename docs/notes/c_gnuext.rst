@@ -371,3 +371,42 @@ output:
     arr[2] = 3
     str_arr[0] = foo
     str_arr[1] = bar
+
+
+Conditionals with Omitted Operands
+-----------------------------------
+
+ref: `Conditionals with Omitted Operands <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Conditionals.html#Conditionals>`_
+
+.. note::
+
+    The middle operand in a conditional expression may be
+    omitted. Then if the first operand is nonzero, its value
+    is the value of the conditional expression.
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+            int x = 1, y = 0;
+            int z = -1;
+
+            /* equivalent to x ? x : y */
+            z = x ? : y;
+            printf("z = %d\n", z);
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    z = 1
