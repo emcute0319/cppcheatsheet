@@ -405,6 +405,8 @@ ref: `Conditionals with Omitted Operands <https://gcc.gnu.org/onlinedocs/gcc-4.1
             return 0;
     }
 
+output:
+
 .. code-block:: bash
 
     $ ./a.out
