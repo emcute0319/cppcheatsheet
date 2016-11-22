@@ -164,6 +164,8 @@ output:
     }
     #endif
 
+output:
+
 .. code-block:: bash
 
     ./a.out
