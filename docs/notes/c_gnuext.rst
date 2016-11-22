@@ -207,7 +207,8 @@ output:
             int i = 0;
             int offset = 1;
 
-            char *access(char **arr, int idx) {
+            char *access(char **arr, int idx)
+            {
                     return arr[idx + offset];
             }
 
@@ -248,8 +249,9 @@ output:
             __label__ end;
             int ret = -1, i = 0;
 
-            void up(void) {
-                    i++; 
+            void up(void)
+            {
+                    i++;
                     if (i > 2) goto end;
             }
             printf("i = %d\n", i); /* i = 0 */
@@ -402,6 +404,70 @@ ref: `Conditionals with Omitted Operands <https://gcc.gnu.org/onlinedocs/gcc-4.1
             printf("z = %d\n", z);
             return 0;
     }
+
+.. code-block:: bash
+
+    $ ./a.out
+    z = 1
+
+
+Arrays of Length Zero
+----------------------
+
+    ref: `Zero-length arrays <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Zero-Length.html#Zero-Length>`_
+
+.. note::
+
+    Zero-length arrays are allowed in GNU C. They are very useful as the **last
+    element** of a structure which is really a header for a **variable-length**
+    object
+
+.. code-block:: c
+
+    #include <stdlib.h>
+    #include <errno.h>
+    #include <string.h>
+
+    #define CHECK_NULL(ptr, fmt, ...)                   \
+            do {                                        \
+                    if (!ptr) {                         \
+                            printf(fmt, ##__VA_ARGS__); \
+                            goto End;                   \
+                    }                                   \
+            } while(0)
+
+    /* array item has zero length */
+    typedef struct _list {
+            int len;
+            char *item[0];
+    } list;
+
+    int main(int argc, char *argv[])
+    {
+
+            int ret = -1, len = 3;
+            list *p_list = NULL;
+
+            p_list = (list *)malloc(sizeof(list) + sizeof(char *) * len);
+            CHECK_NULL(p_list, "malloc fail. [%s]", strerror(errno));
+
+            p_list->item[0] = "Foo";
+            p_list->item[1] = "Bar";
+            p_list->item[2] = NULL;
+
+            printf("item[0] = %s\n", p_list->item[0]);
+            printf("item[1] = %s\n", p_list->item[1]);
+            printf("item[2] = %s\n", p_list->item[2]);
+
+            ret = 0;
+    End:
+
+            if (p_list)
+                    free(p_list);
+
+            return ret;
+    }
+
     #endif
 
 output:
@@ -409,4 +475,53 @@ output:
 .. code-block:: bash
 
     $ ./a.out
-    z = 1
+    item[0] = Foo
+    item[1] = Bar
+    item[2] = (null)
+
+
+.. note::
+
+    GCC allows static initialization of flexible array members
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    typedef struct _list {
+            int len;
+            int item[];
+    } list;
+
+    #define PRINT_LIST(l)                             \
+            do {                                      \
+                    int i = 0;                        \
+                    for (i = 0; i < l.len; i++) {     \
+                            printf("%d ", l.item[i]); \
+                    }                                 \
+                    printf("\n");                     \
+            } while(0)
+
+    int main(int argc, char *argv[])
+    {
+            static list l1 = {3, {1, 2, 3}};
+            static list l2 = {5, {1, 2, 3, 4, 5}};
+
+            PRINT_LIST(l1);
+            PRINT_LIST(l2);
+            return 0;
+    }
+
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    1 2 3
+    1 2 3 4 5
