@@ -2,6 +2,87 @@
 C Basic cheatsheet
 ==================
 
+``sizeof(struct {int:-!!(e); })`` Compile Time Assert
+-------------------------------------------------------
+
+Reference
+~~~~~~~~~~
+
+1. `Stack Overflow <http://stackoverflow.com/q/9229601>`_
+2. `/usr/include/linux/kernel.h <https://github.com/torvalds/linux/blob/ff2d8b19a3a62559afba1c53360c8577a7697714/include/linux/kernel.h#L677-L682>`_
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    #define FORCE_COMPILE_TIME_ERROR_OR_ZERO(e) \
+            (sizeof(struct { int:-!!(e); }))
+
+    #define FORCE_COMPILE_TIME_ERROR_OR_NULL(e) \
+            ((void *)sizeof(struct { int:-!!(e); }))
+
+    int main(int argc, char *argv[])
+    {
+            FORCE_COMPILE_TIME_ERROR_OR_ZERO(0);
+            FORCE_COMPILE_TIME_ERROR_OR_NULL(NULL);
+
+            return 0;
+    }
+
+
+output:
+
+.. code-block:: bash
+
+    $ gcc test.c
+    $ tree .
+    .
+    |-- a.out
+    `-- test.c
+
+    0 directories, 2 files
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    #define FORCE_COMPILE_TIME_ERROR_OR_ZERO(e) \
+            (sizeof(struct { int:-!!(e); }))
+
+    #define FORCE_COMPILE_TIME_ERROR_OR_NULL(e) \
+            ((void *)sizeof(struct { int:-!!(e); }))
+
+    int main(int argc, char *argv[])
+    {
+            int a = 123;
+
+            FORCE_COMPILE_TIME_ERROR_OR_ZERO(a);
+            FORCE_COMPILE_TIME_ERROR_OR_NULL(&a);
+
+            return 0;
+    }
+
+
+output:
+
+.. code-block:: bash
+
+    $ gcc test.c
+    test.c: In function 'main':
+    test.c:4:24: error: bit-field '<anonymous>' width not an integer constant
+             (sizeof(struct { int:-!!(e); }))
+                            ^
+    test.c:13:9: note: in expansion of macro 'FORCE_COMPILE_TIME_ERROR_OR_ZERO'
+             FORCE_COMPILE_TIME_ERROR_OR_ZERO(a);
+             ^
+    test.c:7:32: error: negative width in bit-field '<anonymous>'
+             ((void *)sizeof(struct { int:-!!(e); }))
+                                    ^
+    test.c:14:9: note: in expansion of macro 'FORCE_COMPILE_TIME_ERROR_OR_NULL'
+             FORCE_COMPILE_TIME_ERROR_OR_NULL(&a);
+             ^
+
+
 Machine endian check
 ---------------------
 
