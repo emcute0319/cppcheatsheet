@@ -529,3 +529,37 @@ output:
     $ ./a.out
     1 2 3
     1 2 3 4 5
+
+
+Variadic Macros
+----------------
+
+ref: `Variadic Macros <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Variadic-Macros.html#Variadic-Macros>`_
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    #define DEBUG_C99(fmt, ...)     fprintf(stderr, fmt, ##__VA_ARGS__)
+    #define DEBUG_GNU(fmt, args...) fprintf(stderr, fmt, ##args)
+
+    int main(int argc, char *argv[])
+    {
+            DEBUG_C99("ISO C supported variadic macros\n");
+            DEBUG_GNU("GNU C supported variadic macors\n");
+
+            DEBUG_C99("ISO C format str = %s\n", "Foo");
+            DEBUG_GNU("GNU C format str = %s\n", "Bar");
+
+            return 0;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    ISO C supported variadic macros
+    GNU C supported variadic macors
+    ISO C format str = Foo
+    GNU C format str = Bar
