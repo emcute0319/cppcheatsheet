@@ -538,6 +538,10 @@ ref: `Variadic Macros <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Variadic-Mac
 
 .. code-block:: c
 
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
     #include <stdio.h>
 
     #define DEBUG_C99(fmt, ...)     fprintf(stderr, fmt, ##__VA_ARGS__)
@@ -553,6 +557,7 @@ ref: `Variadic Macros <https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Variadic-Mac
 
             return 0;
     }
+    #endif
 
 output:
 
@@ -563,3 +568,101 @@ output:
     GNU C supported variadic macors
     ISO C format str = Foo
     GNU C format str = Bar
+
+
+Compound Literals (cast constructors)
+--------------------------------------
+
+ref: `Compound Literals <https://gcc.gnu.org/onlinedocs/gcc-4.9.2/gcc/Compound-Literals.html#Compound-Literals>`_
+
+.. note::
+
+    A compound literal looks like a cast containing an initializer.
+    Its value is an object of the type specified in the cast, containing
+    the elements specified in the initializer
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+            struct foo {int a; char b[3]; } structure = {};
+
+            /* compound literals (cast constructors )*/
+
+            structure = ((struct foo) { 5566, 'a', 'b'});
+            printf("a = %d, b = %s\n", structure.a, structure.b);
+
+            /* equal to */
+
+            struct foo temp = {5566, 'a', 'b'};
+            structure = temp;
+
+            printf("a = %d, b = %s\n", structure.a, structure.b);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    a = 5566, b = ab
+    a = 5566, b = ab
+
+.. note::
+
+    If the object being initialized has array type of unknown size,
+    the size is determined by compound literal size
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+            /* The size is determined by compound literal size */
+
+            static int x[] = (int []) {1, 2, 3, 4, 5};
+            static int y[] = (int [3]) {1};
+            int i = 0;
+
+            for (i = 0; i < 5; i++) printf("%d ", x[i]);
+            printf("\n");
+
+            for (i = 0; i < 3; i++) printf("%d ", y[i]);
+            printf("\n");
+
+            /* equal to */
+
+            static int xx[] = {1, 2, 3, 4, 5};
+            static int yy[] = {1, 0, 0};
+
+            for (i = 0; i < 5; i++) printf("%d ", xx[i]);
+            printf("\n");
+
+            for (i = 0; i < 3; i++) printf("%d ", yy[i]);
+            printf("\n");
+
+            return 0;
+    }
+    #endif
+
+.. code-block:: bash
+
+    ./a.out
+    1 2 3 4 5
+    1 0 0
+    1 2 3 4 5
+    1 0 0
