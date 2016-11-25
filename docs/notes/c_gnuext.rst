@@ -668,3 +668,60 @@ output:
     1 0 0
     1 2 3 4 5
     1 0 0
+
+
+Case Ranges
+------------
+
+ref: `Case Ranges <https://gcc.gnu.org/onlinedocs/gcc/Case-Ranges.html#Case-Ranges>`_
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int foo(int a)
+    {
+            switch (a) {
+                    case 1 ... 3:
+                            return 5566;
+                    case 4 ... 6:
+                            return 9527;
+            }
+            return 7788;
+    }
+
+    int main(int argc, char *argv[])
+    {
+            int b = 0;
+
+            b = foo(1);
+            printf("b = %d\n", b);
+
+            b = foo(5);
+            printf("b = %d\n", b);
+
+            b = foo(10);
+            printf("b = %d\n", b);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    b = 5566
+    b = 9527
+    b = 7788
+
+.. warning::
+
+    Be careful, write spaces around the ``...`` (ex: ``r1 ... r2``),
+    for otherwise it may be parsed wrong when you use it with integer
+    values
