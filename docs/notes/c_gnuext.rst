@@ -778,7 +778,7 @@ output:
                                           ^
 
     $ # compile in C99 mode
-    $ gcc -std=c90 -pedantic test.c
+    $ gcc -std=c99 -pedantic test.c
     $ ./a.out
     0 0 9527 0 0 5566
     0 0 9527 0 0 5566
