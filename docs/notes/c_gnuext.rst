@@ -725,3 +725,171 @@ output:
     Be careful, write spaces around the ``...`` (ex: ``r1 ... r2``),
     for otherwise it may be parsed wrong when you use it with integer
     values
+
+
+Designated Initializers
+------------------------
+
+ref: `Initializers <https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html#Designated-Inits>`_
+
+Array initializer
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    #define ARRLEN 6
+
+    int main(int argc, char *argv[])
+    {
+            /* ISO C99 support giving the elements in any order */
+            int a[ARRLEN] = {[5] = 5566, [2] = 9527};
+            /* equal to (ISO C90)*/
+            int b[ARRLEN] = {0, 0, 9527, 0, 0, 5566};
+            register int i = 0;
+
+            for (i = 0; i < ARRLEN; i++) printf("%d ", a[i]);
+            printf("\n");
+
+            for (i = 0; i < ARRLEN; i++) printf("%d ", a[i]);
+            printf("\n");
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ # compile in C90 mode
+    $ gcc -std=c90 -pedantic test.c
+    test.c: In function 'main':
+    test.c:12:26: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             int a[ARRLEN] = {[5] = 5566, [2] = 9527};
+                              ^
+    test.c:12:38: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             int a[ARRLEN] = {[5] = 5566, [2] = 9527};
+                                          ^
+
+    $ # compile in C99 mode
+    $ gcc -std=c90 -pedantic test.c
+    $ ./a.out
+    0 0 9527 0 0 5566
+    0 0 9527 0 0 5566
+
+.. note::
+
+    GNU C also support to initialize a range of elements to the same value
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    #define ARRLEN 10
+
+    int main(int argc, char *argv[])
+    {
+            int arr[ARRLEN] = { [2 ... 5] = 5566, [7 ... 9] = 9527};
+            register i = 0;
+
+            for (i = 0; i< ARRLEN; i++) printf("%d ", arr[i]);
+            printf("\n");
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -pedantic test.c
+    test.c: In function 'main':
+    test.c:11:32: warning: ISO C forbids specifying range of elements to initialize [-Wpedantic]
+             int arr[ARRLEN] = { [2 ... 5] = 5566, [7 ... 9] = 9527};
+                                    ^
+    test.c:11:29: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             int arr[ARRLEN] = { [2 ... 5] = 5566, [7 ... 9] = 9527};
+                                 ^
+    test.c:11:50: warning: ISO C forbids specifying range of elements to initialize [-Wpedantic]
+             int arr[ARRLEN] = { [2 ... 5] = 5566, [7 ... 9] = 9527};
+                                                      ^
+    test.c:11:47: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             int arr[ARRLEN] = { [2 ... 5] = 5566, [7 ... 9] = 9527};
+                                                   ^
+    $ ./a.out
+    0 0 5566 5566 5566 5566 0 9527 9527 9527
+
+structure & union initializer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    typedef struct _point {int x, y; } point;
+    typedef union _foo {int i; double d; } foo;
+
+
+    int main(int argc, char *argv[])
+    {
+            point a = { 5566, 9527 };
+            /* GNU C support initialize with .fieldname = */
+            point b = { .x = 5566, .y = 9527 };
+            /* obsolete since GCC 2.5 */
+            point c = { x: 5566, y: 9527 };
+            /* specify which element of the union should be used */
+            foo bar = { .d = 5566 };
+
+            printf("a.x = %d, a.y = %d\n", a.x, a.y);
+            printf("b.x = %d, b.y = %d\n", b.x, b.y);
+            printf("c.x = %d, c.y = %d\n", c.x, c.y);
+            printf("bar.d = %.2lf\n", bar.d);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -pedantic test.c
+    test.c: In function 'main':
+    test.c:15:21: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             point b = { .x = 5566, .y = 9527 };
+                         ^
+    test.c:15:32: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             point b = { .x = 5566, .y = 9527 };
+                                    ^
+    test.c:17:22: warning: obsolete use of designated initializer with ':' [-Wpedantic]
+             point c = { x: 5566, y: 9527 };
+                          ^
+    test.c:17:31: warning: obsolete use of designated initializer with ':' [-Wpedantic]
+             point c = { x: 5566, y: 9527 };
+                                   ^
+    test.c:19:21: warning: ISO C90 forbids specifying subobject to initialize [-Wpedantic]
+             foo bar = { .d = 5566 };
+                         ^
+    test.c:24:9: warning: ISO C90 does not support the '%lf' gnu_printf format [-Wformat=]
+             printf("bar.d = %.2lf\n", bar.d);
+             ^
+    $ a.out
+    a.x = 5566, a.y = 9527
+    b.x = 5566, b.y = 9527
+    c.x = 5566, c.y = 9527
+    bar.d = 5566.00
