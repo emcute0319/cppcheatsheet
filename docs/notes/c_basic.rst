@@ -2,6 +2,49 @@
 C Basic cheatsheet
 ==================
 
+Old Style and New Style Function Definition
+----------------------------------------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    /* old style function declaration */
+    int old_style_add(a, b)
+            int a; int b;
+    {
+            return a + b;
+    }
+
+    /* new style function declaration */
+    int new_style_add(int a, int b)
+    {
+            return a + b;
+    }
+
+    int main(int argc, char *argv[])
+    {
+
+            printf("old_sylte_add = %d\n", old_style_add(5566, 7788));
+            printf("new_sylte_add = %d\n", new_style_add(5566, 9527));
+
+            return 0;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -Wold-style-definition -g -Wall test.c
+    test.c: In function 'old_style_add':
+    test.c:4:5: warning: old-style function definition [-Wold-style-definition]
+     int old_style_add(a, b)
+         ^
+    $ ./a.out
+    old_sylte_add = 13354
+    new_sylte_add = 15093
+
+
 ``sizeof(struct {int:-!!(e); })`` Compile Time Assert
 -------------------------------------------------------
 
