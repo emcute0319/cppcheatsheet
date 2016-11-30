@@ -893,3 +893,55 @@ output:
     b.x = 5566, b.y = 9527
     c.x = 5566, c.y = 9527
     bar.d = 5566.00
+
+
+Unnamed Structure and Union Fields
+-----------------------------------
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    struct foo {
+            int a;
+            union {
+                    int b;
+                    char byte[4];
+            };
+            int d;
+    };
+
+    int main(int argc, char *argv[])
+    {
+
+            struct foo bar = { 0x1a, { 0x2b }, 0x3c };
+            int i = 0;
+
+            printf("%x, %x, %x\n", bar.a, bar.b, bar.d);
+
+            /* on little machine, we will get 2b 0 0 0 */
+            for (i = 0; i < 4; i++) printf("%x ", bar.byte[i]);
+            printf("\n");
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ # without gcc options -std=c11 will raise warning
+    $ gcc -g -Wall -pedantic test.c
+    test.c:12:10: warning: ISO C90 doesn't support unnamed structs/unions [-Wpedantic]
+             };
+              ^
+    $ # with gcc options -std=c11 will not raise warning
+    $ gcc -g -Wall -pedantic -std=c11 test.c
+    $ ./a.out
+    1a, 2b, 3c
+    2b 0 0 0
