@@ -2,6 +2,146 @@
 GNU C Extensions cheatsheet
 ============================
 
+Using ``__extension__`` prevent ``-pedantic`` warning
+-------------------------------------------------------
+
+with ``__extension__``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    /* with __extension__ */
+    #define lambda(ret_type, ...)               \
+            __extension__                       \
+            ({                                  \
+                    ret_type __fn__ __VA_ARGS__ \
+                    __fn__;                     \
+            })
+
+    int main(int argc, char *argv[])
+    {
+            int a = 5566, b = 9527;
+            int c = __extension__ 0b101010;
+            int (*max) (int, int) = lambda(int, (int x, int y) {return x > y ? x : y; });
+
+            printf("max(%d, %d) = %d\n", a, b, max(a, b));
+            printf("binary const c = %x\n", c);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -g -Wall -std=c99 -pedantic test.c
+    $ ./a.out
+    max(5566, 9527) = 9527
+    binary const c = 2a
+
+
+without ``__extension__``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    /* with __extension__ */
+    #define lambda(ret_type, ...)               \
+            ({                                  \
+                    ret_type __fn__ __VA_ARGS__ \
+                    __fn__;                     \
+            })
+
+    int main(int argc, char *argv[])
+    {
+            int a = 5566, b = 9527;
+            int c = 0b101010;
+            int (*max) (int, int) = lambda(int, (int x, int y) {return x > y ? x : y; });
+
+            printf("max(%d, %d) = %d\n", a, b, max(a, b));
+            printf("binary const c = %x\n", c);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -g -Wall -pedantic test.c
+    test.c: In function 'main':
+    test.c:17:17: warning: binary constants are a GCC extension [enabled by default]
+             int c = 0b101010;
+                     ^
+    test.c:18:40: warning: ISO C forbids nested functions [-Wpedantic]
+             int (*max) (int, int) = lambda(int, (int x, int y) {return x > y ? x : y; });
+                                            ^
+    test.c:10:17: note: in definition of macro 'lambda'
+                     ret_type __fn__ __VA_ARGS__ \
+                     ^
+    test.c:9:9: warning: ISO C forbids braced-groups within expressions [-Wpedantic]
+             ({                                  \
+             ^
+    test.c:18:33: note: in expansion of macro 'lambda'
+             int (*max) (int, int) = lambda(int, (int x, int y) {return x > y ? x : y; });
+                                     ^
+    $ ./a.out
+    max(5566, 9527) = 9527
+    binary const c = 2a
+
+
+Binary Constants
+-----------------
+
+ref: `Binary Constants <https://gcc.gnu.org/onlinedocs/gcc/Binary-constants.html#Binary-constants>`_
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    int main(int argc, char *argv[])
+    {
+            int a = 0b0101;
+            int b = 0x003a;
+
+            printf("%x, %x\n", a, b);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -g -Wall -pedantic test.c
+    test.c: In function 'main':
+    test.c:9:17: warning: binary constants are a GCC extension [enabled by default]
+             int a = 0b0101;
+                     ^
+    $ ./a.out
+    ./a.out
+    5, 3a
+
+
 Statements and Declarations in Expressions
 --------------------------------------------
 
@@ -945,3 +1085,46 @@ output:
     $ ./a.out
     1a, 2b, 3c
     2b 0 0 0
+
+.. note::
+
+    Unnamed field must be a structure or union definition without a tag
+    like ``struct { int a; };``. If ``-fms-extensions`` is used, the field
+    may also be a definition with a tag such as ``struct foo { int a; };``
+
+.. code-block:: c
+
+    #ifndef __GNUC__
+    #error "__GNUC__ not defined"
+    #else
+
+    #include <stdio.h>
+
+    struct foo {
+            int b;
+            int c;
+    };
+
+    struct bar {
+            int a;
+            struct foo;
+            int d;
+    };
+
+    int main(int argc, char *argv[])
+    {
+            struct bar baz = { 0x1a, { 0x2b, 0x00 }, 0x3c };
+
+            printf("%x, %x, %x, %x\n", baz.a, baz.b, baz.c, baz.d);
+
+            return 0;
+    }
+    #endif
+
+output:
+
+.. code-block:: bash
+
+    $ gcc -g -Wall -pedantic -std=c11 -fms-extensions test.c
+    $ ./a.out
+    1a, 2b, 0, 3c
