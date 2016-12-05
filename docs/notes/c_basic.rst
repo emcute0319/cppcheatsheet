@@ -2,6 +2,55 @@
 C Basic cheatsheet
 ==================
 
+Comma Operator
+---------------
+
+.. code-block:: c
+
+    #include <stdio.h>
+
+    #define PRINT(exp...)                           \
+            {                                       \
+                    exp;                            \
+                    printf(#exp " => i = %d\n", i); \
+            }
+
+    int main(int argc, char *argv[])
+    {
+            /* comma just a separators */
+            int a = 1, b = 2, c = 3, i = 0;
+
+            printf("(a, b, c) = (%d, %d, %d)\n\n", a, b, c);
+
+            /* comma act as binary operator */
+            PRINT( i = (a, b, c) );
+            PRINT( i = (a + 5, a + b) );
+
+            /* equivalent to (i = a + 5), a + b */
+            PRINT( i = a + 5, a + b );
+
+            return 0;
+    }
+
+output:
+
+.. code-block:: bash
+
+    $ ./a.out
+    (a, b, c) = (1, 2, 3)
+
+    i = (a, b, c) => i = 3
+    i = (a + 5, a + b) => i = 3
+    i = a + 5, a + b => i = 6
+
+.. note::
+
+    Comma operator is a **binary operator**, it evaluates its first operand and
+    discards the result, and then evaluates the second operand and return this
+    value.
+
+
+
 Old Style and New Style Function Definition
 ----------------------------------------------
 
