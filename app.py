@@ -11,7 +11,7 @@ ROOT = os.path.join(DIR, 'docs', '_build', 'html')
 
 app = Flask(__name__)
 if 'DYNO' in os.environ:
-        sslify = SSLify(app)
+    sslify = SSLify(app)
 
 @app.route('/<path:path>')
 def static_proxy(path):
@@ -24,4 +24,4 @@ def index_redirection():
     return send_from_directory(ROOT, 'index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
