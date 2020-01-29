@@ -91,3 +91,25 @@ of the current stack.
     >info args
     >info locals
     >end
+
+Display Memory Contents
+-----------------------
+
+.. code-block:: cpp
+
+    int main() {
+        char arr[100] = "1234567890abcdefghijklmnopqrstuvwxyz";
+        return 0;
+    }
+
+.. code-block:: bash
+
+    (gdb) " x/[format] [address expression]
+    (gdb) " x/[len][format] [address expression]
+    (gdb) x/s arr
+    0x7fffffffe620:	"1234567890abcdefghijklmnopqrstuvwxyz"
+    (gdb) x/10c arr
+    (gdb) x/5c arr
+    0x7fffffffe620:	49 '1'	50 '2'	51 '3'	52 '4'	53 '5'
+    (gdb) x/5b arr
+    0x7fffffffe620:	0x31	0x32	0x33	0x34	0x35
