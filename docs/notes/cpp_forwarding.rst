@@ -7,6 +7,63 @@ function in their C++ programs. However, few examples show how to use it in a
 real scenario. Instead of explaining what a C++ `perfect forwarding` is, this
 article tries to collect use cases about using it.
 
+Profiling
+---------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <utility>
+    #include <chrono>
+
+    class Timer {
+    public:
+        Timer() : s_(std::chrono::system_clock::now()) {}
+        ~Timer() {
+            e_ = std::chrono::system_clock::now();
+            std::chrono::duration<double> d = e_ - s_;
+            std::cout << "Time Cost: " << d.count() << std::endl;
+        }
+    private:
+        std::chrono::time_point<std::chrono::system_clock> s_;
+        std::chrono::time_point<std::chrono::system_clock> e_;
+    };
+
+    template <typename Func, typename ...Args>
+    decltype(auto) Profile(Func f, Args&&... args) {
+        Timer timer;
+        return f(std::forward<Args>(args)...);
+    }
+
+    long fib1(long n) {
+        return (n < 2) ? 1 : fib1(n-1) + fib1(n-2);
+    }
+
+    template<long N>
+    struct f {
+        static constexpr long v = f<N-1>::v + f<N-2>::v;
+    };
+
+    template<>
+    struct f<0> {
+        static constexpr long v = 0;
+    };
+
+    template<>
+    struct f<1> {
+        static constexpr long v = 1;
+    };
+
+    int main() {
+        long ret = -1;
+        ret = Profile(fib1, 35);
+        std::cout << ret << std::endl;
+
+        ret = Profile([](){ return f<35>::v; });
+        std::cout << ret << std::endl;
+        return 0;
+    }
+
 Factory Pattern
 ---------------
 
