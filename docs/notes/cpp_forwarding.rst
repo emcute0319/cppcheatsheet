@@ -7,6 +7,36 @@ function in their C++ programs. However, few examples show how to use it in a
 real scenario. Instead of explaining what a C++ `perfect forwarding` is, this
 article tries to collect use cases about using it.
 
+Decorator Pattern
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <utility>
+    #include <chrono>
+
+    template <typename Func, typename ...Args>
+    auto Decorator(Func &&f, Args&&... args) {
+
+        const auto s = std::chrono::system_clock::now();
+        auto ret = f(std::forward<Args>(args)...);
+        const auto e = std::chrono::system_clock::now();
+        std::chrono::duration<double> d = e - s;
+
+        std::cout << "Time Cost: " << d.count() << std::endl;
+        return ret;
+    }
+
+    long fib(long n) {
+        return n < 2 ? 1 : fib(n-1) + fib(n-2);
+    }
+
+    int main() {
+        Decorator(fib, 35);
+        return 0;
+    }
+
 Profiling
 ---------
 
@@ -30,7 +60,7 @@ Profiling
     };
 
     template <typename Func, typename ...Args>
-    decltype(auto) Profile(Func f, Args&&... args) {
+    auto Profile(Func f, Args&&... args) {
         Timer timer;
         return f(std::forward<Args>(args)...);
     }
