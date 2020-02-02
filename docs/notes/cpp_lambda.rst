@@ -93,19 +93,19 @@ Generic Lambda
 .. code-block:: cpp
 
     #include <iostream>
+    #include <utility>
 
     class Sum {
     public:
-        // Fold expression (since c++17)
         template <typename ...Args>
-        constexpr auto operator()(Args&&... args) {
-            return (args + ...);
+        constexpr auto operator()(Args&& ...args) {
+            return (std::forward<Args>(args) + ...);
         }
     };
 
     int main() {
         Sum sum;
-        constexpr int ret =  sum(1,2,3,4,5);
+        constexpr int ret = sum(1,2,3,4,5);
         std::cout << ret << std::endl;
         return 0;
     }
@@ -115,10 +115,11 @@ The snippet is equal to the following example
 .. code-block:: cpp
 
     #include <iostream>
+    #include <utility>
 
     int main() {
-        auto sum = [](auto ...args) {
-            return (args + ...);
+        auto sum = [](auto&& ...args) {
+            return (std::forward<decltype(args)>(args) + ...);
         };
         constexpr int ret = sum(1,2,3,4,5);
         std::cout << ret << std::endl;
