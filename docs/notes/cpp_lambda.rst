@@ -148,9 +148,94 @@ to utilize parameters' type instead of using `decltype`.
         return 0;
     }
 
+Callback
+--------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    template<typename F>
+    long fib(long n, F f) {
+        long a = 0, b = 1;
+        for (long i = 0; i < n; ++i) {
+            long tmp = b;
+            b = a + b;
+            a = tmp;
+            f(a);
+        }
+        return a;
+    }
+
+    int main(int argc, char *argv[]) {
+        fib(10, [](long res) {
+            std::cout << res << " ";
+        });
+        std::cout << "\n";
+        return 0;
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <functional>
+
+    using fibcb = std::function<void(long x)>;
+
+    long fib(long n, fibcb f) {
+        long a = 0, b = 1;
+        for (long i = 0; i < n; ++i) {
+            long tmp = b;
+            b = a + b;
+            a = tmp;
+            f(a);
+        }
+        return a;
+    }
+
+    int main(int argc, char *argv[]) {
+        fib(10, [](long res) {
+            std::cout << res << " ";
+        });
+        std::cout << "\n";
+        return 0;
+    }
+
+Programmers can also use function pointers to define a functino's callback
+parameter. However, function pointers are only suitable for captureless lambda
+functions.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <functional>
+
+    using fibcb = void(*)(long n);
+
+    long fib(long n, fibcb f) {
+        long a = 0, b = 1;
+        for (long i = 0; i < n; ++i) {
+            long tmp = b;
+            b = a + b;
+            a = tmp;
+            f(a);
+        }
+        return a;
+    }
+
+    int main(int argc, char *argv[]) {
+        fib(10, [](long res) {
+            std::cout << res << " ";
+        });
+        std::cout << "\n";
+        return 0;
+    }
+
 Reference
 ---------
 
 1. `Back to Basics: Lambdas from Scratch`_
+2. `Demystifying C++ lambdas`_
 
 .. _Back to Basics\: Lambdas from Scratch: https://youtu.be/3jCOwajNch0
+.. _Demystifying C++ lambdas: https://blog.feabhas.com/2014/03/demystifying-c-lambdas/
