@@ -129,6 +129,25 @@ The snippet is equal to the following example
         return 0;
     }
 
+In c+20, lambda supports explicit template paramter list allowing a programmer
+to utilize parameters' type instead of using `decltype`.
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    // g++ -std=c++2a -g -O3 a.cpp
+
+    int main(int argc, char *argv[])
+    {
+        auto sum = []<typename ...Args>(Args&&... args) {
+            return (std::forward<Args>(args) + ...);
+        };
+        constexpr int ret = sum(1,2,3,4,5);
+        std::cout << ret << std::endl;
+        return 0;
+    }
+
 Reference
 ---------
 
