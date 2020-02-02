@@ -22,5 +22,7 @@ Contents:
    notes/bash_basic
    notes/cpp_basic
    notes/cpp_template
+   notes/cpp_constexpr
+   notes/cpp_lambda
    notes/cpp_forwarding
    notes/gdb_debug
