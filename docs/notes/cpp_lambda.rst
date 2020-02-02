@@ -95,10 +95,13 @@ Generic Lambda
     #include <iostream>
     #include <utility>
 
+    // g++ -std=c++17 -g -O3 a.cpp
+
     class Sum {
     public:
         template <typename ...Args>
         constexpr auto operator()(Args&& ...args) {
+            // Fold expression (since c++17)
             return (std::forward<Args>(args) + ...);
         }
     };
