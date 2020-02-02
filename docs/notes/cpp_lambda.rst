@@ -87,6 +87,44 @@ output:
 
     $ g++ -std=c++17 -g -O3 a.cpp
 
+Generic Lambda
+--------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    class Sum {
+    public:
+        // Fold expression (since c++17)
+        template <typename ...Args>
+        constexpr auto operator()(Args&&... args) {
+            return (args + ...);
+        }
+    };
+
+    int main() {
+        Sum sum;
+        constexpr int ret =  sum(1,2,3,4,5);
+        std::cout << ret << std::endl;
+        return 0;
+    }
+
+The snippet is equal to the following example
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    int main() {
+        auto sum = [](auto ...args) {
+            return (args + ...);
+        };
+        constexpr int ret = sum(1,2,3,4,5);
+        std::cout << ret << std::endl;
+        return 0;
+    }
+
 Reference
 ---------
 
