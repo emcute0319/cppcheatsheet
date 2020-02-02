@@ -37,6 +37,28 @@ Lambda version
         return 0;
     }
 
+Default Arguments
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    int main(int argc, char *argv[]) {
+        auto fib = [](long n=0) {
+            long a = 0, b = 1;
+            for (long i = 0; i < n; ++i) {
+                long tmp = b;
+                b = a + b;
+                a = tmp;
+            }
+            return a;
+        };
+        std::cout << fib() << "\n";
+        std::cout << fib(10) << "\n";
+        return 0;
+    }
+
 Captureless
 -----------
 
