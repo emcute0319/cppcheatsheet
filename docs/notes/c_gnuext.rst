@@ -1075,12 +1075,12 @@ output:
 
 .. code-block:: bash
 
-    $ # without gcc options -std=c11 will raise warning
+    # without gcc options -std=c11 will raise warning
     $ gcc -g -Wall -pedantic test.c
     test.c:12:10: warning: ISO C90 doesn't support unnamed structs/unions [-Wpedantic]
              };
               ^
-    $ # with gcc options -std=c11 will not raise warning
+    # with gcc options -std=c11 will not raise warning
     $ gcc -g -Wall -pedantic -std=c11 test.c
     $ ./a.out
     1a, 2b, 3c

@@ -12,6 +12,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from datetime import datetime
 import sys
 import os
 
@@ -29,12 +30,8 @@ import os
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
 ]
 
@@ -53,8 +50,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
+year = datetime.now().year
 project = u'csheeet'
-copyright = u'2016, crazyguitar'
+copyright = u'2016-{}, crazyguitar'.format(year)
 author = u'crazyguitar'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -81,7 +79,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = []
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -121,10 +119,12 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
+    'logo':'dennis.png',
     'show_powered_by': False,
     'github_user': 'crazyguitar',
     'github_repo': 'csheeet',
     'github_banner': True,
+    'github_button': False,
     'show_related': False,
     'head_font_family': 'Georgia',
     'font_family': 'Georgia'
@@ -171,8 +171,8 @@ html_static_path = ['_static']
 html_sidebars = {
     'index': [
         'sidebarintro.html',
+        'about.html',
         'link.html',
-        'relations.html',
         'github.html',
         'searchbox.html'
     ],
@@ -283,7 +283,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'C cheatsheet', u'C cheatsheet Documentation',
+    (master_doc, 'C/C++ cheatsheet', u'C/C++ cheatsheet Documentation',
      [author], 1)
 ]
 
@@ -297,8 +297,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'c-cheatsheet', u'c-cheatsheet Documentation',
-     author, 'c-cheatsheet', 'One line description of project.',
+    (master_doc, 'cpp-cheatsheet', u'cpp-cheatsheet Documentation',
+     author, 'cpp-cheatsheet', 'One line description of project.',
      'Miscellaneous'),
 ]
 
