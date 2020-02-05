@@ -11,7 +11,7 @@ ROOT = os.path.join(DIR, 'docs', '_build', 'html')
 
 app = Flask(__name__)
 if 'DYNO' in os.environ:
-    sslify = SSLify(app)
+    sslify = SSLify(app, permanent=True)
 
 @app.route('/<path:path>')
 def static_proxy(path):
