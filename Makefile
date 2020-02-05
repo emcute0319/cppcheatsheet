@@ -4,7 +4,7 @@ VER  = $(word 2, $(shell python --version 2>&1))
 SRC  = app.py
 PY36 = $(shell expr $(VER) \>= 3.6)
 
-.PHONY: build deps test
+.PHONY: build deps
 build: html
 
 %:
