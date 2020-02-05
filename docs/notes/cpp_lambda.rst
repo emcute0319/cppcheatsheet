@@ -170,6 +170,55 @@ to utilize parameters' type instead of using `decltype`.
         return 0;
     }
 
+Break Loops
+-----------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    int main(int argc, char *argv[]) {
+        bool is_stoped = false;
+        for (int i = 0; i < 5; ++i) {
+            for (int j = 0; j < 5; ++j) {
+                std::cout << i + j << " ";
+                if (i + j == 5) {
+                    is_stoped = true;
+                    break;
+                }
+            }
+            if (is_stoped) {
+                break;
+            }
+        }
+        std::cout << std::endl;
+        return 0;
+    }
+
+The previous example shows a common way to break multiple loops via a flag.
+However, the drawback is a programmer requires to maintain flags if code
+includes nested loops. By using a lambda function, it is convenient for
+developers to break nested loops through the return.
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    int main(int argc, char *argv[]) {
+        [&] {
+            for (int i = 0; i < 5; ++i) {
+                for (int j = 0; j < 5; ++j) {
+                    std::cout << i + j << " ";
+                    if (i + j == 5) {
+                        return;
+                    }
+                }
+            }
+        }();
+        std::cout << std::endl;
+        return 0;
+    }
+
 Callback
 --------
 
