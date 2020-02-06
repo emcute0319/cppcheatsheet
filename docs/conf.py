@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# csheeet documentation build configuration file, created by
+# cppcheatsheet documentation build configuration file, created by
 # sphinx-quickstart on Sun Mar  6 19:16:33 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -51,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 year = datetime.now().year
-project = u'csheeet'
+project = u'cppcheatsheet'
 copyright = u'2016-{}, crazyguitar'.format(year)
 author = u'crazyguitar'
 
@@ -122,7 +122,7 @@ html_theme_options = {
     'logo':'dennis.png',
     'show_powered_by': False,
     'github_user': 'crazyguitar',
-    'github_repo': 'csheeet',
+    'github_repo': 'cppcheatsheet',
     'github_banner': True,
     'github_button': False,
     'show_related': False,
@@ -135,7 +135,10 @@ html_theme_options = {
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "csheeet"
+html_title = "cppcheatsheet"
+html_context = {
+    "tracking_id": os.environ.get("TRACKING_ID")
+}
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -231,7 +234,7 @@ html_sidebars = {
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'csheeetdoc'
+htmlhelp_basename = 'cppcheatsheetdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -253,7 +256,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'csheeet.tex', u'csheeet Documentation',
+    (master_doc, 'cppcheatsheet.tex', u'C/C++ cheatsheet Documentation',
      u'crazyguitar', 'manual'),
 ]
 
