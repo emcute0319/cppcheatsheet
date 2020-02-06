@@ -190,3 +190,54 @@ Curiously recurring template pattern
 
         return 0;
     }
+
+Parametric Expressions
+----------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    // g++ -std=c++17 -fconcepts -g -O3 a.cpp
+
+    decltype(auto) min(auto&& lhs, auto&& rhs) {
+        return lhs < rhs ? lhs : rhs;
+    }
+
+    int main(int argc, char *argv[]) {
+        std::cout << min(1, 2) << "\n";
+        std::cout << min(3.14, 2.718) << "\n";
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    template<typename T>
+    decltype(auto) min(T&& lhs,T&& rhs) {
+        return lhs < rhs ? lhs : rhs;
+    }
+
+    int main(int argc, char *argv[]) {
+        std::cout << min(1, 2) << "\n";
+        std::cout << min(3.14, 2.718) << "\n";
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    auto min = [](auto&& lhs, auto&& rhs) {
+        return lhs < rhs ? lhs : rhs;
+    };
+
+    int main(int argc, char *argv[]) {
+        std::cout << min(1, 2) << "\n";
+        std::cout << min(3.14, 2.718) << "\n";
+    }
+
+Reference
+
+_ `Parametric Expressions`_
+
+.. _Parametric Expressions: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1221r0.html
