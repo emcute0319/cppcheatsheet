@@ -170,6 +170,119 @@ to utilize parameters' type instead of using `decltype`.
         return 0;
     }
 
+Comparison Function
+-------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <map>
+
+    struct Cmp {
+        template<typename T>
+        bool operator() (const T &lhs, const T &rhs) const {
+            return lhs < rhs;
+        }
+    };
+
+    int main(int argc, char *argv[]) {
+
+        // sort by keys
+        std::map<int, std::string, Cmp> m;
+
+        m[3] = "Foo";
+        m[2] = "Bar";
+        m[1] = "Baz";
+
+        for (auto it : m) {
+            std::cout << it.first << ", " << it.second << "\n";
+        }
+        return 0;
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <map>
+
+    bool cmp(const int &lhs, const int &rhs) {
+        return lhs < rhs;
+    }
+
+    int main(int argc, char *argv[]) {
+
+        // sort by keys
+        std::map<int, std::string, decltype(&cmp)> m(cmp);
+
+        m[3] = "Foo";
+        m[2] = "Bar";
+        m[1] = "Baz";
+
+        for (auto it : m) {
+            std::cout << it.first << ", " << it.second << "\n";
+        }
+        return 0;
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <functional>
+    #include <string>
+    #include <map>
+
+    template<typename T>
+    using Cmp = std::function<bool(const T &, const T &)>;
+
+    template<typename T>
+    bool cmp(const T &lhs, const T &rhs) {
+        return lhs < rhs;
+    }
+
+    int main(int argc, char *argv[]) {
+
+        // sort by keys
+        std::map<int, std::string, Cmp<int>> m(cmp<int>);
+
+        m[3] = "Foo";
+        m[2] = "Bar";
+        m[1] = "Baz";
+
+        for (auto it : m) {
+            std::cout << it.first << ", " << it.second << "\n";
+        }
+        return 0;
+    }
+
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <map>
+
+    int main(int argc, char *argv[]) {
+
+        auto cmp = [](auto &lhs, auto &rhs) {
+            return lhs < rhs;
+        };
+
+        // sort by keys
+        std::map<int, std::string, decltype(cmp)> m(cmp);
+
+        m[3] = "Foo";
+        m[2] = "Bar";
+        m[1] = "Baz";
+
+        for (auto it : m) {
+            std::cout << it.first << ", " << it.second << "\n";
+        }
+        return 0;
+    }
+
+
 Break Loops
 -----------
 
