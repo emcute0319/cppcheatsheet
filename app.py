@@ -9,7 +9,7 @@ from flask_sslify import SSLify
 DIR = os.path.dirname(os.path.realpath(__file__))
 ROOT = os.path.join(DIR, 'docs', '_build', 'html')
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=ROOT)
 if 'DYNO' in os.environ:
     sslify = SSLify(app, permanent=True)
 
