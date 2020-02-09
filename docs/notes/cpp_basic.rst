@@ -2,6 +2,24 @@
 C++ Basic cheatsheet
 ====================
 
+Negative Array index
+--------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    int main(int argc, char *argv[]) {
+        // note: arr[i] = *(a + i)
+        int arr[] = {1, 2, 3};
+        int *ptr = &arr[1];
+
+        std::cout << ptr[-1] << "\n";
+        std::cout << ptr[0] << "\n";
+        std::cout << ptr[1] << "\n";
+    }
+
+
 Reference
 ---------
 
