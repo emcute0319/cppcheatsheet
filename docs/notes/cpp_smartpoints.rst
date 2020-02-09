@@ -51,3 +51,24 @@ Custom Deleters
     end:
         return 0;
     }
+
+``std::make_shared`` and ``std::make_unique``
+---------------------------------------------
+
+``std::make_shared`` and ``std::make_unique`` are the recommended ways to
+create smart pointers because compilers do guarantee the order of executions,
+which may introduce memory leaks when an exception is thrown. For example, the
+compilers may call ``new T``, then ``raise()``, and so on before ``foo`` is
+called. In this case, ``std::unique_ptr`` does not know the pointer ``T`` yet,
+so it is still on the heap.
+
+.. code-block:: cpp
+
+    using uptr = std::unique_ptr<T>;
+
+    bool raise() {
+        throw std::exception();
+        return true;
+    }
+
+    foo(uptr(new T), raise(), uptr(new T));
