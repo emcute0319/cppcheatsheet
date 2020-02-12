@@ -8,6 +8,8 @@ Before starting
 
 .. code-block:: cpp
 
+    // foo.h
+
     #include <iostream>
 
     struct Foo {
@@ -125,6 +127,21 @@ Runtime Decision (w/ RVO)
         Foo foo = FooRVO(true);
     }
 
+Runtime Decision (w/ RVO, w/o NRVO)
+-----------------------------------
+
+.. code-block:: cpp
+
+    #include "foo.h"
+
+    Foo RVOButNoNRVO(bool is_x) {
+        Foo x;
+        return is_x ? x : Foo();
+    }
+
+    int main(int argc, char *argv[]) {
+        Foo f = RVOButNoNRVO(false);
+    }
 
 Runtime Decision (w/o NRVO)
 ---------------------------
