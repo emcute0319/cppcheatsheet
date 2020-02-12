@@ -176,3 +176,22 @@ Return by ``std::move`` (w/o NRVO)
     int main(int argc, char *argv[]) {
         Foo foo = FooMove();
     }
+
+Return a Member (w/o RVO)
+-------------------------
+
+.. code-block:: cpp
+
+    #include "foo.h"
+
+    struct Bar {
+        Foo foo;
+    };
+
+    Foo ReturnMember() {
+        return Bar().foo;
+    }
+
+    int main(int argc, char *argv[]) {
+        Foo f = ReturnMember();
+    }
