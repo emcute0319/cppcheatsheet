@@ -174,6 +174,38 @@ Variadic Template (Parameter Pack)
         }
     }
 
+Limit a Template Types
+----------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <type_traits>
+
+    template<typename S,
+        typename = typename std::enable_if<
+            std::is_same<
+                std::string,
+                typename std::decay<S>::type
+            >::value
+        >::type
+    >
+    void Foo(S s) {
+        std::cout << s << "\n";
+    }
+
+
+    int main(int argc, char *argv[]) {
+        std::string s1 = "Foo";
+        const std::string s2 = "Bar";
+        Foo(s1);
+        Foo(s2);
+
+        // Foo(123)     compile error
+        // Foo("Baz");  compile error
+    }
+
 Curiously recurring template pattern
 ------------------------------------
 
