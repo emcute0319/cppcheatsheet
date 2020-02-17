@@ -80,6 +80,36 @@ Captureless
         return 0;
     }
 
+Capture by ``std::move``
+------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <utility>
+
+    struct Foo {
+        Foo() { std::cout << "Constructor" << "\n"; }
+        ~Foo() { std::cout << "Destructor" << "\n"; }
+        Foo(const Foo&) { std::cout << "Copy Constructor" << "\n"; }
+        Foo(Foo &&) { std::cout << "Move Constructor" << "\n";}
+
+        Foo& operator=(const Foo&) {
+            std::cout << "Copy Assignment" << "\n";
+            return *this;
+        }
+        Foo& operator=(Foo &&){
+            std::cout << "Move Assignment" << "\n";
+            return *this;
+        }
+    };
+
+    int main(int argc, char *argv[]) {
+        Foo foo;
+        [f=std::move(foo)] { /* do some tasks here...*/ }();
+    }
+
+
 Copy a Global into a Capture
 ----------------------------
 
