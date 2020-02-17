@@ -202,9 +202,68 @@ Limit a Template Types
         Foo(s1);
         Foo(s2);
 
-        // Foo(123)     compile error
+        // Foo(123);    compile error
         // Foo("Baz");  compile error
     }
+
+Specialize Types
+----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <type_traits>
+
+    template<typename S>
+    void Foo(S s) {
+        if (std::is_integral<S>::value) {
+            std::cout << "do a task for integer..." << "\n";
+            return;
+        }
+        if (std::is_same<
+                std::string,
+                typename std::decay<S>::type
+            >::value
+        ) {
+            std::cout << "do a task for string..." << "\n";
+            return;
+        }
+    }
+
+    int main(int argc, char *argv[]) {
+        std::string s1 = "Foo";
+        Foo(s1);
+        Foo(123);
+    }
+
+Template Specialization approach
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <type_traits>
+
+    template<typename S>
+    void Foo(S s) {}
+
+    template <>
+    void Foo<int>(int s) {
+        std::cout << "do a task for integer..." << "\n";
+    }
+    template<>
+    void Foo<std::string>(std::string s) {
+        std::cout << "do a task for string..." << "\n";
+    }
+
+
+    int main(int argc, char *argv[]) {
+        std::string s1 = "Foo";
+        Foo(s1);
+        Foo(123);
+    }
+
 
 Curiously recurring template pattern
 ------------------------------------
