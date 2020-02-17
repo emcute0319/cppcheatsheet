@@ -80,6 +80,23 @@ Captureless
         return 0;
     }
 
+Copy a Global into a Capture
+----------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    int g = 1;
+
+    // copy a global to a capture
+    auto bar = [g=g]() { return g + 1; };
+
+    int main(int argc, char *argv[]) {
+        int g = 10;
+        std::cout << bar() << "\n";
+    }
+
 constexpr by Default
 --------------------
 
