@@ -139,6 +139,40 @@ Class Template
         return 0;
     }
 
+Variadic Template (Parameter Pack)
+----------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <utility>
+    #include <vector>
+
+    template <typename T>
+    class Vector {
+    protected:
+        std::vector<T> v;
+    public:
+
+        template<typename ...Args>
+        Vector(Args&&... args) {
+            (v.emplace_back(std::forward<Args>(args)), ...);
+        }
+
+        using iterator = typename std::vector<T>::iterator;
+        iterator begin() noexcept { return v.begin(); }
+        iterator end() noexcept { return v.end(); }
+    };
+
+
+    int main(int argc, char *argv[]) {
+
+        Vector<int> v{1,2,3};
+        for (const auto &x : v)
+        {
+            std::cout << x << "\n";
+        }
+    }
 
 Curiously recurring template pattern
 ------------------------------------
