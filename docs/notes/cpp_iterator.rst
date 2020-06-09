@@ -2,6 +2,32 @@
 Iterator
 ========
 
+Reverse Range-based for Loop
+----------------------------
+
+.. code-block:: cpp
+
+    // via boost
+    // $ g++ --std=c++14 -Wall -Werror -g -O3 reverse.cpp
+    // $ ./a.out
+    // dlrow olleh
+
+    #include <iostream>
+    #include <string>
+    #include <boost/range/adaptor/reversed.hpp>
+
+    using namespace boost;
+
+    int main(int argc, char *argv[]) {
+        std::string in = "hello world";
+        std::string out;
+        for (const auto &c : adaptors::reverse(in)) {
+            out += c;
+        }
+        std::cout << out << "\n";
+    }
+
+
 Iterate an Internal Vector
 --------------------------
 
