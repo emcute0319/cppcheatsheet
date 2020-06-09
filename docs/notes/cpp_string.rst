@@ -8,6 +8,12 @@ Split a String
 
 .. code-block:: cpp
 
+    // $ g++ --std=c++14 -Wall -Werror -g -O3 split.cpp
+    // $ ./a.out
+    // abc
+    // def
+    // ghi
+
     #include <iostream>
     #include <string>
     #include <vector>
