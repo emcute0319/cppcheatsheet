@@ -21,6 +21,7 @@ Contents:
    notes/c_make
    notes/bash_basic
    notes/cpp_basic
+   notes/cpp_string
    notes/cpp_initialization
    notes/cpp_iterator
    notes/cpp_rvo
