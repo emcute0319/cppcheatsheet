@@ -43,3 +43,29 @@ Split a String
             cout << c << "\n";
         }
     }
+
+Using ``std::getline``
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <sstream>
+    #include <string>
+    #include <vector>
+
+    using namespace std;
+
+    int main(int argc, char *argv[])
+    {
+        string in = "abc,def,ghi";
+        vector<string> out;
+        string token;
+        std::istringstream stream(in);
+
+        while (std::getline(stream, token, ',')) {
+            out.emplace_back(token);
+        }
+        for (const auto &c : out) {
+            cout << c << "\n";
+        }
+    }
