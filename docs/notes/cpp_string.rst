@@ -69,3 +69,24 @@ Using ``std::getline``
             cout << c << "\n";
         }
     }
+
+Using boost
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <vector>
+    #include <boost/algorithm/string.hpp>
+
+    using namespace std;
+
+    int main(int argc, char *argv[]) {
+        string in = "abc,def,ghi";
+        vector<string> out;
+
+        boost::split(out, in, [](char c) { return c == ','; });
+        for (const auto &s : out) {
+            cout << s << "\n";
+        }
+    }
