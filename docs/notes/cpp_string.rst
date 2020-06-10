@@ -44,6 +44,40 @@ Split a String
         }
     }
 
+Using istream
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <sstream>
+    #include <string>
+    #include <vector>
+
+    using namespace std;
+
+    template<char delimiter>
+    class String : public string
+    {
+        friend istream &operator>>( istream  &is, String &out) {
+            std::getline(is, out, delimiter);
+            return is;
+        }
+    };
+
+    int main(int argc, char *argv[]) {
+        std::string text = "abc,def,ghi";
+
+        istringstream iss(text);
+        vector<string> out((istream_iterator<String<','>>(iss)),
+                            istream_iterator<String<','>>());
+
+        for (const auto &c : out) {
+            cout << c << "\n";
+        }
+    }
+
+
+
 Using ``std::getline``
 
 .. code-block:: cpp
