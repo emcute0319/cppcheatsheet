@@ -1,6 +1,6 @@
-============
-Smart Points
-============
+==============
+Smart Pointers
+==============
 
 Custom Deleters
 ---------------

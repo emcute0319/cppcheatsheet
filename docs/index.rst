@@ -28,6 +28,6 @@ Contents:
    notes/cpp_template
    notes/cpp_constexpr
    notes/cpp_lambda
-   notes/cpp_smartpoints
+   notes/cpp_smartpointers
    notes/cpp_forwarding
    notes/gdb_debug
