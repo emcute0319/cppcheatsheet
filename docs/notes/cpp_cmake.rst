@@ -156,3 +156,25 @@ project dir
         "${PROJECT_BINARY_DIR}"
         "${PROJECT_BINARY_DIR/fib}"
     )
+
+PUBLIC & PRIVATE
+----------------
+
+- PUBLIC - only affect the current target, not dependencies
+- INTERFACE - only needed for dependencies
+
+.. code-block:: cmake
+
+    cmake_minimum_required(VERSION 3.10)
+
+    project(example)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED True)
+    find_package(Boost)
+
+    add_executable(a.out a.cpp)
+    add_library(b STATIC b.cpp b.h)
+
+    target_include_directories(a.out PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+    target_include_directories(b PRIVATE "${Boost_INCLUDE_DIR}")
+    target_link_libraries(a.out INTERFACE b) # link b failed
