@@ -2,6 +2,9 @@
 cmake
 =====
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Minimal CMakeLists.txt
 ----------------------
 
