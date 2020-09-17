@@ -189,3 +189,19 @@ Run a command at configure time
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         RESULT_VARIABLE GIT_SUBMOD_RESULT
     )
+
+Option
+------
+
+.. code-block:: cmake
+
+    # $ make -p build
+    # $ cd build
+    # $ cmake -DBUILD_TEST=ON ../
+
+    option(BUILD_TEST "Build test" OFF)
+    if (BUILD_TEST)
+        message("Build tests.")
+    else()
+        message("Ignore tests.")
+    endif()
