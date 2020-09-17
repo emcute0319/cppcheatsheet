@@ -178,3 +178,14 @@ PUBLIC & PRIVATE
     target_include_directories(a.out PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
     target_include_directories(b PRIVATE "${Boost_INCLUDE_DIR}")
     target_link_libraries(a.out INTERFACE b) # link b failed
+
+Run a command at configure time
+-------------------------------
+
+.. code-block:: cmake
+
+    execute_process(
+        COMMAND git submodule update --init --recursive
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE GIT_SUBMOD_RESULT
+    )
