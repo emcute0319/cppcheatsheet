@@ -83,3 +83,20 @@ Format Time
       putenv(tz.data());
       std::cout << "Chicago " << std::put_time(std::localtime(&t), fmt) << "\n";
     }
+
+ISO 8601 format
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <iomanip>
+    #include <ctime>
+    #include <stdlib.h>
+
+    int main(int argc, char *argv[])
+    {
+      std::time_t t = std::time(nullptr);
+      constexpr char fmt[] = "%FT%TZ";
+      std::cout << std::put_time(std::gmtime(&t), fmt) << "\n";
+    }
