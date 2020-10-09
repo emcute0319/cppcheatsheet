@@ -177,6 +177,26 @@ Variadic Template (Parameter Pack)
         }
     }
 
+Fold expressions
+----------------
+
+.. code-block:: cpp
+
+    // g++ -std=c++17 -Wall -Werror -O3 a.cc
+
+    #include <iostream>
+    #include <utility>
+
+    template <typename ...Args>
+    decltype(auto) f(Args&& ...args) {
+      auto l = [](auto &&x) { return x * 2; };
+      return (l(std::forward<Args>(args)) + ...);
+    }
+
+    int main(int argc, char *argv[]) {
+      std::cout << f(1, 2, 3, 4, 5) << std::endl;
+    }
+
 Limit a Template Types
 ----------------------
 
