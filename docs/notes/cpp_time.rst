@@ -22,6 +22,28 @@ Timestamp
       std::cout << chrono::duration_cast<milliseconds>(t).count() << "\n";
     }
 
+To ``chrono::chrono::time_point``
+---------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <iomanip>
+    #include <chrono>
+    #include <ctime>
+
+    namespace chrono = std::chrono;
+    using ms = std::chrono::milliseconds;
+
+    int main(int argc, char *argv[])
+    {
+      using namespace std::literals;
+      auto s = 1602207217323ms;
+      chrono::system_clock::time_point tp(s);
+      std::time_t t = chrono::system_clock::to_time_t(tp);
+      std::cout << std::put_time(std::gmtime(&t), "%FT%TZ") << "\n";
+    }
+
 Profiling
 ---------
 
