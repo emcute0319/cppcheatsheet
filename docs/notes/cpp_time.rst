@@ -110,12 +110,16 @@ ISO 8601 format
 
     #include <iostream>
     #include <iomanip>
+    #include <chrono>
     #include <ctime>
-    #include <stdlib.h>
+
+    namespace chrono = std::chrono;
 
     int main(int argc, char *argv[])
     {
-      std::time_t t = std::time(nullptr);
-      constexpr char fmt[] = "%FT%TZ";
-      std::cout << std::put_time(std::gmtime(&t), fmt) << "\n";
+      auto now = chrono::system_clock::now();
+      std::time_t t = std::chrono::system_clock::to_time_t(now);
+      std::cout << std::put_time(std::gmtime(&t), "%Y-%m-%dT%H:%M:%SZ") << "\n";
+      std::cout << std::put_time(std::gmtime(&t), "%FT%TZ") << "\n";
+      std::cout << std::put_time(std::gmtime(&t), "%FT%TZ%z") << "\n";
     }
