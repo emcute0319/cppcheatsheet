@@ -2,6 +2,9 @@
 Time
 ====
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Timestamp
 ---------
 
