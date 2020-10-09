@@ -84,6 +84,25 @@ Format Time
       std::cout << "Chicago " << std::put_time(std::localtime(&t), fmt) << "\n";
     }
 
+To ``time_t``
+-------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <iomanip>
+    #include <chrono>
+    #include <ctime>
+
+    namespace chrono = std::chrono;
+
+    int main(int argc, char *argv[])
+    {
+      auto now = chrono::system_clock::now();
+      std::time_t t = std::chrono::system_clock::to_time_t(now);
+      std::cout << std::put_time(std::gmtime(&t), "%FT%TZ") << "\n";
+    }
+
 ISO 8601 format
 ---------------
 
