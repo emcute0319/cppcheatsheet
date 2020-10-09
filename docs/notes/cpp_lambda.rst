@@ -83,6 +83,24 @@ Captureless
         return 0;
     }
 
+Lambda capture initializers
+---------------------------
+
+.. code-block:: cpp
+
+    // g++ -std=c++17 -Wall -Werror -O3 a.cc
+
+    #include <iostream>
+    #include <utility>
+    #include <memory>
+
+    int main(int argc, char *argv[])
+    {
+      std::unique_ptr<int> p = std::make_unique<int>(5566);
+      auto f = [x = std::move(p)]() { std::cout << *x << std::endl; };
+      f();
+    }
+
 Capture by ``std::move``
 ------------------------
 
