@@ -2,6 +2,9 @@
 Smart Pointers
 ==============
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Custom Deleters
 ---------------
 

@@ -2,6 +2,9 @@
 Iterator
 ========
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Reverse Range-based for Loop
 ----------------------------
 

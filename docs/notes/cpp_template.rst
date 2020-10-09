@@ -2,6 +2,9 @@
 C++ Template cheatsheet
 =======================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Instantiate a Template
 ----------------------
 

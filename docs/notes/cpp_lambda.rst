@@ -2,6 +2,9 @@
 Lambda
 ======
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Callable Objects
 ----------------
 

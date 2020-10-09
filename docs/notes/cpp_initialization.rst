@@ -2,6 +2,9 @@
 Initialization
 ==============
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Initializer lists
 -----------------
 

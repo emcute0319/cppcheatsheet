@@ -2,6 +2,9 @@
 Perfect Forwarding
 ==================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Perfect forwarding is a way for a programmer to design a generic wrapper
 function in their C++ programs. However, few examples show how to use it in a
 real scenario. Instead of explaining what a C++ `perfect forwarding` is, this

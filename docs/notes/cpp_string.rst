@@ -2,6 +2,8 @@
 String
 ======
 
+.. contents:: Table of Contents
+    :backlinks: none
 
 Split a String
 --------------

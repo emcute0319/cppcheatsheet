@@ -2,6 +2,9 @@
 constexpr
 =========
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 constexpr Function
 ------------------
 

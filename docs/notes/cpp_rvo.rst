@@ -2,6 +2,9 @@
 Return Value Optimization (RVO)
 ===============================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 
 Before starting
 ---------------
