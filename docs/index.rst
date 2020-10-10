@@ -24,6 +24,7 @@ Contents:
    notes/cpp_iterator
    notes/cpp_rvo
    notes/cpp_template
+   notes/cpp_variadic
    notes/cpp_constexpr
    notes/cpp_lambda
    notes/cpp_smartpointers
