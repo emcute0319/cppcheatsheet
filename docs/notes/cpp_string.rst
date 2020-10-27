@@ -126,3 +126,26 @@ Using boost
             cout << s << "\n";
         }
     }
+
+Upper & Lower
+-------------
+
+.. code-block:: cpp
+
+    // cc -std=c++17 -Wall -Werror -O3 a.cpp
+
+    #include <iostream>
+    #include <string>
+    #include <algorithm>
+
+    int main(int argc, char *argv[])
+    {
+      std::string s = "Hello World";
+      // to upper
+      std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+      std::cout << s << "\n";
+
+      // to lower
+      std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+      std::cout << s << "\n";
+    }
