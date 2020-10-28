@@ -56,3 +56,81 @@ Data Structure & Algorithm
       }
     }
 
+``std::foreach``
+----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <algorithm>
+
+    int main(int argc, char *argv[])
+    {
+      std::vector v{1, 2, 3};
+      std::for_each(v.begin(), v.end(), [](auto &i) { i = i * 2; });
+      std::for_each(v.begin(), v.end(), [](auto &i) { std::cout << i << "\n"; });
+    }
+
+``std::find``
+-------------
+
+``std::find`` returns an iterator to the first element in an array like object.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <algorithm>
+
+    int main(int argc, char *argv[])
+    {
+      std::vector v{1, 2, 3};
+
+      // complexity O(n)
+      auto it = std::find(v.begin(), v.end(), 2);
+      std::cout << *it << "\n";
+    }
+
+``std::find_if`` & ``std::find_if_not``
+---------------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <algorithm>
+
+    int main(int argc, char *argv[])
+    {
+      std::vector v{1, 2, 3};
+      auto x = find_if(v.begin(), v.end(), [](auto &i) { return i == 2; });
+      std::cout << *x << "\n";
+
+      auto y = find_if_not(v.begin(), v.end(), [](auto &i) { return i == 2; });
+      std::cout << *y << "\n";
+    }
+
+``std::transform``
+------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <algorithm>
+
+    int main(int argc, char *argv[])
+    {
+      std::string s = "Hello World";
+
+      // transform elements in place
+      std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+      std::cout << s << "\n";
+
+      // transform elements and store in another object
+      std::string o(s.size(), 0);
+      std::transform(s.begin(), s.end(), o.begin(), ::tolower);
+      std::cout << o << "\n";
+    }
+
