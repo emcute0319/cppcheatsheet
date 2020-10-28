@@ -134,3 +134,27 @@ Data Structure & Algorithm
       std::cout << o << "\n";
     }
 
+
+``std::generate``
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <random>
+    #include <vector>
+    #include <algorithm>
+
+    int main(int argc, char *argv[])
+    {
+      std::random_device dev;
+      std::mt19937 rng(dev());
+      std::uniform_int_distribution<std::mt19937::result_type> dist(1,10);
+
+      // generate a sequence
+      std::vector<int> v(5);
+      std::generate(v.begin(), v.end(), [&] { return dist(rng); });
+      for (const auto &i : v) {
+        std::cout << i << std::endl;
+      }
+    }
