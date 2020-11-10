@@ -5,6 +5,45 @@ Data Structure & Algorithm
 .. contents:: Table of Contents
     :backlinks: none
 
+Remove elements by conditions
+-----------------------------
+
+.. code-block:: cpp
+
+    #include <vector>
+
+    int main(int argc, char *argv[])
+    {
+      std::vector<int> v{1, 2, 3, 4, 5, 6};
+      for (auto it = v.begin(); it != v.end();) {
+        if (*it > 3) {
+          it = v.erase(it);
+        } else {
+          ++it;
+        }
+      }
+    }
+
+Remove keys by conditions
+-------------------------
+
+.. code-block:: cpp
+
+    #include <string>
+    #include <map>
+
+    int main(int argc, char *argv[])
+    {
+      std::map<int, std::string> m{{1, "1"}, {2, "2"}, {3, "3"}};
+      for (auto it = m.begin(); it != m.end();) {
+        if (it->first > 1) {
+          it = m.erase(it);
+        } else {
+          ++it;
+        }
+      }
+    }
+
 ``std::map`` sort by key
 ------------------------
 
