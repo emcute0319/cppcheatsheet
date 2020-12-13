@@ -91,7 +91,7 @@ Using ``fstat`` get file size
         }
         printf("File Size: %lld byte\n", st.st_size);
         ret = 0;
-    Error:    
+    Error:
         if (fd>=0) {
             close(fd);
         }
@@ -158,7 +158,7 @@ Copy all content of a file
             if (r_size != write(dfd, buf, r_size)) {
                 printf("copy file get error\n");
                 goto Error;
-            } 
+            }
         }
         ret = 0;
     Error:
@@ -211,7 +211,7 @@ Copy some bytes of content to a file
             goto Error;
         }
         /* open source file */
-        src = argv[1]; 
+        src = argv[1];
         if (0 > (sfd = open(src, O_RDONLY))) {
             printf("open source file error\n");
             goto Error;
@@ -225,7 +225,7 @@ Copy some bytes of content to a file
         dst = argv[2];
         perm = st.st_mode;
         if (0 > (dfd = open(dst, O_WRONLY | O_CREAT, perm))) {
-            printf("open destination file error\n"); 
+            printf("open destination file error\n");
             goto Error;
         }
         if (-1 == (d_offset = lseek(dfd, 0, SEEK_END))) {
@@ -237,16 +237,16 @@ Copy some bytes of content to a file
             goto Error;
         }
         /* bytes */
-        size = atoi(argv[3]);    
+        size = atoi(argv[3]);
         if (-1 == (r_size = read(sfd, buf, size))) {
-            printf("read content fail\n"); 
+            printf("read content fail\n");
             goto Error;
         }
         if (r_size != write(dfd, buf, r_size)) {
-            printf("write content fail\n"); 
+            printf("write content fail\n");
             goto Error;
         }
-        ret = 0; 
+        ret = 0;
     Error:
         if (sfd >= 0) {
             close(sfd);
@@ -265,7 +265,7 @@ output:
     $ $ ./a.out hello.txt hello_copy.txt 3
     $ cat hello_copy.txt
     Hel$./a.out hello.txt hello_copy.txt 3
-    $ cat hello_copy.txt 
+    $ cat hello_copy.txt
     Hello
     $ diff hello.txt hello_copy.txt
 
@@ -315,6 +315,23 @@ Get lines of a file
         return ret;
     }
 
+Get lines of a file via ``std::getline``
+----------------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <fstream>
+    #include <sstream>
+    #include <string>
+
+    int main(int argc, char *argv[])
+    {
+        std::ifstream f(argv[1]);
+        for (std::string line; std::getline(f, line);) {
+            std::cout << line << "\n";
+        }
+    }
 
 Read content into memory from a file
 ------------------------------------
