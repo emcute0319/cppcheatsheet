@@ -19,6 +19,7 @@ Contents:
    notes/cpp_cmake
    notes/cpp_basic
    notes/cpp_string
+   notes/cpp_time
    notes/cpp_initialization
    notes/cpp_algorithm
    notes/cpp_iterator

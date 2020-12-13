@@ -127,7 +127,7 @@ Build/Link a shared library
     target_include_directories(a.out PUBLIC "${PROJECT_BINARY_DIR}")
 
 Subdirectory
------------
+------------
 
 subdirectory fib/
 
