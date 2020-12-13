@@ -35,7 +35,7 @@ Customize an Iterator
 
 .. code-block:: cpp
 
-    // g++ -std=c++17 -Wall -Werror -g -O3 a.cc
+    // $ g++ -std=c++17 -Wall -Werror -g -O3 a.cc
 
     #include <iostream>
     #include <memory>
@@ -140,4 +140,50 @@ Iterate an Internal Vector
           std::cout << it << std::endl;
       }
       return 0;
+    }
+
+Iterate a file
+--------------
+
+.. code-block:: cpp
+
+    // $ g++ -std=c++17 -Wall -Werror -g -O3 a.cc
+    // $ ./a.out file
+
+    #include <iostream>
+    #include <iterator>
+    #include <fstream>
+    #include <string>
+
+    class line : public std::string {};
+
+    std::istream &operator>>(std::istream &is, line &l)
+    {
+      std::getline(is, l);
+      return is;
+    }
+
+    class FileReader
+    {
+     public:
+      using iterator = std::istream_iterator<line>;
+      inline iterator begin() noexcept { return begin_; }
+      inline iterator end() noexcept { return end_; }
+
+     public:
+      FileReader(const std::string path) : f_{path}, begin_{f_} {}
+      friend std::istream &operator>>(std::istream &, std::string &);
+
+     private:
+      std::ifstream f_;
+      iterator begin_;
+      iterator end_;
+    };
+
+    int main(int argc, char *argv[])
+    {
+      FileReader reader(argv[1]);
+      for (auto &line : reader) {
+        std::cout << line << "\n";
+      }
     }
