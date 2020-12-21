@@ -208,3 +208,23 @@ Option
     else()
         message("Ignore tests.")
     endif()
+
+Add ExternalProject
+-------------------
+
+.. code-block:: cmake
+
+    set(TARGET a.out)
+    include (ExternalProject)
+
+    ExternalProject_Add(fmt
+      GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+      GIT_TAG "7.1.3"
+      GIT_CONFIG advice.detachedHead=false
+      PREFIX "${CMAKE_BINARY_DIR}/fmt"
+      CMAKE_CACHE_ARGS
+        "-DFMT_INSTALL:BOOL=ON"
+        "-DFMT_DOC:BOOL=OFF"
+        "-DFMT_TEST:BOOL=OFF"
+        "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}"
+    )
