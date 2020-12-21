@@ -182,6 +182,26 @@ PUBLIC & PRIVATE
     target_include_directories(b PRIVATE "${Boost_INCLUDE_DIR}")
     target_link_libraries(a.out INTERFACE b) # link b failed
 
+Install
+-------
+
+.. code-block:: cmake
+
+    cmake_minimum_required(VERSION 3.10)
+    project(a)
+    add_library(b_static STATIC b.cc)
+    add_library(b_shared SHARED b.cc)
+    add_executable(a a.cc b.cc)
+
+    include(GNUInstallDirs)
+    set(INSTALL_TARGETS a b_static b_shared)
+    install(TARGETS ${INSTALL_TARGETS}
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+    install(FILES b.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 Run a command at configure time
 -------------------------------
 
