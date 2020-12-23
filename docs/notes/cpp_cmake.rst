@@ -247,6 +247,22 @@ Add ExternalProject
         "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}"
     )
 
+Add ExternalProject (download only)
+-----------------------------------
+
+.. code-block:: cmake
+
+    include (ExternalProject)
+    ExternalProject_Add(fmt
+      GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+      GIT_TAG "7.1.3"
+      GIT_CONFIG advice.detachedHead=false
+      PREFIX "${CMAKE_BINARY_DIR}/fmt"
+      CONFIGURE_COMMAND ""
+      BUILD_COMMAND ""
+      INSTALL_COMMAND ""
+    )
+
 Add ExternalProject (autotool)
 ------------------------------
 
