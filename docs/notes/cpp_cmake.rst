@@ -33,16 +33,31 @@ Wildcard Sourse Files
 Set CXXFLAGS
 ------------
 
+Bad
+
 .. code-block:: cmake
 
     cmake_minimum_required(VERSION 3.10)
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED True)
-    file(GLOB src "*.cpp")
+    file(GLOB src "*.cc")
 
     project(example)
     set(CMAKE_CXX_FLAGS "-Wall -Werror -O3")
     add_executable(a.out ${src})
+
+Good
+
+.. code-block:: cmake
+
+    cmake_minimum_required(VERSION 3.10)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED True)
+    file(GLOB src "*.cc")
+
+    project(example)
+    add_executable(a.out ${src})
+    target_compile_options(a.out PRIVATE -Werror)
 
 Set CXXFLAGS with Build Type
 ----------------------------
