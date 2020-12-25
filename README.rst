@@ -35,5 +35,13 @@ Modern C++ Cheat Sheet
 - `Smart Pointer <docs/notes/cpp_smartpointers.rst>`_
 - `Return Value Optimization <docs/notes/cpp_rvo.rst>`_
 - `Algorithm <docs/notes/cpp_algorithm.rst>`_
+
+CMake
+=====
+
 - `CMake <docs/notes/cpp_cmake.rst>`_
+
+GNU Debugger
+============
+
 - `GDB <docs/notes/gdb_debug.rst>`_
