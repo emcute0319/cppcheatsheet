@@ -197,6 +197,27 @@ PUBLIC & PRIVATE
     target_include_directories(b PRIVATE "${Boost_INCLUDE_DIR}")
     target_link_libraries(a.out INTERFACE b) # link b failed
 
+Generator Expression
+--------------------
+
+.. code-block:: cmake
+
+    cmake_minimum_required(VERSION 3.10)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED True)
+    project(example)
+
+    set(target fib)
+    add_library(${target} src/fib.cc)
+    target_compile_options(${target} PRIVATE -Wall -Werror -Wextra)
+    target_include_directories(${target}
+      PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+      PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+
 Install
 -------
 
