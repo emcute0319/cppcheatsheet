@@ -58,7 +58,7 @@ CMake Cheat Sheet
 .. toctree::
    :maxdepth: 1
 
-   notes/cpp_cmake
+   notes/cmake_basic
 
 GNU Debugger Cheat Sheet
 ------------------------

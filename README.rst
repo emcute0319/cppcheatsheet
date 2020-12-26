@@ -39,7 +39,8 @@ Modern C++ Cheat Sheet
 CMake
 =====
 
-- `CMake <docs/notes/cpp_cmake.rst>`_
+- `CMake <docs/notes/cmake_basic.rst>`_
+- `Package <docs/notes/cmake_package.rst>`_
 
 GNU Debugger
 ============
