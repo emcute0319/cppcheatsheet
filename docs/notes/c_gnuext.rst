@@ -2,8 +2,8 @@
 GNU C Extensions cheatsheet
 ============================
 
-Using ``__extension__`` prevent ``-pedantic`` warning
--------------------------------------------------------
+.. contents:: Table of Contents
+    :backlinks: none
 
 with ``__extension__``
 ~~~~~~~~~~~~~~~~~~~~~~~

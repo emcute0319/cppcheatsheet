@@ -8,7 +8,6 @@ C Cheat Sheet
 =============
 
 - `From Scratch <docs/notes/c_basic.rst>`_
-- `Concurrency <docs/notes/c_concurrency.rst>`_
 - `GNU C Extension <docs/notes/c_gnuext.rst>`_
 - `Macro <docs/notes/c_macro.rst>`_
 
@@ -35,6 +34,7 @@ System Programming Cheat Sheet
 - `File I/O <docs/notes/c_file.rst>`_
 - `Signal <docs/notes/c_signal.rst>`_
 - `Socket <docs/notes/c_socket.rst>`_
+- `Concurrency <docs/notes/c_concurrency.rst>`_
 
 CMake
 =====

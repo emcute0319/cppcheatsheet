@@ -2,6 +2,9 @@
 C signal operation cheatsheet
 =============================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Print signal expression
 -----------------------
 
@@ -13,12 +16,12 @@ Print signal expression
     #define ARRAYLEN(arr) sizeof(arr) / sizeof((arr)[0])
 
     static int signo_arr[] = {
-        SIGABRT , SIGALRM  , SIGBUS, 
+        SIGABRT , SIGALRM  , SIGBUS,
         SIGCHLD , SIGCONT  , SIGFPE,
         SIGHUP  , SIGILL   , SIGINT,
         SIGIO   , SIGKILL  , SIGPIPE,
         SIGPROF , SIGQUIT  , SIGSEGV,
-        SIGSYS  , SIGTERM  , SIGTRAP, 
+        SIGSYS  , SIGTERM  , SIGTRAP,
         SIGTSTP , SIGTTIN  , SIGTTOU,
         SIGURG  , SIGVTALRM, SIGUSR1,
         SIGUSR2 , SIGXCPU  , SIGXFSZ
@@ -26,7 +29,7 @@ Print signal expression
 
     int main(int argc, char *argv[])
     {
-        int i = 0; 
+        int i = 0;
         int signo = -1;
         char *msg = "SIGNAL";
 
@@ -72,7 +75,7 @@ output:
     Signal[25]: Filesize limit exceeded
 
 
-Basic signal event handler 
+Basic signal event handler
 --------------------------
 
 .. code-block:: c
@@ -85,7 +88,7 @@ Basic signal event handler
     #include <unistd.h>
 
     /** singal handler prototype :
-     * 
+     *
      *  type void (*sighandler_t) (int)
      */
 
@@ -97,7 +100,7 @@ Basic signal event handler
     int main(int argc, char *argv[])
     {
         int ret = -1;
-        
+
         /* overwrite default signal handler */
         if (SIG_ERR == signal(SIGHUP, sig_handler)) {
             printf("Get error: %s\n", strerror(errno));
@@ -126,7 +129,7 @@ output:
 
 .. code-block:: console
 
-    $ ./a.out 
+    $ ./a.out
     ^C[54652] Get signal: Interrupt: 2
     [54652] Get signal: Hangup: 1
     [54652] Get signal: Alarm clock: 14
@@ -177,7 +180,7 @@ A pthread signal handler
             goto Error;
         }
         /* create signal thread */
-        err = pthread_create(&thread, NULL, 
+        err = pthread_create(&thread, NULL,
                              &sig_thread, (void *)&sig_set))
         if (0 != err) {
             printf("create pthread error\n");
@@ -219,7 +222,7 @@ Check child process alive
                pid, signo, sys_siglist[signo]);
     }
 
-    int main(int argc, char *argv[]) 
+    int main(int argc, char *argv[])
     {
         int ret = -1;
         pid_t pid = -1;
@@ -228,7 +231,7 @@ Check child process alive
         signal(SIGCHLD, handler);
         if (pid < 0) {
             printf("Fork failed\n");
-            goto Error; 
+            goto Error;
         } else if (pid == 0) {
             /* child */
             printf("Child[%i]\n", getpid());
@@ -244,13 +247,13 @@ Check child process alive
 
 .. code-block:: console
 
-    $ ./a.out 
+    $ ./a.out
     Parent[59113]
     Child[59114]
     [59113] Got signal[20]: Child exited
 
 
-Basic sigaction usage 
+Basic sigaction usage
 ---------------------
 
 .. code-block:: c

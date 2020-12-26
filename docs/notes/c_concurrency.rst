@@ -2,6 +2,9 @@
 C Concurrency cheatsheet
 ========================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 How to write a UNIX daemon
 --------------------------
 

@@ -2,6 +2,9 @@
 C Macro cheatsheet
 ==================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Predefined Macros
 ------------------
 
@@ -92,14 +95,14 @@ ARRAYSIZE
     /*
      * Entry point
      */
-    int main(int argc, char *argv[])                                                                                               
-    {                                                                                                                              
-        int ret = -1;                                                                                                              
-        char *pszArr[] = {"Hello", "World", NULL};                                                                                 
-                                                                                                                                   
-        printf("array size: %lu\n", ARRAY_SIZE(pszArr));                                                                           
-        ret = 0;                                                                                                                   
-        return ret;                                                                                                                
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        char *pszArr[] = {"Hello", "World", NULL};
+
+        printf("array size: %lu\n", ARRAY_SIZE(pszArr));
+        ret = 0;
+        return ret;
     }
 
 output:
@@ -118,25 +121,25 @@ FOREACH
 
     #include <stdio.h>
 
-    #define FOREACH(item, arr) \                                                                                                   
+    #define FOREACH(item, arr) \
         for (item=arr; *item; item++)
 
     /*
      * Entry point
      */
-    int main(int argc, char *argv[])                                                                                               
-    {                                                                                                                              
-        int ret = -1;                                                                                                              
-        char *pszArr[] = {"Hello", "World", NULL};                                                                                 
-        char **str = NULL;                                                                                                         
-                                                                                                                                   
-        FOREACH (str, pszArr) {                                                                                                     
-            printf("%s ", *str);                                                                                                   
-        }                                                                                                                          
-        printf("\n");                                                                                                              
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
+        char *pszArr[] = {"Hello", "World", NULL};
+        char **str = NULL;
 
-        ret = 0;                                                                                                                   
-        return ret;                                                                                                                
+        FOREACH (str, pszArr) {
+            printf("%s ", *str);
+        }
+        printf("\n");
+
+        ret = 0;
+        return ret;
     }
 
 output:
@@ -195,26 +198,26 @@ lambda
 
 .. code-block:: c
 
-    #define lambda(return_type, ...) \                                                                                             
-        __extension__ \                                                                                                              
-        ({ \                                                                                                                         
-            return_type __fn__ __VA_ARGS__ \                                                                                           
-            __fn__; \                                                                                                                  
+    #define lambda(return_type, ...) \
+        __extension__ \
+        ({ \
+            return_type __fn__ __VA_ARGS__ \
+            __fn__; \
         })
 
     /*
      * Entry point
      */
-    int main(int argc, char *argv[])                                                                                               
-    {                                                                                                                              
-        int ret = -1;                                                                                                              
+    int main(int argc, char *argv[])
+    {
+        int ret = -1;
         int (*max) (int, int) =
-            lambda (int, (int x, int y) { return x > y ? x : y; });                                            
-                                                                                                                                   
-        printf("lambda: %d\n", max(2,3));                                                                                          
-                                                                                                                                   
-        ret = 0;                                                                                                                   
-        return ret;                                                                                                                
+            lambda (int, (int x, int y) { return x > y ? x : y; });
+
+        printf("lambda: %d\n", max(2,3));
+
+        ret = 0;
+        return ret;
     }
 
 output:

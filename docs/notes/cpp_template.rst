@@ -1,6 +1,6 @@
-=======================
-C++ Template cheatsheet
-=======================
+========
+Template
+========
 
 .. contents:: Table of Contents
     :backlinks: none

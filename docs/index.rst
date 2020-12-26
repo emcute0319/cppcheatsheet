@@ -9,7 +9,6 @@ C Cheat Sheet
    :maxdepth: 1
 
    notes/c_basic
-   notes/c_concurrency
    notes/c_gnuext.rst
    notes/c_macro
    notes/c_make
@@ -51,6 +50,7 @@ System Programming Cheat Sheet
    notes/c_file
    notes/c_signal
    notes/c_socket
+   notes/c_concurrency
 
 CMake Cheat Sheet
 -----------------

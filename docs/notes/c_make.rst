@@ -2,6 +2,9 @@
 C Makefile cheatsheet
 ======================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Automatic variables
 --------------------
 
@@ -157,8 +160,8 @@ output
 
     == findstring example ==
     Res:  hello
-    Res: 
-    Res: 
+    Res:
+    Res:
 
     == words example ==
     num of words: 4
@@ -175,10 +178,10 @@ output
 using ``$(sort list)`` sort list and remove duplicates
 -------------------------------------------------------
 
-Makefile 
+Makefile
 
 .. code-block:: make
-    
+
     SRC = foo.c bar.c ker.c foo.h bar.h ker.h
 
     .PHONY: all
@@ -390,7 +393,7 @@ output
     $ make
     cc -Wall -g -O2 -I./include -c src/foo.c -o src/foo.o
     cc -Wall -g -O2 -I./include -c src/main.c -o src/main.o
-    cc  -o main src/foo.o src/main.o 
+    cc  -o main src/foo.o src/main.o
 
 
 build shared library
@@ -519,7 +522,7 @@ output
 .. code-block:: bash
 
     $ make
-    make -C src 
+    make -C src
     make[1]: Entering directory '/root/test/src'
     cc -Wall -Werror -g -O2 -fPIC -I../include -c -o foo.o foo.c
     cc -Wall -Werror -g -O2 -fPIC -I../include -c -o bar.o bar.c
@@ -626,7 +629,7 @@ output
 .. code-block:: bash
 
     $ make
-    make -C src 
+    make -C src
     make[1]: Entering directory '/root/proj/src'
     cc -Wall -g -O2 -Werror -fPIC -I../include -c foo.c -o foo.o
     cc -Wall -g -O2 -Werror -fPIC -I../include -c bar.c -o bar.o
@@ -634,7 +637,7 @@ output
     ln -sf libfoobar.so.1.0.0 libfoobar.so.1
     ln -sf libfoobar.so.1.0.0 libfoobar.so
     make[1]: Leaving directory '/root/proj/src'
-    make -C test 
+    make -C test
     make[1]: Entering directory '/root/proj/test'
     cc -Wall -Werror -g -I../include -c test.c -o test.o
     cc -o test_main test.o -Wall -L../src -lfoobar

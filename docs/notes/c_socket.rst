@@ -2,6 +2,9 @@
 C socket cheatsheet
 ===================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Get host via ``gethostbyname``
 --------------------------------
 
@@ -152,12 +155,12 @@ Basic TCP socket server
         struct sockaddr_in c_addr;
         const int on = 1;
         char buf[BUF_SIZE] = {0};
-        
+
         /* set socket host and port */
         bzero(&s_addr, sizeof(s_addr));
         s_addr.sin_family = AF_INET;
         s_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-        s_addr.sin_port = htons(port);    
+        s_addr.sin_port = htons(port);
 
         /* create socket */
         s = socket(AF_INET, SOCK_STREAM, 0);
@@ -166,7 +169,7 @@ Basic TCP socket server
             goto Error;
         }
         /* set sockopt */
-        if (0 > setsockopt(s, SOL_SOCKET, 
+        if (0 > setsockopt(s, SOL_SOCKET,
                 SO_REUSEADDR, &on, sizeof(on))) {
             printf("setsockopt fail\n");
             goto Error;
@@ -184,7 +187,7 @@ Basic TCP socket server
         }
         for(;;) {
             clen = sizeof(c_addr);
-            c = accept(s, (struct sockaddr *)&c_addr, &clen);    
+            c = accept(s, (struct sockaddr *)&c_addr, &clen);
             if (!isvalidsock(c)) {
                 printf("accept error\n");
                 continue;
@@ -192,9 +195,9 @@ Basic TCP socket server
             bzero(buf, BUF_SIZE);
             if (0 > (len = recv(c, buf, BUF_SIZE-1, 0))) {
                 close(c);
-            }   
+            }
             send(c, buf, BUF_SIZE-1, 0);
-            close(c); 
+            close(c);
         }
         ret = 0
     Error:
@@ -333,7 +336,7 @@ Event driven socket via ``select``
             goto Error;
         }
         if (0 > setsockopt(
-                sfd, SOL_SOCKET, 
+                sfd, SOL_SOCKET,
                 SO_REUSEADDR, &on, sizeof(on))) {
             printf("setsockopt error\n");
             goto Error;
@@ -345,10 +348,10 @@ Event driven socket via ``select``
             goto Error;
         }
         if (0 > listen(sfd, 10)) {
-            printf("listen network error\n"); 
+            printf("listen network error\n");
             goto Error;
-        } 
-        ret = sfd; 
+        }
+        ret = sfd;
     Error:
         if (ret == -1) {
             if (sfd >=0) {
@@ -371,7 +374,7 @@ Event driven socket via ``select``
         socklen_t clen = 0;
         fd_set wait_set;
         fd_set read_set;
-       
+
         if (-1 == (sfd = socket_init())) {
             printf("socket_init error\n");
             goto Error;
@@ -382,7 +385,7 @@ Event driven socket via ``select``
             read_set = wait_set;
             if (0 > select(FD_SETSIZE, &read_set,
                            NULL, NULL, NULL)) {
-                printf("select get error\n"); 
+                printf("select get error\n");
                 goto Error;
             }
             for (i=0; i < FD_SETSIZE; i++) {
@@ -394,7 +397,7 @@ Event driven socket via ``select``
                     cfd = accept(sfd,
                         (struct sockaddr *)&c_addr, &clen);
                     if (!isvalidsock(cfd)) {
-                        goto Error; 
+                        goto Error;
                     }
                     FD_SET(cfd, &wait_set);
                 } else {
@@ -411,7 +414,7 @@ Event driven socket via ``select``
                     }
                 }
             }
-        }    
+        }
         ret = 0;
     Error:
         if (sfd >= 0) {

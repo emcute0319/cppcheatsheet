@@ -1,6 +1,6 @@
-==========================
-Variadic Function/Template
-==========================
+========
+Variadic
+========
 
 .. contents:: Table of Contents
     :backlinks: none

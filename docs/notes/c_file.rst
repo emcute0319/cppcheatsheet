@@ -2,6 +2,9 @@
 C file operations cheatsheet
 ============================
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Calculate file size via ``lseek``
 ---------------------------------
 
