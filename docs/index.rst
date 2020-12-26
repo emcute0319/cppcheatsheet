@@ -59,6 +59,8 @@ CMake Cheat Sheet
    :maxdepth: 1
 
    notes/cmake_basic
+   notes/cmake_package
+   notes/cmake_external
 
 GNU Debugger Cheat Sheet
 ------------------------
