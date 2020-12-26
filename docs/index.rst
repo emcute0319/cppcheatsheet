@@ -14,16 +14,6 @@ C Cheat Sheet
    notes/c_macro
    notes/c_make
 
-System Programming Cheat Sheet
-------------------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   notes/c_file
-   notes/c_signal
-   notes/c_socket
-
 Modern C++ Cheat Sheet
 ----------------------
 
@@ -51,6 +41,16 @@ Bash Cheat Sheet
    :maxdepth: 1
 
    notes/bash_basic
+
+System Programming Cheat Sheet
+------------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   notes/c_file
+   notes/c_signal
+   notes/c_socket
 
 CMake Cheat Sheet
 -----------------
