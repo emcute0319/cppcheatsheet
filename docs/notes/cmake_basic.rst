@@ -33,8 +33,6 @@ Wildcard Sourse Files
 Set CXXFLAGS
 ------------
 
-Bad
-
 .. code-block:: cmake
 
     cmake_minimum_required(VERSION 3.10)
@@ -45,8 +43,6 @@ Bad
     project(example)
     set(CMAKE_CXX_FLAGS "-Wall -Werror -O3")
     add_executable(a.out ${src})
-
-Good
 
 .. code-block:: cmake
 
@@ -78,6 +74,37 @@ Build Debug/Release
 
     $ cmake -DCMAKE_BUILD_TYPE=Release ../
     $ cmake -DCMAKE_BUILD_TYPE=Debug ../
+
+Build with Type
+---------------
+
+.. code-block:: cmake
+
+    cmake_minimum_required(VERSION 3.10)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED True)
+    project(example)
+    add_executable(a.out a.cc)
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      target_compile_options(a.out PRIVATE -g -O0 -Wall)
+    else()
+      target_compile_options(a.out PRIVATE -O3 -Wall -Werror)
+    endif()
+
+Instead of checking ``CMAKE_BUILD_TYPE``, modern CMake prefers to use *generator
+expressions* to examine conditions.
+
+.. code-block:: cmake
+
+    cmake_minimum_required(VERSION 3.10)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED True)
+    project(example)
+    add_executable(a.out a.cc)
+    target_compile_options(a.out PRIVATE
+      $<IF:$<CONFIG:Debug>, -g -O0 -Wall, -O3 -Wall -Werror>
+    )
 
 Version File
 ------------
