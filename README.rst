@@ -4,8 +4,8 @@ Documentation Status
 .. image:: https://travis-ci.org/crazyguitar/cppcheatsheet.svg?branch=master
      :target: https://travis-ci.org/crazyguitar/cppcheatsheet
 
-Cheat Sheet (C)
-===============
+C Cheat Sheet
+=============
 
 - `From Scratch <docs/notes/c_basic.rst>`_
 - `Concurrency <docs/notes/c_concurrency.rst>`_
