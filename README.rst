@@ -41,6 +41,7 @@ CMake
 
 - `CMake <docs/notes/cmake_basic.rst>`_
 - `Package <docs/notes/cmake_package.rst>`_
+- `External Project <docs/notes/cmake_external.rst>`_
 
 GNU Debugger
 ============

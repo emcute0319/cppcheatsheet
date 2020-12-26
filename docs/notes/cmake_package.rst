@@ -2,6 +2,9 @@
 Package
 =======
 
+.. contents:: Table of Contents
+    :backlinks: none
+
 Support ``find_package``
 ------------------------
 
