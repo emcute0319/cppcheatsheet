@@ -315,32 +315,12 @@ Add ExternalProject (autotool)
       INSTALL_COMMAND make install
     )
 
-CPack
------
+Alias a Library
+---------------
+
+When a ``CMakeLists.txt`` export Foo in namespace ``Foo::``, it also need to
+create an alias ``Foo::Foo``.
 
 .. code-block:: cmake
 
-    # $ cd build
-    # $ cmake ..
-    # $ make -j 2
-    # $ cpack -G TGZ .
-
-    cmake_minimum_required(VERSION 3.10)
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED True)
-    project(a)
-
-    add_executable(a a.cc)
-    add_library(b b.cc)
-    target_link_libraries(a PRIVATE b)
-    include(GNUInstallDirs)
-    install(TARGETS a b
-      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
-    install(FILES b.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-    set(CPACK_GENERATOR "ZIP;TGZ")
-    SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "crazyguitar")
-    include(CPack)
+    add_library(Foo::Foo ALIAS Foo)
