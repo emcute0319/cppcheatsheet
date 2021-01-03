@@ -178,12 +178,14 @@ html_sidebars = {
         'about.html',
         'link.html',
         'github.html',
+        'cheatsheets.html',
         'searchbox.html'
     ],
     '**': [
         'sidebarintro.html',
         'link.html',
         'github.html',
+        'cheatsheets.html',
         'localtoc.html',
         'relations.html',
         'searchbox.html'
