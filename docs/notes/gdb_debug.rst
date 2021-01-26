@@ -79,6 +79,34 @@ Basic Commands
 3. rn - Reverse next
 4. rs - Reverse step
 
+.. code-block:: cpp
+
+    int main(int argc, char *argv[]) {
+        int out = 0;
+        for (int i = 0; i < 10; ++i) {
+            out = i * i;
+        }
+        return out;
+    }
+
+.. code-block:: bash
+
+	(gdb) b main
+	(gdb) r
+	Starting program: /home/ubuntu/a.out
+
+	Breakpoint 1, main (argc=21845, argv=0x0) at test.cc:2
+	2       {
+	(gdb) record
+	...
+	(gdb) n
+	(gdb) p out
+	$1 = 1
+	(gdb) rn
+	(gdb) rn
+	(gdb) p out
+	$2 = 0
+
 **Define a Function**
 
 GDB provides an original way for developers to define a customized function.
