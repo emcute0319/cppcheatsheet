@@ -32,6 +32,7 @@ Modern C++ Cheat Sheet
    notes/cpp_smartpointers
    notes/cpp_rvo
    notes/cpp_algorithm
+   notes/cpp_ranges
 
 Bash Cheat Sheet
 ----------------
