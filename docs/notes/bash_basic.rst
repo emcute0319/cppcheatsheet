@@ -5,6 +5,33 @@ Bash Basic cheatsheet
 .. contents:: Table of Contents
     :backlinks: none
 
+Logger
+------
+
+.. code-block:: bash
+
+    REST='\e[0m'
+    RED='\e[1;31m'
+    GREEN='\e[1;32m'
+    YELLOW='\e[1;33m'
+    CYAN='\e[1;36m'
+
+    info() {
+      echo -e "[$(date +'%Y-%m-%dT%H:%M:%S%z')][${GREEN}info${REST}] $*"
+    }
+
+    debug() {
+      echo -e "[$(date +'%Y-%m-%dT%H:%M:%S%z')][${CYAN}debug${REST}] $*"
+    }
+
+    warn() {
+      echo -e "[$(date +'%Y-%m-%dT%H:%M:%S%z')][${YELLOW}warn${REST}] $*" >&2
+    }
+
+    err() {
+      echo -e "[$(date +'%Y-%m-%dT%H:%M:%S%z')][${RED}error${REST}] $*" >&2
+    }
+
 Check Command Exist
 -------------------
 
