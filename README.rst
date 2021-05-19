@@ -44,6 +44,12 @@ CMake
 - `Package <docs/notes/cmake_package.rst>`_
 - `External Project <docs/notes/cmake_external.rst>`_
 
+Shell
+=====
+
+- `Bash From Scratch <docs/notes/bash_basic.rst>`_
+- `Operating System <docs/notes/bash_os.rst>`_
+
 GNU Debugger
 ============
 
