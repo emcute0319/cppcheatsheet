@@ -54,3 +54,8 @@ GNU Debugger
 ============
 
 - `GDB <docs/notes/gdb_debug.rst>`_
+
+Systemd
+=======
+
+- `Systemd <docs/notes/systemd.rst>`_

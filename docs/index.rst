@@ -71,3 +71,11 @@ GNU Debugger Cheat Sheet
    :maxdepth: 1
 
    notes/gdb_debug
+
+Systemd Cheat Sheet
+-------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   notes/systemd
