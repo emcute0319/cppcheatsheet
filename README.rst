@@ -4,6 +4,9 @@ Documentation Status
 .. image:: https://travis-ci.org/crazyguitar/cppcheatsheet.svg?branch=master
      :target: https://travis-ci.org/crazyguitar/cppcheatsheet
 
+.. image:: https://img.shields.io/badge/doc-pdf-blue
+     :target: https://cppcheatsheet.readthedocs.io/_/downloads/en/latest/pdf/
+
 C Cheat Sheet
 =============
 
