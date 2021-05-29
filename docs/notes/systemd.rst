@@ -62,3 +62,49 @@ User Services
 
    # move app.service to ~/.config/systemd/user/
    $ systemctl --user start app.service
+
+Service Unit
+------------
+
+.. code-block:: bash
+
+    # app.service
+    #
+    # $ systemctl enable app.service
+    # $ systemctl start app.service
+    # $ systemctl status app.service
+
+    [Unit]
+    Description=Run an application
+
+    [Service]
+    Type=simple
+    Restart=always
+    RestartSec=30
+    WorkingDirectory=/path/to/app
+    ExecStart=/bin/bash run.sh
+
+    [Install]
+    WantedBy=multi-user.target
+
+Timer Unit
+----------
+
+.. code-block:: bash
+
+    # job.timer
+    #
+    # $ systemctl enable job.timer
+    # $ systemctl start job.timer
+    # $ systemctl list-timers
+
+    [Unit]
+    Description=Run a timer
+
+    [Timer]
+    OnBootSec=10min
+    OnUnitActiveSec=1m
+    Unit=check.service
+
+    [Install]
+    WantedBy=multi-user.target
