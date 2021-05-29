@@ -104,7 +104,22 @@ Timer Unit
     [Timer]
     OnBootSec=10min
     OnUnitActiveSec=1m
-    Unit=check.service
+    Unit=job.service
+
+    [Install]
+    WantedBy=multi-user.target
+
+.. code-block:: bash
+
+    # job.service
+
+    [Unit]
+    Description=Run a job
+
+    [Service]
+    Type=oneshot
+    WorkingDirectory=/path/to/job/folder
+    ExecStart=/bin/bash run.sh
 
     [Install]
     WantedBy=multi-user.target
