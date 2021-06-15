@@ -44,6 +44,26 @@ Check Command Exist
       echo "$cmd does not exist"
     fi
 
+Read a File Line by Line
+------------------------
+
+.. code-block:: bash
+
+   #!/bin/bash
+
+   file="file.txt"
+   while IFS= read -r l; do echo $l; done < "$file"
+
+Read a File field wise
+----------------------
+
+.. code-block:: bash
+
+   #!/bin/bash
+
+   file="/etc/passwd"
+   while IFS=: read -r n _ _ _ _ _ _; do echo $n; done < "$file"
+
 
 Parse Arguments
 ---------------
