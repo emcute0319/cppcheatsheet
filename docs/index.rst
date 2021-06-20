@@ -41,6 +41,7 @@ Bash Cheat Sheet
    :maxdepth: 1
 
    notes/bash_basic
+   notes/bash_date
    notes/bash_os
 
 System Programming Cheat Sheet
