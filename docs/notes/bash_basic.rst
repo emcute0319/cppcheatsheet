@@ -216,32 +216,13 @@ Parse Arguments
 	params=""
 	while (( "$#" )); do
 	  case "$1" in
-		-h|-\?|--help)
-		  usage
-		  exit 0
-		  ;;
-
-		-a|--argument)
-		  arg="$2"
-		  shift 2
-		  ;;
-
+		-h|-\?|--help) usage; exit 0 ;;
+		-a|--argument) args="$2"; shift 2 ;;
 		# stop parsing
-		--)
-		  shift
-		  break
-		  ;;
-
+		--) shift; break ;;
 		# unsupport options
-		-*|--*=)
-		  echo "Error: unsupported option $1" >&2
-		  exit 1
-		  ;;
-
+		-*|--*=) echo "unsupported option $1" >&2; exit 1 ;;
 		# positional arguments
-		*)
-		  params="$params $1"
-		  shift
-		  ;;
+		*) params="$params $1"; shift ;;
 	  esac
 	done
