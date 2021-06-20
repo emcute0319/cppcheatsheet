@@ -37,6 +37,20 @@ Brace Expansion
     $ echo foo.{pdf,txt,png,jpg}
     foo.pdf foo.txt foo.png foo.jpg
 
+Variable Expansion
+------------------
+
+.. code-block:: bash
+
+    $ foo1="foo1"
+    $ foo2="foo2"
+
+    # expand to "$foo1 foo2"
+    $ echo "${!foo*}"
+
+    # expand to "$foo1" "$foo2"
+    $ echo "${!foo@}"
+
 String length
 -------------
 
