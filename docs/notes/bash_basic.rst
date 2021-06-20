@@ -5,6 +5,30 @@ Bash Basic cheatsheet
 .. contents:: Table of Contents
     :backlinks: none
 
+Special Parameters
+------------------
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    foo() {
+      # expand to the position params, equal to "$1$2..."
+      echo $*
+      # expand to the position params, equal to "$1" "$2" ...
+      echo $@
+      # expand to the number of position params
+      echo $#
+      # expand to the pid
+      echo $$
+      # expand to the exit status
+      echo $?
+      # expand to the name of shell script
+      echo $0
+    }
+
+    foo "a" "b" "c"
+
 Logger
 ------
 
