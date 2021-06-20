@@ -194,20 +194,35 @@ Read a File Line by Line
 
 .. code-block:: bash
 
-   #!/bin/bash
+    #!/bin/bash
 
-   file="file.txt"
-   while IFS= read -r l; do echo $l; done < "$file"
+    file="file.txt"
+    while IFS= read -r l; do echo $l; done < "$file"
 
 Read a File field wise
 ----------------------
 
 .. code-block:: bash
 
-   #!/bin/bash
+    #!/bin/bash
 
-   file="/etc/passwd"
-   while IFS=: read -r n _ _ _ _ _ _; do echo $n; done < "$file"
+    file="/etc/passwd"
+    while IFS=: read -r n _ _ _ _ _ _; do echo $n; done < "$file"
+
+Dictionary
+----------
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    declare -A d
+    d=( ["foo"]="FOO" ["bar"]="BAR" )
+    d["baz"]="BAZ"
+
+    for k in "${!d[@]}"; do
+      echo "${d[$k]}"
+    done
 
 Append Elements to an Array
 ---------------------------
