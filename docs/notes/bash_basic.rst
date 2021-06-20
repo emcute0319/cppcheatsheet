@@ -204,6 +204,19 @@ Append Elements to an Array
 
     echo "${arr[@]}"
 
+Prompt
+------
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    read -p "Continue (y/n)? " c
+    case "$c" in
+      y|Y|yes) echo "yes" ;;
+      n|N|no) echo "no" ;;
+      *) echo "invalid" ;;
+    esac
 
 Parse Arguments
 ---------------
