@@ -29,6 +29,17 @@ Special Parameters
 
     foo "a" "b" "c"
 
+Set Positional Parameters
+-------------------------
+
+.. code-block:: bash
+
+    $ set -- a b c
+    $ echo $@
+    a b c
+    $ echo "$1" "$2" "$3"
+    a b c
+
 Brace Expansion
 ---------------
 
