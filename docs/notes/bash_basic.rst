@@ -5,6 +5,15 @@ Bash Basic cheatsheet
 .. contents:: Table of Contents
     :backlinks: none
 
+:
+-
+
+`true` was instead simply aliased to :, and false like `let 0`.
+
+.. code-block:: bash
+
+    $ while :; do sleep 1; date; done
+
 Special Parameters
 ------------------
 
