@@ -189,6 +189,21 @@ Read a File field wise
    file="/etc/passwd"
    while IFS=: read -r n _ _ _ _ _ _; do echo $n; done < "$file"
 
+Append Elements to an Array
+---------------------------
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    arr=()
+
+    for i in "a b c d e"; do
+      arr+=($i)
+    done
+
+    echo "${arr[@]}"
+
 
 Parse Arguments
 ---------------
