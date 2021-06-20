@@ -37,6 +37,14 @@ Brace Expansion
     $ echo foo.{pdf,txt,png,jpg}
     foo.pdf foo.txt foo.png foo.jpg
 
+String length
+-------------
+
+.. code-block:: bash
+
+    echo ${#foo}
+    7
+
 String Slice
 ------------
 
