@@ -112,6 +112,24 @@ Other examples
     echo ${disk%%[0-9]*}
     /dev/sda
 
+Here Documents
+--------------
+
+.. code-block:: bash
+
+    cat <<EOF
+        Hello Document
+    EOF
+
+Here Strings
+------------
+
+.. code-block:: bash
+
+    # CMD <<< $w, where $w is expanded to the stdin of CMD
+
+    bc <<< "1 + 2 * 3"
+
 Logger
 ------
 
