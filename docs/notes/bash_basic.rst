@@ -57,6 +57,39 @@ String Slice
     $ echo ${foo:7:3}
     789
 
+Delete Match String
+-------------------
+
+.. code-block:: bash
+
+    $ foo="123,456,789"
+    # ${p##substring} delete longest match of substring from front
+    $ echo ${foo##*,}
+    789
+
+    # ${p#substring} delete shortest match of substring from front
+    echo ${foo#*,}
+    456,789
+
+    # ${p%%substring} delete longest match of substring from back
+    $ echo ${foo%%,*}
+    123
+
+    $ echo ${foo%,*}
+    123,456
+
+Other examples
+
+.. code-block:: bash
+
+    disk="/dev/sda"
+    $ echo ${disk##*/}
+    sda
+
+    $ disk="/dev/sda3"
+    echo ${disk%%[0-9]*}
+    /dev/sda
+
 Logger
 ------
 
