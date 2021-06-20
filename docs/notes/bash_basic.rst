@@ -29,6 +29,34 @@ Special Parameters
 
     foo "a" "b" "c"
 
+Brace Expansion
+---------------
+
+.. code-block:: bash
+
+    $ echo foo.{pdf,txt,png,jpg}
+    foo.pdf foo.txt foo.png foo.jpg
+
+String Slice
+------------
+
+.. code-block:: bash
+
+    $ foo="01234567890abcdefg"
+
+    # ${param:offset}
+    $ echo ${foo:7}
+    7890abcdefg
+
+    $ echo ${foo: -7}
+    abcdefg
+    $ echo ${foo: -7:2}
+    ab
+
+    # ${param:offset:length}
+    $ echo ${foo:7:3}
+    789
+
 Logger
 ------
 
