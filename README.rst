@@ -52,6 +52,7 @@ Shell
 
 - `Bash From Scratch <docs/notes/bash_basic.rst>`_
 - `Date <docs/notes/bash_date.rst>`_
+- `Grep <docs/notes/bash_grep.rst>`_
 - `Operating System <docs/notes/bash_os.rst>`_
 
 GNU Debugger
