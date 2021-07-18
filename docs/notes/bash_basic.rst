@@ -224,6 +224,31 @@ Dictionary
       echo "${d[$k]}"
     done
 
+Check if a Key Exists in a Dictionary
+-------------------------------------
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    declare -A d
+    d["foo"]="FOO"
+    if [ -v "d[foo]" ]; then
+      echo "foo exists in d"
+    else
+      echo "foo does exists in d"
+    fi
+
+Remove a Key-Value from a Dictionary
+------------------------------------
+
+.. code-block:: bash
+
+    $ declare -A d
+    $ d["foo"]="FOO"
+    $ unset d["foo"]
+
+
 Append Elements to an Array
 ---------------------------
 
