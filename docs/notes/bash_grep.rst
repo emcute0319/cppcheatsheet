@@ -65,3 +65,17 @@ Therefore, a programmer needs to use ``sort`` to categorizes lines before
     b
     a
     c
+
+``sort`` lines
+--------------
+
+.. code-block:: bash
+
+    # sort by lines
+    $ echo "b a c d" | tr " " "\n" | sort
+
+    # sort by lines reversely
+    $ echo "b a c d" | tr " " "\n" | sort -r
+
+    # sort by a field
+    $ echo "b a b c d" | tr " " "\n" | sort | uniq -c | sort -k1
