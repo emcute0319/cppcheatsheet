@@ -51,8 +51,8 @@ Shell
 =====
 
 - `Bash From Scratch <docs/notes/bash_basic.rst>`_
-- `Date <docs/notes/bash_date.rst>`_
-- `Grep <docs/notes/bash_grep.rst>`_
+- `Bash Date <docs/notes/bash_date.rst>`_
+- `Bash Regular Expression <docs/notes/bash_re.rst>`_
 - `Operating System <docs/notes/bash_os.rst>`_
 
 GNU Debugger
