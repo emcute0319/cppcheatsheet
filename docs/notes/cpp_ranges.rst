@@ -222,3 +222,24 @@ range-v3 - zip
         std::cout << a << " " << b << "\n";
       }
     }
+
+range-v3 - generate
+-------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/view/generate.hpp>
+    #include <range/v3/view/take.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      auto fib = ranges::views::generate([i=0, j=1]() mutable {
+        int tmp = i; i+= j; j = i; return tmp;
+      });
+
+      auto v = fib | ranges::views::take(5);
+      std::cout << ranges::views::all(v) << std::endl;
+      // [0,1,2,4,8]
+    }
