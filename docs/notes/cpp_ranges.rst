@@ -174,6 +174,25 @@ range-v3 - split
       // [hello,c++]
     }
 
+range-v3 - tokenize
+-------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    #include <regex>
+    #include <range/v3/view/tokenize.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      const std::string s = "hello cpp";
+      const auto p = std::regex{"[\\w]+"};
+      auto r = s | ranges::views::tokenize(p);
+      std::cout << ranges::views::all(r) << "\n";
+    }
+
 range-v3 - join
 ---------------
 
@@ -211,6 +230,59 @@ range-v3 - generate
       auto v = fib | ranges::views::take(5);
       std::cout << ranges::views::all(v) << std::endl;
       // [0,1,2,4,8]
+    }
+
+range-v3 - cycle
+----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/view/cycle.hpp>
+    #include <range/v3/view/take.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3};
+      auto r = v | ranges::views::cycle | ranges::views::take(6);
+      std::cout << ranges::views::all(r) << "\n";
+    }
+
+range-v3 - keys
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <unordered_map>
+    #include <range/v3/view/map.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::unordered_map<int, int> m{{9, 5}, {2, 7}};
+      auto keys = m | ranges::views::keys;
+      for (auto &&k : keys) {
+        std::cout << k << "\n";
+      }
+    }
+
+range-v3 - values
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <unordered_map>
+    #include <range/v3/view/map.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::unordered_map<int, int> m{{9, 5}, {2, 7}};
+      auto values = m | ranges::views::values;
+      for (auto &&v : values) {
+        std::cout << v << "\n";
+      }
     }
 
 c++20 range - iota
