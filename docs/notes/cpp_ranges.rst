@@ -5,111 +5,6 @@ Ranges
 .. contents:: Table of Contents
     :backlinks: none
 
-Generate a Sequence
--------------------
-
-.. code-block:: cpp
-
-    // g++-10 -Wall -Werror -O3 -g --std=c++20 a.cc
-
-    #include <iostream>
-    #include <ranges>
-
-    int main(int argc, char *argv[])
-    {
-      using namespace std::ranges;
-
-      for (auto i : views::iota(1) | views::take(5)) {
-        std::cout << i << std::endl;
-      }
-    }
-
-Transform
----------
-
-.. code-block:: cpp
-
-    #include <iostream>
-    #include <ranges>
-    #include <vector>
-
-    int main(int argc, char *argv[])
-    {
-      using namespace std::ranges;
-
-      std::vector v{1, 2, 3};
-      auto adaptor = views::transform([](auto &e) { return e * e; });
-      for (auto i : v | adaptor) {
-        std::cout << i << std::endl;
-      }
-    }
-
-Filter
-------
-
-.. code-block:: cpp
-
-    #include <iostream>
-    #include <ranges>
-    #include <vector>
-
-    int main(int argc, char *argv[])
-    {
-      using namespace std::ranges;
-
-      std::vector v{1, 2, 3};
-      auto adaptor = views::filter([](auto &e) { return e % 2 == 0; });
-
-      for (auto i : v | adaptor) {
-        std::cout << i << std::endl;
-      }
-    }
-
-
-Split
------
-
-.. code-block:: cpp
-
-    #include <iostream>
-    #include <ranges>
-    #include <string>
-
-    int main(int argc, char *argv[])
-    {
-      using namespace std::ranges;
-      std::string s{"This is a string."};
-
-      for (auto v : s | views::split(' ')) {
-        std::string w;
-        for (auto &c : v) {
-          w += c;
-        }
-        std::cout << w << std::endl;
-      }
-    }
-
-Join
-----
-
-.. code-block:: cpp
-
-    #include <iostream>
-    #include <ranges>
-    #include <vector>
-    #include <string>
-
-    int main(int argc, char *argv[])
-    {
-      using namespace std::ranges;
-      std::vector<std::string> v{"This", " ", "is", " ", "a", " ", "string."};
-      std::string s;
-      for (auto &c : v | views::join) {
-        s += c;
-      }
-      std::cout << s << std::endl;
-    }
-
 range-v3 - debug a vector
 -------------------------
 
@@ -167,6 +62,25 @@ range-v3 - enumerate
       }
     }
 
+range-v3 - concat vectors
+-------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/view/concat.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> x{1, 5};
+      std::vector<int> y{2, 8};
+      std::vector<int> z{0, 3};
+      auto r = ranges::views::concat(x, y, z);
+      std::cout << ranges::views::all(r) << "\n";
+      // [1,5,2,8,0,3]
+    }
+
 range-v3 - sort
 ---------------
 
@@ -183,6 +97,24 @@ range-v3 - sort
       std::cout << ranges::views::all(v) << "\n";
       // [1,1,1,2,3,4,5]
     }
+
+range-v3 - reverse sort
+-----------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/action/sort.hpp>
+    #include <range/v3/action/reverse.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 5, 3, 2, 6};
+      v |= ranges::actions::sort | ranges::actions::reverse;
+      std::cout << ranges::views::all(v) << "\n";
+    }
+
 
 range-v3 - sort & uniqe
 -----------------------
@@ -223,6 +155,43 @@ range-v3 - zip
       }
     }
 
+range-v3 - split
+----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    #include <range/v3/view/c_str.hpp>
+    #include <range/v3/action/split.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::string s = "hello c++";
+      auto v = ranges::actions::split(s, ranges::views::c_str(" "));
+      std::cout << ranges::views::all(v) << "\n";
+      // [hello,c++]
+    }
+
+range-v3 - join
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    #include <range/v3/core.hpp>
+    #include <range/v3/view/join.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<std::string> v{"hello", "c++"};
+      auto s = v | ranges::views::join(' ') | ranges::to<std::string>();
+      std::cout << s << "\n";
+    }
+
 range-v3 - generate
 -------------------
 
@@ -242,4 +211,109 @@ range-v3 - generate
       auto v = fib | ranges::views::take(5);
       std::cout << ranges::views::all(v) << std::endl;
       // [0,1,2,4,8]
+    }
+
+c++20 range - iota
+------------------
+
+.. code-block:: cpp
+
+    // g++-10 -Wall -Werror -O3 -g --std=c++20 a.cc
+
+    #include <iostream>
+    #include <ranges>
+
+    int main(int argc, char *argv[])
+    {
+      using namespace std::ranges;
+
+      for (auto i : views::iota(1) | views::take(5)) {
+        std::cout << i << std::endl;
+      }
+    }
+
+c++20 range - transform
+-----------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <ranges>
+    #include <vector>
+
+    int main(int argc, char *argv[])
+    {
+      using namespace std::ranges;
+
+      std::vector v{1, 2, 3};
+      auto adaptor = views::transform([](auto &e) { return e * e; });
+      for (auto i : v | adaptor) {
+        std::cout << i << std::endl;
+      }
+    }
+
+c++20 range - filter
+--------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <ranges>
+    #include <vector>
+
+    int main(int argc, char *argv[])
+    {
+      using namespace std::ranges;
+
+      std::vector v{1, 2, 3};
+      auto adaptor = views::filter([](auto &e) { return e % 2 == 0; });
+
+      for (auto i : v | adaptor) {
+        std::cout << i << std::endl;
+      }
+    }
+
+
+c++20 range - split
+-------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <ranges>
+    #include <string>
+
+    int main(int argc, char *argv[])
+    {
+      using namespace std::ranges;
+      std::string s{"This is a string."};
+
+      for (auto v : s | views::split(' ')) {
+        std::string w;
+        for (auto &c : v) {
+          w += c;
+        }
+        std::cout << w << std::endl;
+      }
+    }
+
+c++20 range - join
+------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <ranges>
+    #include <vector>
+    #include <string>
+
+    int main(int argc, char *argv[])
+    {
+      using namespace std::ranges;
+      std::vector<std::string> v{"This", " ", "is", " ", "a", " ", "string."};
+      std::string s;
+      for (auto &c : v | views::join) {
+        s += c;
+      }
+      std::cout << s << std::endl;
     }
