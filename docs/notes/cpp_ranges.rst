@@ -81,6 +81,42 @@ range-v3 - concat vectors
       // [1,5,2,8,0,3]
     }
 
+
+range-v3 - accumulate (sum)
+---------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/numeric/accumulate.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3, 4, 5};
+      const auto r = ranges::accumulate(v, 0);
+      std::cout << r << "\n";
+      // 15
+    }
+
+range-v3 - accumulate (reduce)
+------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/numeric/accumulate.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3, 4, 5};
+      const auto r = ranges::accumulate(v, 1, [](auto &a, auto &b){
+        return a + b;
+      });
+      std::cout << r << "\n";
+      // 120
+    }
+
 range-v3 - sort
 ---------------
 
@@ -230,6 +266,22 @@ range-v3 - generate
       auto v = fib | ranges::views::take(5);
       std::cout << ranges::views::all(v) << std::endl;
       // [0,1,2,4,8]
+    }
+
+range-v3 - drop
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/action/drop.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3, 4, 5, 6};
+      v |= ranges::actions::drop(3);
+      std::cout << ranges::views::all(v) << "\n";
     }
 
 range-v3 - cycle
