@@ -81,7 +81,6 @@ range-v3 - concat vectors
       // [1,5,2,8,0,3]
     }
 
-
 range-v3 - accumulate (sum)
 ---------------------------
 
@@ -268,6 +267,39 @@ range-v3 - generate
       // [0,1,2,4,8]
     }
 
+range-v3 - take
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <range/v3/view/iota.hpp>
+    #include <range/v3/view/take.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      auto v = ranges::views::iota(5, 10) | ranges::views::take(3);
+      std::cout << ranges::views::all(v) << "\n";
+      // [5,6,7]
+    }
+
+range-v3 - take_while
+---------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <range/v3/view/iota.hpp>
+    #include <range/v3/view/take_while.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      auto v = ranges::views::iota(5, 10)
+          | ranges::views::take_while([](auto &&x) { return x < 8; });
+      std::cout << ranges::views::all(v) << "\n";
+    }
+
+
 range-v3 - drop
 ---------------
 
@@ -281,6 +313,22 @@ range-v3 - drop
     int main(int argc, char *argv[]) {
       std::vector<int> v{1, 2, 3, 4, 5, 6};
       v |= ranges::actions::drop(3);
+      std::cout << ranges::views::all(v) << "\n";
+    }
+
+range-v3 - drop_while
+---------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <range/v3/view/iota.hpp>
+    #include <range/v3/view/drop_while.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      auto v = ranges::views::iota(5, 10)
+          | ranges::views::drop_while([](auto &&x) { return x < 8; });
       std::cout << ranges::views::all(v) << "\n";
     }
 
