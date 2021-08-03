@@ -366,6 +366,25 @@ range-v3 - filter
       // [4,5]
     }
 
+range-v3 - group_by
+-------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <range/v3/view/group_by.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::string s = "aaaabbbccd";
+      auto r = s | ranges::views::group_by([](auto &&x, auto &&y){
+        return x == y;
+      });
+      std::cout << ranges::views::all(r) << "\n";
+      // [[a,a,a,a],[b,b,b],[c,c],[d]]
+    }
+
 range-v3 - cycle
 ----------------
 
