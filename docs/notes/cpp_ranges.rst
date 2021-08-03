@@ -37,6 +37,12 @@ range-v3 - all_of
       // 1
     }
 
+.. code-block:: python
+
+    >>> a = [0, 2, 4]
+    >>> all(x % 2 == 0 for x in a)
+    True
+
 range-v3 - any_of
 -----------------
 
@@ -49,7 +55,14 @@ range-v3 - any_of
     int main(int argc, char *argv[]) {
       std::vector<int> v{0, 1, 2};
       std::cout << ranges::any_of(v, [](auto &&x) { return !(x % 2); });
+      // 1
     }
+
+.. code-block:: python
+
+    >>> a = [0, 1 ,2]
+    >>> any(x % 2 == 0 for x in a)
+    True
 
 range-v3 - slice
 ----------------
@@ -75,6 +88,12 @@ range-v3 - slice
       }
     }
 
+.. code-block:: python
+
+    >>> a = [5,4,3,2,1]
+    >>> print(a[1:3])
+    [4, 3]
+
 range-v3 - enumerate
 --------------------
 
@@ -90,6 +109,19 @@ range-v3 - enumerate
         std::cout << i << ", " << e << "\n";
       }
     }
+
+.. code-block:: python
+
+    >>> a = [5,4,3,2,1,1]
+    >>> for i, e in enumerate(a):
+    ...     print(i, e)
+    ...
+    0 5
+    1 4
+    2 3
+    3 2
+    4 1
+    5 1
 
 range-v3 - concat vectors
 -------------------------
@@ -110,6 +142,14 @@ range-v3 - concat vectors
       // [1,5,2,8,0,3]
     }
 
+.. code-block:: python
+
+    >>> a = [1, 5]
+    >>> b = [2, 8]
+    >>> c = [0, 3]
+    >>> print(a + b + c)
+    [1, 5, 2, 8, 0, 3]
+
 range-v3 - accumulate (sum)
 ---------------------------
 
@@ -125,6 +165,12 @@ range-v3 - accumulate (sum)
       std::cout << r << "\n";
       // 15
     }
+
+.. code-block:: python
+
+    >>> a = [1, 2, 3, 4, 5]
+    >>> sum(a)
+    15
 
 range-v3 - accumulate (reduce)
 ------------------------------
@@ -145,6 +191,12 @@ range-v3 - accumulate (reduce)
       // 120
     }
 
+.. code-block:: python
+
+    >>> from functools import reduce
+    >>> reduce(lambda x, y: x * y, [1, 2, 3, 4, 5], 1)
+    120
+
 range-v3 - sort
 ---------------
 
@@ -161,6 +213,13 @@ range-v3 - sort
       std::cout << ranges::views::all(v) << "\n";
       // [1,1,1,2,3,4,5]
     }
+
+.. code-block:: python
+
+    >>> a = [5,4,3,2,1,1,1]
+    >>> a.sort()
+    >>> a
+    [1, 1, 1, 2, 3, 4, 5]
 
 range-v3 - reverse sort
 -----------------------
@@ -179,6 +238,12 @@ range-v3 - reverse sort
       std::cout << ranges::views::all(v) << "\n";
     }
 
+.. code-block:: python
+
+    >>> a = [1, 5, 3, 2, 6]
+    >>> a.sort(reverse=True)
+    >>> a
+    [6, 5, 3, 2, 1]
 
 range-v3 - sort & uniqe
 -----------------------
@@ -200,6 +265,14 @@ range-v3 - sort & uniqe
       // [1,2,3,4,5]
     }
 
+.. code-block:: python
+
+    >>> a = [5, 4, 3, 2, 1, 1, 1]
+    >>> a = list({x for x in a})
+    >>> a.sort()
+    >>> a
+    [1, 2, 3, 4, 5]
+
 range-v3 - zip
 --------------
 
@@ -219,6 +292,18 @@ range-v3 - zip
       }
     }
 
+.. code-block:: python
+
+    >>> a = [5,4,3,2]
+    >>> b = [1,2,3,4]
+    >>> for x, y in zip(a, b):
+    ...     print(x, y)
+    ...
+    5 1
+    4 2
+    3 3
+    2 4
+
 range-v3 - split
 ----------------
 
@@ -237,6 +322,12 @@ range-v3 - split
       std::cout << ranges::views::all(v) << "\n";
       // [hello,c++]
     }
+
+.. code-block:: python
+
+    >>> s = "hello python"
+    >>> s.split(" ")
+    ['hello', 'python']
 
 range-v3 - tokenize
 -------------------
