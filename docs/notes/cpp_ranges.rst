@@ -473,6 +473,23 @@ range-v3 - cartesian_product
       // a1 a2 b1 b2
     }
 
+range-v3 - permutation
+----------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/algorithm/permutation.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3};
+      do {
+        std::cout << ranges::views::all(v) << "\n";
+      } while (ranges::next_permutation(v));
+    }
+
 c++20 range - iota
 ------------------
 
