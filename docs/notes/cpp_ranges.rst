@@ -22,6 +22,35 @@ range-v3 - debug a vector
       // [5,4,3,2,1,1,1]
     }
 
+range-v3 - all_of
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/algorithm/all_of.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{0, 2, 4};
+      std::cout << ranges::all_of(v, [](auto &&x) { return !(x % 2); });
+      // 1
+    }
+
+range-v3 - any_of
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/algorithm/any_of.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{0, 1, 2};
+      std::cout << ranges::any_of(v, [](auto &&x) { return !(x % 2); });
+    }
+
 range-v3 - slice
 ----------------
 
