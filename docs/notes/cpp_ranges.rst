@@ -385,6 +385,26 @@ range-v3 - values
       }
     }
 
+range-v3 - cartesian_product
+----------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    #include <range/v3/view/cartesian_product.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::string x = "ab";
+      std::vector<int> y{1, 2};
+      auto r = ranges::views::cartesian_product(x, y);
+      for (auto &&[a, b] : r) {
+        std::cout << a << b << "\n";
+      }
+      // a1 a2 b1 b2
+    }
+
 c++20 range - iota
 ------------------
 
