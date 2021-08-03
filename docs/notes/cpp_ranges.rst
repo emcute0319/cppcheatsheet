@@ -246,6 +246,21 @@ range-v3 - join
       std::cout << s << "\n";
     }
 
+range-v3 - iota
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <range/v3/view/iota.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      auto seq = ranges::views::iota(5, 8);
+      std::cout << ranges::views::all(seq) << "\n";
+      // [5,6,7]
+    }
+
 range-v3 - generate
 -------------------
 
