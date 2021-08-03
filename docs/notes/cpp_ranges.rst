@@ -332,6 +332,40 @@ range-v3 - drop_while
       std::cout << ranges::views::all(v) << "\n";
     }
 
+range-v3 - transform (map)
+--------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/view/transform.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3, 4, 5};
+      auto r = v | ranges::views::transform([](auto &&x){ return x*x; });
+      std::cout << ranges::views::all(r) << "\n";
+      // [1,4,9,16,25]
+    }
+
+range-v3 - filter
+-----------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <range/v3/view/filter.hpp>
+    #include <range/v3/view/all.hpp>
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{1, 2, 3, 4, 5};
+      auto r = v | ranges::views::filter([](auto &&x){ return x > 3; });
+      std::cout << ranges::views::all(r) << "\n";
+      // [4,5]
+    }
+
 range-v3 - cycle
 ----------------
 
