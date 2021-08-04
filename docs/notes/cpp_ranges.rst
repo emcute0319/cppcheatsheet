@@ -348,6 +348,13 @@ range-v3 - tokenize
       std::cout << ranges::views::all(r) << "\n";
     }
 
+.. code-block:: python
+
+    >>> import re
+    >>> s = "hello python"
+    >>> [m.group() for m in re.finditer(r"\w+", s)]
+    ['hello', 'python']
+
 range-v3 - join
 ---------------
 
@@ -366,6 +373,12 @@ range-v3 - join
       std::cout << s << "\n";
     }
 
+.. code-block:: python
+
+    >>> v = ['hello', 'python']
+    >>> ' '.join(v)
+    'hello python'
+
 range-v3 - iota
 ---------------
 
@@ -380,6 +393,11 @@ range-v3 - iota
       std::cout << ranges::views::all(seq) << "\n";
       // [5,6,7]
     }
+
+.. code-block:: python
+
+    >>> [x for x in range(5, 8)]
+    [5, 6, 7]
 
 range-v3 - generate
 -------------------
@@ -401,6 +419,17 @@ range-v3 - generate
       std::cout << ranges::views::all(v) << std::endl;
       // [0,1,2,4,8]
     }
+
+.. code-block:: python
+
+    >>> def fib(n):
+    ...     a, b = 0, 1
+    ...     for _ in range(n):
+    ...         yield a
+    ...         a, b = b, a + b
+    ...
+    >>> [x for x in fib(5)]
+    [0, 1, 1, 2, 3]
 
 range-v3 - take
 ---------------
