@@ -52,6 +52,7 @@ Shell
 
 - `Bash From Scratch <docs/notes/bash_basic.rst>`_
 - `Bash Date <docs/notes/bash_date.rst>`_
+- `Bash Find <docs/notes/bash_find.rst>`_
 - `Bash Regular Expression <docs/notes/bash_re.rst>`_
 - `Operating System <docs/notes/bash_os.rst>`_
 

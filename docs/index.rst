@@ -42,6 +42,7 @@ Bash Cheat Sheet
 
    notes/bash_basic
    notes/bash_date
+   notes/bash_find
    notes/bash_re
    notes/bash_os
 
