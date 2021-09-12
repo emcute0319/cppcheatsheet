@@ -17,25 +17,25 @@ Instantiate a Template
 
     template <typename T, typename U>
     struct Foo {
-        Foo(T t, U u) : t_(t), u_(u) {}
+      Foo(T t, U u) : t_(t), u_(u) {}
 
-        T t_;
-        U u_;
+      T t_;
+      U u_;
     };
 
     template <typename F, typename T, typename U>
     struct Bar {
-        Bar(T t, U u) : f_(t, u) {}
+      Bar(T t, U u) : f_(t, u) {}
 
-        F f_;
+      F f_;
     };
 
     // instantiate template Foo
     template class Foo<A, B>;
 
     int main() {
-        Bar<Foo<A, B>, A, B>(A(), B());
-        return 0;
+      Bar<Foo<A, B>, A, B>(A(), B());
+      return 0;
     }
 
 Template Specialization
@@ -49,15 +49,15 @@ Template Specialization
     class Base
     {
     private:
-        T m_a;
-        U m_b;
+      T m_a;
+      U m_b;
 
     public:
 
-        Base(T a, U b) : m_a(a), m_b(b) {};
+      Base(T a, U b) : m_a(a), m_b(b) {};
 
-        T foo() { return m_a; }
-        U bar() { return m_b; }
+      T foo() { return m_a; }
+      U bar() { return m_b; }
     };
 
     // partial specialization
@@ -65,12 +65,12 @@ Template Specialization
     class Base <T, int>
     {
     private:
-        T m_a;
-        int m_b;
+      T m_a;
+      int m_b;
     public:
-        Base(T a, int b) : m_a(a), m_b(b) {}
-        T foo() { return m_a; }
-        int bar() { return m_b; }
+      Base(T a, int b) : m_a(a), m_b(b) {}
+      T foo() { return m_a; }
+      int bar() { return m_b; }
     };
 
     // full specialization
@@ -78,24 +78,24 @@ Template Specialization
     class Base <double, double>
     {
     private:
-        double d_a;
-        double d_b;
+      double d_a;
+      double d_b;
     public:
-        Base(double a, double b) : d_a(a), d_b(b) {}
-        double foo() { return d_a; }
-        double bar() { return d_b; }
+      Base(double a, double b) : d_a(a), d_b(b) {}
+      double foo() { return d_a; }
+      double bar() { return d_b; }
     };
 
 
     int main (int argc, char *argv[])
     {
-        Base<float, int> foo(3.33, 1);
-        Base<double, double> bar(55.66, 95.27);
-        std::cout << foo.foo() << std::endl;
-        std::cout << foo.bar() << std::endl;
-        std::cout << bar.foo() << std::endl;
-        std::cout << bar.bar() << std::endl;
-        return 0;
+      Base<float, int> foo(3.33, 1);
+      Base<double, double> bar(55.66, 95.27);
+      std::cout << foo.foo() << std::endl;
+      std::cout << foo.bar() << std::endl;
+      std::cout << bar.foo() << std::endl;
+      std::cout << bar.bar() << std::endl;
+      return 0;
     }
 
 Class Template
@@ -109,37 +109,37 @@ Class Template
     class Area
     {
     protected:
-        T w;
-        T h;
+      T w;
+      T h;
     public:
-        Area(T a, T b) : w(a), h(b) {}
-        T get() { return w * h; }
+      Area(T a, T b) : w(a), h(b) {}
+      T get() { return w * h; }
     };
 
     class Rectangle : public Area<int>
     {
     public:
-        Rectangle(int a, int b) : Area<int>(a, b) {}
+      Rectangle(int a, int b) : Area<int>(a, b) {}
     };
 
     template <typename T>
     class GenericRectangle : public Area<T>
     {
     public:
-        GenericRectangle(T a, T b) : Area<T>(a, b){}
+      GenericRectangle(T a, T b) : Area<T>(a, b){}
     };
 
 
     int main (int argc, char *argv[])
     {
-        Rectangle r(2, 5);
-        GenericRectangle<double> g1(2.5, 3.);
-        GenericRectangle<int> g2(2, 3);
+      Rectangle r(2, 5);
+      GenericRectangle<double> g1(2.5, 3.);
+      GenericRectangle<int> g2(2, 3);
 
-        std::cout << r.get() << std::endl;
-        std::cout << g1.get() << std::endl;
-        std::cout << g2.get() << std::endl;
-        return 0;
+      std::cout << r.get() << std::endl;
+      std::cout << g1.get() << std::endl;
+      std::cout << g2.get() << std::endl;
+      return 0;
     }
 
 Variadic Template (Parameter Pack)
@@ -154,27 +154,27 @@ Variadic Template (Parameter Pack)
     template <typename T>
     class Vector {
     protected:
-        std::vector<T> v;
+      std::vector<T> v;
     public:
 
-        template<typename ...Args>
-        Vector(Args&&... args) {
-            (v.emplace_back(std::forward<Args>(args)), ...);
-        }
+      template<typename ...Args>
+      Vector(Args&&... args) {
+        (v.emplace_back(std::forward<Args>(args)), ...);
+      }
 
-        using iterator = typename std::vector<T>::iterator;
-        iterator begin() noexcept { return v.begin(); }
-        iterator end() noexcept { return v.end(); }
+      using iterator = typename std::vector<T>::iterator;
+      iterator begin() noexcept { return v.begin(); }
+      iterator end() noexcept { return v.end(); }
     };
 
 
     int main(int argc, char *argv[]) {
 
-        Vector<int> v{1,2,3};
-        for (const auto &x : v)
-        {
-            std::cout << x << "\n";
-        }
+      Vector<int> v{1,2,3};
+      for (const auto &x : v)
+      {
+        std::cout << x << "\n";
+      }
     }
 
 Fold expressions
@@ -207,26 +207,26 @@ Limit a Template Types
     #include <type_traits>
 
     template<typename S,
-        typename = typename std::enable_if<
-            std::is_same<
-                std::string,
-                typename std::decay<S>::type
-            >::value
-        >::type
+      typename = typename std::enable_if<
+        std::is_same<
+          std::string,
+          typename std::decay<S>::type
+        >::value
+      >::type
     >
     void Foo(S s) {
-        std::cout << s << "\n";
+      std::cout << s << "\n";
     }
 
 
     int main(int argc, char *argv[]) {
-        std::string s1 = "Foo";
-        const std::string s2 = "Bar";
-        Foo(s1);
-        Foo(s2);
+      std::string s1 = "Foo";
+      const std::string s2 = "Bar";
+      Foo(s1);
+      Foo(s2);
 
-        // Foo(123);    compile error
-        // Foo("Baz");  compile error
+      // Foo(123);    compile error
+      // Foo("Baz");  compile error
     }
 
 Specialize Types
@@ -240,24 +240,21 @@ Specialize Types
 
     template<typename S>
     void Foo(S s) {
-        if (std::is_integral<S>::value) {
-            std::cout << "do a task for integer..." << "\n";
-            return;
-        }
-        if (std::is_same<
-                std::string,
-                typename std::decay<S>::type
-            >::value
-        ) {
-            std::cout << "do a task for string..." << "\n";
-            return;
-        }
+      if (std::is_integral<S>::value) {
+        std::cout << "do a task for integer..." << "\n";
+        return;
+      }
+      if (std::is_same<std::string, typename std::decay<s>::type>::value)
+      {
+        std::cout << "do a task for string..." << "\n";
+        return;
+      }
     }
 
     int main(int argc, char *argv[]) {
-        std::string s1 = "Foo";
-        Foo(s1);
-        Foo(123);
+      std::string s1 = "Foo";
+      Foo(s1);
+      Foo(123);
     }
 
 Template Specialization approach
@@ -273,18 +270,18 @@ Template Specialization approach
 
     template <>
     void Foo<int>(int s) {
-        std::cout << "do a task for integer..." << "\n";
+      std::cout << "do a task for integer..." << "\n";
     }
     template<>
     void Foo<std::string>(std::string s) {
-        std::cout << "do a task for string..." << "\n";
+      std::cout << "do a task for string..." << "\n";
     }
 
 
     int main(int argc, char *argv[]) {
-        std::string s1 = "Foo";
-        Foo(s1);
-        Foo(123);
+      std::string s1 = "Foo";
+      Foo(s1);
+      Foo(123);
     }
 
 
@@ -301,42 +298,42 @@ Curiously recurring template pattern
     class Base
     {
     public:
-        void interface() {
-            static_cast<D *>(this)->implement();
-        }
+      void interface() {
+        static_cast<D *>(this)->implement();
+      }
 
-        static void static_interface() {
-            D::static_interface();
-        }
+      static void static_interface() {
+        D::static_interface();
+      }
 
-        void implement() {
-            std::cout << "Base" << std::endl;
-        }
+      void implement() {
+        std::cout << "Base" << std::endl;
+      }
     };
 
     class DerivedFoo : public Base<DerivedFoo>
     {
     public:
-        void implement() {
-            std::cout << "Foo" << std::endl;
-        }
-        static void static_interface() {
-            std::cout << "Static Foo" << std::endl;
-        }
+      void implement() {
+        std::cout << "Foo" << std::endl;
+      }
+      static void static_interface() {
+        std::cout << "Static Foo" << std::endl;
+      }
     };
 
     class DerivedBar : public Base<DerivedBar> {};
 
     int main (int argc, char *argv[])
     {
-        DerivedFoo foo;
-        DerivedBar bar;
+      DerivedFoo foo;
+      DerivedBar bar;
 
-        foo.interface();
-        foo.static_interface();
-        bar.interface();
+      foo.interface();
+      foo.static_interface();
+      bar.interface();
 
-        return 0;
+      return 0;
     }
 
 Parametric Expressions
@@ -349,12 +346,12 @@ Parametric Expressions
     // g++ -std=c++17 -fconcepts -g -O3 a.cpp
 
     decltype(auto) min(auto&& lhs, auto&& rhs) {
-        return lhs < rhs ? lhs : rhs;
+      return lhs < rhs ? lhs : rhs;
     }
 
     int main(int argc, char *argv[]) {
-        std::cout << min(1, 2) << "\n";
-        std::cout << min(3.14, 2.718) << "\n";
+      std::cout << min(1, 2) << "\n";
+      std::cout << min(3.14, 2.718) << "\n";
     }
 
 .. code-block:: cpp
@@ -363,12 +360,12 @@ Parametric Expressions
 
     template<typename T>
     decltype(auto) min(T&& lhs,T&& rhs) {
-        return lhs < rhs ? lhs : rhs;
+      return lhs < rhs ? lhs : rhs;
     }
 
     int main(int argc, char *argv[]) {
-        std::cout << min(1, 2) << "\n";
-        std::cout << min(3.14, 2.718) << "\n";
+      std::cout << min(1, 2) << "\n";
+      std::cout << min(3.14, 2.718) << "\n";
     }
 
 .. code-block:: cpp
@@ -376,12 +373,12 @@ Parametric Expressions
     #include <iostream>
 
     auto min = [](auto&& lhs, auto&& rhs) {
-        return lhs < rhs ? lhs : rhs;
+      return lhs < rhs ? lhs : rhs;
     };
 
     int main(int argc, char *argv[]) {
-        std::cout << min(1, 2) << "\n";
-        std::cout << min(3.14, 2.718) << "\n";
+      std::cout << min(1, 2) << "\n";
+      std::cout << min(3.14, 2.718) << "\n";
     }
 
 Reference
@@ -389,3 +386,23 @@ Reference
 _ `Parametric Expressions`_
 
 .. _Parametric Expressions: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1221r0.html
+
+Template Template Parameters
+----------------------------
+
+.. code-block:: cpp
+
+    #include <vector>
+    #include <deque>
+
+    template <template<class, class> class V, class T, class A>
+    void f(V<T, A> &v) {
+      v.pop_back();
+    }
+
+    int main(int argc, char *argv[]) {
+      std::vector<int> v{0};
+      std::deque<int> q{1};
+      f<std::vector, int>(v);
+      f<std::deque, int>(q);
+    }
