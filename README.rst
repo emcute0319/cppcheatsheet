@@ -20,6 +20,7 @@ Modern C++ Cheat Sheet
 - `Modern C++ From Scratch <docs/notes/cpp_basic.rst>`_
 - `Initialization <docs/notes/cpp_initialization.rst>`_
 - `String <docs/notes/cpp_string.rst>`_
+- `Container <docs/notes/cpp_container.rst>`_
 - `Iterator <docs/notes/cpp_iterator.rst>`_
 - `Template <docs/notes/cpp_template.rst>`_
 - `Variadic <docs/notes/cpp_variadic.rst>`_

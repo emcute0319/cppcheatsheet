@@ -22,6 +22,7 @@ Modern C++ Cheat Sheet
    notes/cpp_basic
    notes/cpp_initialization
    notes/cpp_string
+   notes/cpp_container
    notes/cpp_iterator
    notes/cpp_template
    notes/cpp_variadic
