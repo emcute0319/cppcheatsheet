@@ -2,8 +2,93 @@
 Container
 =========
 
+Priority Queue
+--------------
+
 .. contents:: Table of Contents
     :backlinks: none
+
+Priority Queue
+--------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <functional>
+    #include <vector>
+    #include <queue>
+
+    template<typename Q>
+    void dump(Q &q) {
+      while(!q.empty()) {
+        std::cout << q.top() << " ";
+        q.pop();
+      }
+      std::cout << "\n";
+    }
+
+    void foo() {
+      std::vector<int> data{1, 5, 2, 1, 3};
+      std::priority_queue<int> queue;
+      for (auto & x : data) { queue.push(x); }
+      dump(queue);
+    }
+
+    void bar() {
+      std::vector<int> data{1, 5, 2, 1, 3};
+      std::priority_queue<int, std::vector<int>, std::greater<int>> queue;
+      for (auto & x : data) { queue.push(x); }
+      dump(queue);
+    }
+
+    void baz() {
+      std::vector<int> data{1, 5, 2, 1, 3};
+      auto cmp = [](int x, int y) { return x < y; };
+      std::priority_queue<int, std::vector<int>, decltype(cmp)> queue(cmp);
+      for (auto & x : data) { queue.push(x); }
+      dump(queue);
+    }
+
+    int main(int argc, char *argv[]) {
+      foo();
+      bar();
+      baz();
+      // 5 3 2 1 1
+      // 1 1 2 3 5
+      // 1 1 2 3 5
+    }
+
+
+Priority queue is useful when a programmer need to merge multiple lists of data
+in order.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <queue>
+
+    template<typename Q>
+    void dump(Q &q) {
+      while(!q.empty()) {
+        std::cout << q.top() << " ";
+        q.pop();
+      }
+      std::cout << "\n";
+    }
+
+    int main(int argc, char *argv[]) {
+      std::priority_queue<int> queue;
+      std::vector<int> x{9, 7, 8};
+      std::vector<int> y{0, 5, 3};
+      for (auto &e : x) { queue.push(e); }
+      for (auto &e : y) { queue.push(e); }
+      dump(queue);
+      // 9 8 7 5 3 0
+    }
+
+Profiling
+---------
 
 .. code-block:: cpp
 
@@ -24,7 +109,7 @@ Container
     }
 
 Push Front
-----------
+``````````
 
 .. code-block:: cpp
 
@@ -61,7 +146,7 @@ Push Front
 
 
 Push Back
----------
+`````````
 
 .. code-block:: cpp
 
@@ -95,7 +180,7 @@ Push Back
     39 ms
 
 Pop Front
----------
+`````````
 
 .. code-block:: cpp
 
@@ -145,7 +230,7 @@ Pop Front
     12 ms
 
 Pop Back
---------
+````````
 
 .. code-block:: cpp
 
