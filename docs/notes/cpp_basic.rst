@@ -106,6 +106,52 @@ auto
     auto &&urrx = rx;    // type(urrx) = const int&
     auto &&urrv = 12;    // type(urrv) = int&&
 
+decltype(auto)
+--------------
+
+The ``decltype(auto)`` is similar to auto, which decudes type via compiler.
+However, ``decltype(auto)`` preserves types reference and cv-qualifiers, while
+auto does not.
+
+.. code-block:: cpp
+
+    #include <type_traits>
+
+    int main(int argc, char *argv[]) {
+      int x;
+      const int cx = x;
+      const int &crx = x;
+      int &&z = 0;
+
+      // decltype(auto) preserve cv-qualifiers
+      decltype(auto) y1 = crx;
+      static_assert(std::is_same<const int &, decltype(y1)>::value == 1);
+      // auto does not preserve cv-qualifiers
+      auto y2 = crx;
+      static_assert(std::is_same<int, decltype(y2)>::value == 1);
+      // decltype(auto) preserve rvalue reference
+      decltype(auto) z1 = std::move(z);
+      static_assert(std::is_same<int &&, decltype(z1)>::value == 1);
+    }
+
+``decltype(auto)`` is especially useful for writing a generic function's return.
+
+.. code-block:: cpp
+
+    #include <type_traits>
+
+    auto foo(const int &x) {
+      return x;
+    }
+
+    decltype(auto) bar(const int &x) {
+      return x;
+    }
+
+    int main(int argc, char *argv[]) {
+      static_assert(std::is_same<int, decltype(foo(1))>::value == 1);
+      static_assert(std::is_same<const int &, decltype(bar(1))>::value == 1);
+    }
 
 Reference Collapsing
 --------------------
