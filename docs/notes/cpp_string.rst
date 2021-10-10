@@ -5,6 +5,48 @@ String
 .. contents:: Table of Contents
     :backlinks: none
 
+Char to a string
+----------------
+
+.. code-block:: cpp
+
+    #include <string>
+
+    int main(int argc, char *argv[]) {
+      // string(size_t n, char c)
+      std::string a(1, 'a');
+    }
+
+.. code-block:: cpp
+
+    #include <string>
+
+    int main(int argc, char *argv[]) {
+      std::string s;
+      s += 'a';
+    }
+
+.. code-block:: cpp
+
+    #include <string>
+
+    int main(int argc, char *argv[]) {
+      std::string s;
+      s = 'a';
+    }
+
+C String to a String
+--------------------
+
+.. code-block:: cpp
+
+    #include <string>
+
+    int main(int argc, char *argv[]) {
+      char cstr[] = "hello cstr";
+      std::string s = cstr;
+    }
+
 Split a String
 --------------
 
