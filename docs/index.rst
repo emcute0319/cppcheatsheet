@@ -12,6 +12,7 @@ C Cheat Sheet
    notes/c_gnuext.rst
    notes/c_macro
    notes/c_make
+   notes/asm_basic
 
 Modern C++ Cheat Sheet
 ----------------------

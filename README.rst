@@ -13,6 +13,8 @@ C Cheat Sheet
 - `From Scratch <docs/notes/c_basic.rst>`_
 - `GNU C Extension <docs/notes/c_gnuext.rst>`_
 - `Macro <docs/notes/c_macro.rst>`_
+- `Makefile <docs/notes/c_make.rst>`_
+- `X86 Assembly <docs/notes/asm_basic.rst>`_
 
 Modern C++ Cheat Sheet
 ======================
