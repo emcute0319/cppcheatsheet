@@ -104,6 +104,35 @@ do while
     .section .data
     message: .ascii "Hello World\n"
 
+Procedures
+----------
+
+.. code-block:: asm
+
+    .global _start
+    .section .text
+
+    _start:
+
+    callq print
+
+    # exit
+    mov $0x1,%eax
+    mov $0x0,%ebx
+    int $0x80
+
+    print:
+    # write(stdout, "Hello World\n", 13)
+    mov $0x4,%eax
+    mov $0x1,%ebx
+    lea (message),%ecx
+    mov $13,%edx
+    int $0x80
+    ret
+
+    .section .data
+    message: .ascii "Hello World\n"
+
 Reference
 ---------
 
