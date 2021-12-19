@@ -240,3 +240,23 @@ Perfect Forwarding
       std::cout << baz.ret << std::endl;
       return 0;
     }
+
+Bit Manipulation
+----------------
+
+.. code-block:: cpp
+
+	#include <iostream>
+	#include <bitset>
+
+	int main(int argc, char *argv[]) {
+		std::bitset<4> b{8};
+
+		// show number of bits set
+		std::cout << b.count() << "\n";
+		// compare with int
+		std::cout << (b == 8) << "\n";
+	}
+
+
+
