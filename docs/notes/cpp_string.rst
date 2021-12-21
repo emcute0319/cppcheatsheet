@@ -191,3 +191,59 @@ Upper & Lower
       std::transform(s.begin(), s.end(), s.begin(), ::tolower);
       std::cout << s << "\n";
     }
+
+String Concat
+-------------
+
+Note that concatenating a string at the beginning is much slower than appending
+in the end. Although reserving space can speed up inserting a string in front of
+another one, the performance is still much slower than appending a string at the
+back.
+
+.. code-block:: cpp
+
+	#include <iostream>
+	#include <chrono>
+
+	constexpr int total = 100000;
+	using milliseconds = std::chrono::milliseconds;
+
+	template <typename F>
+	void profile(F &&func) {
+	  const auto start = std::chrono::steady_clock::now();
+	  func();
+	  const auto end = std::chrono::steady_clock::now();
+	  const auto d = end - start;
+	  const auto mill = std::chrono::duration_cast<milliseconds>(d).count();
+	  std::cout << mill << " ms\n";
+	}
+
+	int main(int argc, char *argv[]) {
+
+	  profile([] {
+		std::string s;
+		for (int i = 0; i < total; ++i) {
+		  s += 'a';
+		}
+	  });
+
+	  profile([] {
+		std::string s;
+		for (int i = 0; i < total; ++i) {
+		  s = std::string(1, 'a') + s;
+		}
+	  });
+
+	  profile([] {
+	    std::string s;
+	    s.reserve(total+1);
+	    for (int i = 0; i < total; ++i) {
+	      s = std::string(1, 'a') + s;
+	    }
+	  });
+	}
+
+    // $ g++ -std=c++17 -Wall -Werror a.cc
+    // 0 ms
+    // 143 ms
+    // 110 ms
