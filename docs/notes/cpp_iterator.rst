@@ -267,3 +267,24 @@ Position after Erasing
 	  //   2
 	  //   [1,3,4,5]
 	}
+
+
+Vector Comparision
+------------------
+
+Note that the comparision operators are removed in C++20 (see [doc](https://en.cppreference.com/w/cpp/container/vector)).
+Therefore, using a lambda function as compare function is better than using
+default comparision when elements are not builtin types or has its own comparision
+operators.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+
+    int main(int argc, char *argv[]) {
+        std::vector<int> v1{5,2};
+        std::vector<int> v2{2,3,4};
+        std::cout << (v1 < v2) << "\n";
+        // output: 0
+    }
