@@ -9,8 +9,8 @@ Upper Bound
 -----------
 
 Note that `std::upper_bound(x.begin(), x.end(), val)` finds an element which
-is *greater than* val. However, `std::lower_bound(x.begin(), x.end(), val)`,
-finds an element which is greater or equal to the val.
+is *greater than the val*. However, `std::lower_bound(x.begin(), x.end(), val)`,
+finds an element which is *greater or equal to the val*.
 
 .. code-block:: cpp
 
