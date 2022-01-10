@@ -5,6 +5,75 @@ Iterator
 .. contents:: Table of Contents
     :backlinks: none
 
+Upper Bound
+-----------
+
+Note that `std::upper_bound(x.begin(), x.end(), val)` finds an element which
+is *greater than* val. However, `std::lower_bound(x.begin(), x.end(), val)`,
+finds an element which is greater or equal to the val.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <deque>
+    #include <algorithm>
+
+    int main(int argc, char *argv[]) {
+      std::deque<int> v{1,2,3,4,5,7,10};
+
+      auto x = 5;
+      auto pos1 = std::upper_bound(v.begin(), v.end(), x);
+      std::cout << *pos1 << "\n";
+
+      auto pos2 = std::lower_bound(v.begin(), v.end(), x);
+      std::cout << *pos2 << "\n";
+
+      // 7
+      // 5
+    }
+
+Insert an Element into a Sorted List
+------------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <deque>
+    #include <algorithm>
+    #include <range/v3/view/all.hpp>
+
+
+    int main(int argc, char *argv[]) {
+      std::deque<int> v{1,2,3,4,5,7,10};
+
+      auto x = 8;
+      auto pos = std::upper_bound(v.begin(), v.end(), x);
+      v.insert(pos, x);
+      std::cout << ranges::views::all(v) << "\n";
+      // [1,2,3,4,5,7,8,10]
+    }
+
+Erase an Element in a Sorted List
+---------------------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <deque>
+    #include <algorithm>
+    #include <range/v3/view/all.hpp>
+
+
+    int main(int argc, char *argv[]) {
+      std::deque<int> v{1,2,3,4,5,7,10};
+
+      auto x = 7;
+      auto pos = std::lower_bound(v.begin(), v.end(), x);
+      v.erase(pos);
+      std::cout << ranges::views::all(v) << "\n";
+      // [1,2,3,4,5,10]
+    }
+
 Reverse Range-based for Loop
 ----------------------------
 
