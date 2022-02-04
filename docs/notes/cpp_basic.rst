@@ -33,6 +33,7 @@ construct an object event though ``Foo(int a, double b)`` is the more suitable o
 
    int main(int argc, char *argv[]) {
      Foo x{10, 5.0};
+      // output: with initializer_list
    }
 
 
@@ -84,6 +85,7 @@ to initialize an object. For example, ``int`` and ``double`` cannot convert to
 
     int main(int argc, char *argv[]) {
       Foo x{10, 5.0};
+      // output: without initializer_list
     }
 
 
