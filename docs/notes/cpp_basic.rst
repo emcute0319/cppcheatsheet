@@ -5,6 +5,88 @@ Basic cheatsheet
 .. contents:: Table of Contents
     :backlinks: none
 
+Uniform Initialization
+----------------------
+
+*Uniform Initialization* is also called braced initialization, which unifies
+constructing an object using a brace. However, there are some pitfalls in using
+syntax. For example, the compiler prefers to call ``std::initializer_list`` to
+initialize an object even with a matched constructor. The following snippet shows
+that ``x{10, 5.0}`` will call ``Foo(std::initializer_list<long double>)`` to
+construct an object event though ``Foo(int a, double b)`` is the more suitable one.
+
+.. code-block:: cpp
+
+   #include <iostream>
+   #include <initializer_list>
+
+   class Foo {
+   public:
+     Foo(int a, double b) {
+       std::cout << "without initializer_list\n";
+     }
+
+     Foo(std::initializer_list<long double> il) {
+       std::cout << "with initializer_list\n";
+     }
+   };
+
+   int main(int argc, char *argv[]) {
+     Foo x{10, 5.0};
+   }
+
+
+Moreover, *uniform initialization* does not support narrowing conversion.
+Therefore, the following snippet will compile errors because ``int`` and
+``double`` need to do narrowing conversion ``bool``.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <initializer_list>
+
+    class Foo {
+    public:
+      Foo(int a, double b) {
+        std::cout << "without initializer_list\n";
+      }
+
+      // compile error
+      Foo(std::initializer_list<bool> il) {
+        std::cout << "with initializer_list\n";
+      }
+    };
+
+    int main(int argc, char *argv[]) {
+      Foo x{10, 5.0};
+    }
+
+Note that when types cannot convert, the compiler does not use ``std::initializer_list``
+to initialize an object. For example, ``int`` and ``double`` cannot convert to
+``std::string``, so the compiler will call ``Foo(int, double)`` to create an object.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <initializer_list>
+
+    class Foo {
+    public:
+      Foo(int a, double b) {
+        std::cout << "without initializer_list\n";
+      }
+
+      Foo(std::initializer_list<std::string> il) {
+        std::cout << "with initializer_list\n";
+      }
+    };
+
+    int main(int argc, char *argv[]) {
+      Foo x{10, 5.0};
+    }
+
+
 Negative Array index
 --------------------
 
