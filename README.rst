@@ -33,6 +33,7 @@ Modern C++ Cheat Sheet
 - `Smart Pointer <docs/notes/cpp_smartpointers.rst>`_
 - `Return Value Optimization <docs/notes/cpp_rvo.rst>`_
 - `Algorithm <docs/notes/cpp_algorithm.rst>`_
+- `Coroutine <docs/notes/cpp_coroutine.rst>`_
 - `Ranges <docs/notes/cpp_ranges.rst>`_
 
 System Programming Cheat Sheet
