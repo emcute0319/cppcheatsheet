@@ -21,6 +21,7 @@ Modern C++ Cheat Sheet
    :maxdepth: 1
 
    notes/cpp_basic
+   notes/cpp_constructor
    notes/cpp_initialization
    notes/cpp_string
    notes/cpp_container
