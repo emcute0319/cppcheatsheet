@@ -5,7 +5,6 @@ constructor
 .. contents:: Table of Contents
     :backlinks: none
 
-
 Constructors
 ------------
 
@@ -170,4 +169,31 @@ Rule of five
       std::string s = "Rule of five";
       RuleOfFive r5(s.c_str(), s.size() + 1);
       std::cout << r5 << "\n";
+    }
+
+Rule of zero
+------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+
+    class RuleOfZero {
+     public:
+      RuleOfZero(const std::string &s) : s_(s) {}
+      // if we don't have a user-defined destructor, we should not have
+      // user-defined copy/move constructors or copy/move assignment.
+      friend std::ostream &operator<<(std::ostream &os, const RuleOfZero &r0);
+     private:
+      const std::string s_;
+    };
+
+    std::ostream &operator<<(std::ostream &os, const RuleOfZero &r0) {
+      return os << r0.s_;
+    }
+
+    int main(int argc, char *argv[]) {
+      RuleOfZero r0("Rule of zero");
+      std::cout << r0 << "\n";
     }
