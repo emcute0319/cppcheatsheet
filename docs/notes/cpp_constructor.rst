@@ -121,4 +121,53 @@ Rule of three
       std::cout << r3 << "\n";
     }
 
+Rule of five
+------------
 
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <memory>
+    #include <string>
+    #include <cstring>
+    #include <utility>
+
+    class RuleOfFive {
+     public:
+      RuleOfFive(const char *s, int n) : cstr_(new char[n]) {
+        std::memcpy(cstr_, s, n);
+      }
+
+      // if there is a user-defined destructor including default or delete
+      ~RuleOfFive() { delete[] cstr_; }
+      // a user-defined copy constructor
+      RuleOfFive(const RuleOfFive &other)
+        : RuleOfFive(other.cstr_, strlen(other.cstr_) + 1) {}
+      // a user-defined move constructor
+      RuleOfFive(RuleOfFive &&other)
+        : cstr_(std::exchange(other.cstr_, nullptr)) {}
+      // a user-define copy assignment
+      RuleOfFive &operator=(const RuleOfFive &other) {
+        return *this = RuleOfFive(other);
+      }
+      // a user-defined move assignment have to declare explicitly.
+      RuleOfFive &operator=(RuleOfFive &&other) {
+        std::swap(cstr_, other.cstr_);
+        return *this;
+      }
+
+      friend std::ostream &operator<<(std::ostream &os, const RuleOfFive &);
+
+     private:
+      char *cstr_;
+    };
+
+    std::ostream &operator<<(std::ostream &os, const RuleOfFive &r5) {
+      return os << r5.cstr_;
+    }
+
+    int main(int argc, char *argv[]) {
+      std::string s = "Rule of five";
+      RuleOfFive r5(s.c_str(), s.size() + 1);
+      std::cout << r5 << "\n";
+    }
