@@ -197,3 +197,61 @@ Rule of zero
       RuleOfZero r0("Rule of zero");
       std::cout << r0 << "\n";
     }
+
+Note that a polymorphic class should supress public copy/move.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <utility>
+
+    // bad
+    class A {
+     public:
+      virtual std::string f() { return "a"; }
+    };
+
+    class B : public A {
+     public:
+      std::string f() override { return "b"; }
+    };
+
+    void func(A &a) {
+      auto c = a;
+      std::cout << c.f() << "\n";
+    }
+
+    int main(int argc, char *argv[]) {
+      B b;
+      func(b);
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <utility>
+
+    class A {
+     public:
+      A() = default;
+      A(const A&) = delete;
+      A &operator=(const A&) = delete;
+      virtual std::string f() { return "a"; }
+    };
+
+    class B : public A {
+     public:
+      std::string f() override { return "b"; }
+    };
+
+    void func(A &a) {
+      auto c = a;  // compile error here!
+      std::cout << c.f() << "\n";
+    }
+
+    int main(int argc, char *argv[]) {
+      B b;
+      func(b);
+    }
