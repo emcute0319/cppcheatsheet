@@ -342,5 +342,28 @@ Bit Manipulation
 		std::cout << (b == 8) << "\n";
 	}
 
+Using ``std::addressof``
+------------------------
 
+Because C++ allows the overloading of ``operator &``, accessing the address of
+an reference will result in infinite recusion. Therefore, when it is necessary
+to access the address of reference, it would be safer by using ``std::addressof``.
 
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <memory>
+
+    struct A {
+      int x;
+    };
+
+    const A *operator &(const A& a) {
+      // return &a; <- infinite recursion
+      return std::addressof(a);
+    }
+
+    int main(int argc, char *argv[]) {
+      A a;
+      std::cout << &a << "\n";
+    }
