@@ -406,3 +406,65 @@ Template Template Parameters
       f<std::vector, int>(v);
       f<std::deque, int>(q);
     }
+
+Access Protected Membors in Sub-Template
+----------------------------------------
+
+Accessing protected members by pulling the names into the current scope via ``using``.
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    template <typename T>
+    class A {
+     public:
+      A(T p) : p_{p} {}
+      decltype(auto) f() { std::cout << p_ << "\n"; }
+     protected:
+      T p_;
+    };
+
+    template <typename T>
+    class B : A<T> {
+      using A<T>::p_;
+     public:
+      B(T p) : A<T>(p) {}
+      decltype(auto) g() { std::cout << p_ << "\n"; }
+    };
+
+    int main(int argc, char *argv[]) {
+      A<int> a(0);
+      B<int> b(0);
+      a.f();
+      b.g();
+    }
+
+Another option is qualifying name via the ``this`` pointer.
+
+.. code-block:: cpp
+
+    #include <iostream>
+
+    template <typename T>
+    class A {
+     public:
+      A(T p) : p_{p} {}
+      decltype(auto) f() { std::cout << p_ << "\n"; }
+     protected:
+      T p_;
+    };
+
+    template <typename T>
+    class B : A<T> {
+     public:
+      B(T p) : A<T>{p} {}
+      decltype(auto) g() { std::cout << this->p_ << "\n"; }
+    };
+
+    int main(int argc, char *argv[]) {
+      A<int> a(0);
+      B<int> b(0);
+      a.f();
+      b.g();
+    }
