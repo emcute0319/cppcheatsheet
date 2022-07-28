@@ -29,6 +29,7 @@ Modern C++ Cheat Sheet
    notes/cpp_template
    notes/cpp_variadic
    notes/cpp_forwarding
+   notes/cpp_casting
    notes/cpp_constexpr
    notes/cpp_lambda
    notes/cpp_time

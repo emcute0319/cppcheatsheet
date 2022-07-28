@@ -28,6 +28,7 @@ Modern C++ Cheat Sheet
 - `Template <docs/notes/cpp_template.rst>`_
 - `Variadic <docs/notes/cpp_variadic.rst>`_
 - `Forwarding <docs/notes/cpp_forwarding.rst>`_
+- `Casting <docs/notes/cpp_casting.rst>`_
 - `Constexpr <docs/notes/cpp_constexpr.rst>`_
 - `Lambda <docs/notes/cpp_lambda.rst>`_
 - `Time <docs/notes/cpp_time.rst>`_
