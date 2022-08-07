@@ -247,3 +247,87 @@ back.
     // 0 ms
     // 143 ms
     // 110 ms
+
+String Literals
+---------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string>
+    #include <string_view>
+
+    int main(int argc, char *argv[]) {
+      using namespace std::literals;
+
+      auto s1 = "c string";
+      auto s2 = "std::string"s;
+      auto s3 = "std::string_view"sv;
+
+      std::cout << s1 << "\n";
+      std::cout << s2 << "\n";
+      std::cout << s3 << "\n";
+    }
+
+String View
+-----------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string_view>
+
+    void f(std::string_view s) {
+      std::cout << s << "\n";
+    }
+
+    int main(int argc, char *argv[]) {
+      const std::string s = "foo";
+      // pass a const string is ok
+      f(s);
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string_view>
+
+    void f(std::string s) {
+      std::cout << s << "\n";
+    }
+
+    int main(int argc, char *argv[]) {
+      std::string_view s = "foo";
+      f(s); // compile error. cannot convert a string_view to a string
+    }
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <string_view>
+
+    void f(std::string s) {
+      std::cout << s << "\n";
+    }
+
+    int main(int argc, char *argv[]) {
+      std::string_view s = "foo";
+      // we can cast a string_view to a string
+      f(static_cast<std::string>(s));
+    }
+
+.. code-block:: cpp
+
+    // string_view is not alway has null-terminated
+    #include <iostream>
+    #include <cstring>
+    #include <string_view>
+
+    int main(int argc, char *argv[]) {
+      char array[3] = {'B', 'a', 'r'};
+      std::string_view s(array, sizeof array);
+      // Dangerous!! ptr will access memory address larger than array+3
+      for (auto ptr = s.data(); !!ptr; ++ptr) {
+        std::cout << *ptr << "\n";
+      }
+    }
