@@ -85,3 +85,73 @@ Generator
       // ./a.out
       //  0 1 1 2 3 5 8 13 21 34 55
     }
+
+Boost ASIO Echo Server
+----------------------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <boost/asio/co_spawn.hpp>
+    #include <boost/asio/detached.hpp>
+    #include <boost/asio/io_context.hpp>
+    #include <boost/asio/ip/tcp.hpp>
+    #include <boost/asio/signal_set.hpp>
+    #include <boost/asio/write.hpp>
+
+    using boost::asio::ip::tcp;
+    using boost::asio::awaitable;
+    using boost::asio::co_spawn;
+    using boost::asio::detached;
+    using boost::asio::use_awaitable;
+    namespace this_coro = boost::asio::this_coro;
+
+    constexpr uint64_t BUFSIZE = 1024;
+
+    awaitable<void> echo(tcp::socket &socket) {
+      for (;;) {
+        char data[BUFSIZE] = {0};
+        auto n = co_await socket.async_read_some(boost::asio::buffer(data), use_awaitable);
+        co_await async_write(socket, boost::asio::buffer(data, n), use_awaitable);
+      }
+    }
+
+    awaitable<void> handle(tcp::socket socket) {
+      try {
+        co_await echo(socket);
+      } catch(const std::exception &e) {
+        std::cerr << e.what();
+      }
+    }
+
+    awaitable<void> listener() {
+      auto e = co_await this_coro::executor;
+      tcp::acceptor acceptor(e, {tcp::v4(), 8888});
+      for (;;) {
+        tcp::socket socket = co_await acceptor.async_accept(use_awaitable);
+        co_spawn(e, handle(std::move(socket)), detached);
+      }
+    }
+
+    int main(int argc, char *argv[]) {
+      boost::asio::io_context io_context;
+      boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
+      signals.async_wait([&](auto, auto){ io_context.stop(); });
+      co_spawn(io_context, listener(), detached);
+      io_context.run();
+    }
+
+.. code-block:: cmake
+
+    # CMakeLists.txt
+    cmake_minimum_required(VERSION 3.10)
+    set(target a.out)
+    set(CMAKE_CXX_STANDARD 20)
+    set(CMAKE_CXX_STANDARD_REQUIRED True)
+    project(example)
+    find_package(Boost)
+    add_executable(${target} a.cc)
+    target_include_directories(${target} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+    target_include_directories(${target} PRIVATE "${Boost_INCLUDE_DIR}")
+    target_link_libraries(${target} ${Boost_LIBRARIES})
+    target_link_libraries(${target} INTERFACE Boost::coroutine)
