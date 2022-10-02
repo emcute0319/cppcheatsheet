@@ -1,0 +1,5 @@
+#!/bin/bash
+
+find . -name '*.cpp' -o -name '*.h' | xargs clang-format -i -style=file
+#find . -name '*.py'| xargs autopep8 --max-line-length=150 --in-place -a
+
